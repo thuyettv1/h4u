@@ -77,6 +77,7 @@ public class C3p0Connector {
     }
 
     public static C3p0Connector getInstance() throws Exception {
+        
         if (datasource == null) {
             datasource = new C3p0Connector();
             return datasource;

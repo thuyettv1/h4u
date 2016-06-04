@@ -75,13 +75,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import pl.jsolve.templ4docx.core.Docx;
+import pl.jsolve.templ4docx.core.VariablePattern;
+import pl.jsolve.templ4docx.variable.TextVariable;
+import pl.jsolve.templ4docx.variable.Variables;
 
 /**
  * @since 14/11/2014
  * @author HienDM
  */
-
 public class BaseAction {
+
     public List<List> lstComponent = new ArrayList();
     public List<List> lstComponentMulti = new ArrayList();
     public List<List> lstCustomizeComponent = new ArrayList();
@@ -94,7 +98,7 @@ public class BaseAction {
     public boolean hasTreeSearch = false;
     public boolean recursiveTreeSearch = true;
     public int pageLength = 25;
-    public int tableType = 1;    
+    public int tableType = 1;
     public String idColumnName = "";
     public int nameField = -1;
     public String nameColumn = "";
@@ -142,7 +146,7 @@ public class BaseAction {
     public boolean refreshAlready = false;
     public boolean ignoreAttachWhenEdit = false;
     public boolean notUpdateForm = false;
-    
+
     public HorizontalLayout layoutPanel = new HorizontalLayout();
     public VerticalLayout mainPanel = new VerticalLayout();
     public VerticalLayout dataArea = new VerticalLayout();
@@ -154,7 +158,7 @@ public class BaseAction {
     public UI mainUI = null;
     public HorizontalLayout treeLayout = new HorizontalLayout();
     public Tree treeSearch;
-    
+
     public static final int INT_LABEL = 0;
     public static final int INT_COMPONENT = 1;
     public static final int INT_DB_FIELD_NAME = 2;
@@ -172,10 +176,10 @@ public class BaseAction {
     public static final int INT_VISIBLE_EDIT = 14;
     public static final int INT_ENABLE_ADD = 15;
     public static final int INT_ENABLE_EDIT = 16;
-    
+
     // TextField & Date
     public static final int INT_DEFAULT = 17;
-    
+
     // File
     public static final int INT_FILE_TABLEATTACH = 2;
     public static final int INT_FILE_DIRECTORY = 17;
@@ -191,9 +195,9 @@ public class BaseAction {
     public static final int INT_TO_DATE_COMPONENT = 18;
     public static final int INT_SYSDATE = 19;
     // CheckBox
-    public static final int INT_CHECKBOX_DEFAULT = 9;    
-    public static final int INT_CHECKBOX_ENABLE = 17;    
-    public static final int INT_CHECKBOX_DISABLE = 18;    
+    public static final int INT_CHECKBOX_DEFAULT = 9;
+    public static final int INT_CHECKBOX_ENABLE = 17;
+    public static final int INT_CHECKBOX_DISABLE = 18;
     // ComboBox
     public static final int INT_COMBOBOX_DEFAULTVALUE = 17;
     public static final int INT_COMBOBOX_DEFAULTCAPTION = 18;
@@ -231,18 +235,18 @@ public class BaseAction {
     public static final int INT_LOGINUSER_ONLYVIEW = 30;
     public static final int INT_LOGINUSER_ONLYEDIT = 31;
     public static final int INT_LOGINUSER_ONLYVIEWGROUP = 32;
-    
+
     public final int INT_NORMAL_TABLE = 1;//Bang co Scroll    
     public final int INT_PAGED_TABLE = 2;//Bang Co phan trang
     public final int INT_TREE_TABLE = 3;//Bang co cay
 
     public static final int INT_VIEWGROUP_ALL = 0;
     public static final int INT_VIEWGROUP_ONE = 1;
-    public static final int INT_VIEWGROUP_RECURSIVE = 2;    
-    
+    public static final int INT_VIEWGROUP_RECURSIVE = 2;
+
     public static final String INVOICE_CLOSE_DATE = "INVOICE_CLOSE_DATE";
     public static final String DAYS_FOR_EDIT_ACCEPTANCE_DAY = "DAYS_FOR_EDIT_ACCEPTANCE_DAY";
-    
+
     public Button buttonFind;
     public Button buttonUpdate;
     public Button buttonCancel;
@@ -278,7 +282,9 @@ public class BaseAction {
     }
 
     public void setIdColumnName(String idColumnName) {
-        if(idColumnName != null) this.idColumnName = idColumnName.toLowerCase();
+        if (idColumnName != null) {
+            this.idColumnName = idColumnName.toLowerCase();
+        }
     }
 
     public int getMainTextField() {
@@ -311,8 +317,9 @@ public class BaseAction {
 
     public void setTableName(String tableName) {
         this.tableName = tableName.toLowerCase();
-        if(this.viewName == null || this.viewName.toLowerCase().trim().equals("")) 
+        if (this.viewName == null || this.viewName.toLowerCase().trim().equals("")) {
             viewName = tableName.toLowerCase();
+        }
     }
 
     public String getViewName() {
@@ -409,7 +416,7 @@ public class BaseAction {
 
     public void setTableQuery(String tableQuery) {
         this.tableQuery = tableQuery;
-    }    
+    }
 
     public String getTreeSelectedId() {
         return treeSelectedId;
@@ -466,13 +473,15 @@ public class BaseAction {
     public void setAllowExport(boolean allowExport) {
         this.allowExport = allowExport;
     }
-    
+
     public String getNameColumn() {
         return nameColumn;
     }
 
     public void setNameColumn(String nameColumn) {
-        if(nameColumn != null) this.nameColumn = nameColumn.toLowerCase();
+        if (nameColumn != null) {
+            this.nameColumn = nameColumn.toLowerCase();
+        }
     }
 
     public String getQueryWhereCondition() {
@@ -482,7 +491,7 @@ public class BaseAction {
     public void setQueryWhereCondition(String queryWhereCondition) {
         this.queryWhereCondition = " " + queryWhereCondition + " ";
     }
-    
+
     public void addQueryWhereCondition(String queryWhereCondition) {
         this.queryWhereCondition += " " + queryWhereCondition + " ";
     }
@@ -494,7 +503,7 @@ public class BaseAction {
     public void setQueryWhereParameter(List queryWhereParameter) {
         this.queryWhereParameter = queryWhereParameter;
     }
-    
+
     public void addQueryWhereParameter(List queryWhereParameter) {
         this.queryWhereParameter.addAll(queryWhereParameter);
     }
@@ -561,12 +570,12 @@ public class BaseAction {
 
     public void setConfigFileName(String configFileName) {
         this.configFileName = configFileName;
-    } 
-    
+    }
+
     public HorizontalLayout init(UI localMainUI) throws Exception {
         return null;
     }
-    
+
     /**
      * Hàm khởi tạo giao diện chức năng
      *
@@ -576,84 +585,97 @@ public class BaseAction {
      */
     public HorizontalLayout initPanel(int column) throws Exception {
         beforeInitPanel();
-        if(viewName == null || viewName.isEmpty()) viewName = tableName;
-        if(tableType == INT_NORMAL_TABLE) table = new Table();
-        if(tableType == INT_PAGED_TABLE) table = new PagedTable();
-        if(tableType == INT_TREE_TABLE) {
+        if (viewName == null || viewName.isEmpty()) {
+            viewName = tableName;
+        }
+        if (tableType == INT_NORMAL_TABLE) {
+            table = new Table();
+        }
+        if (tableType == INT_PAGED_TABLE) {
+            table = new PagedTable();
+        }
+        if (tableType == INT_TREE_TABLE) {
             table = new TreeTable();
             includeOrder = false;
         }
         numberOfTD = column;
-        if(sortField == -1) sortField = idField;
-        if(sortColumnName.equals("")) sortColumnName = idColumnName;
-        if(sortColumnType.equals("")) sortColumnType = "int";
-        
-        ((Component)lstComponent.get(idField).get(INT_COMPONENT)).setVisible(false);                
+        if (sortField == -1) {
+            sortField = idField;
+        }
+        if (sortColumnName.equals("")) {
+            sortColumnName = idColumnName;
+        }
+        if (sortColumnType.equals("")) {
+            sortColumnType = "int";
+        }
+
+        ((Component) lstComponent.get(idField).get(INT_COMPONENT)).setVisible(false);
         formArea = buildSearchFormPanel(column);
         mainPanel = buildMainPanel();
-        
+
         panelButton = buildPanelButton();
-        buttonArea.addComponent(panelButton);        
+        buttonArea.addComponent(panelButton);
         buttonArea.setComponentAlignment(panelButton, Alignment.MIDDLE_CENTER);
         buttonArea.setHeight("50px");
 
-        
         //Tạo các filter dữ liệu
-        for(int i = 0; i < lstFilter.size(); i++) {
-            for(int j=0; j < lstComponent.size(); j++) {
-                if(lstComponent.get(j).get(INT_DB_FIELD_NAME).equals(
+        for (int i = 0; i < lstFilter.size(); i++) {
+            for (int j = 0; j < lstComponent.size(); j++) {
+                if (lstComponent.get(j).get(INT_DB_FIELD_NAME).equals(
                         lstFilter.get(i).get(0))) {
-                    if(lstComponent.get(j).get(INT_COMPONENT) instanceof ComboBox) {
+                    if (lstComponent.get(j).get(INT_COMPONENT) instanceof ComboBox) {
                         String filterStore = lstFilter.get(i).get(0).toString();
-                        ComboBox cbo = (ComboBox) lstComponent.get(j).get(INT_COMPONENT);                        
+                        ComboBox cbo = (ComboBox) lstComponent.get(j).get(INT_COMPONENT);
                         filterData(cbo, filterStore);
                     }
                 }
             }
         }
-        
+
         table.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
             public void itemClick(ItemClickEvent itemClickEvent) {
                 if (itemClickEvent.isDoubleClick()) {
                     try {
                         buttonDetailClick();
-                    } catch(Exception ex) {
+                    } catch (Exception ex) {
                         VaadinUtils.handleException(ex);
                         MainUI.mainLogger.debug("Install error: ", ex);
                     }
                 }
             }
-        });        
-        
+        });
+
         afterInitPanel();
         return layoutPanel;
     }
-    
+
     /**
      * Hàm sắp xếp giao diện chức năng
      *
      * @since 24/05/2015 HienDM
      * @return Giao diện chức năng
-     */    
+     */
     public VerticalLayout buildMainPanel() throws Exception {
         VerticalLayout buildMain = new VerticalLayout();
         buildMain.addComponent(formArea);
         buildMain.addComponent(buttonArea);
         buildMain.addComponent(dataArea);
-        if(dataArea != null) dataArea.removeAllComponents();
+        if (dataArea != null) {
+            dataArea.removeAllComponents();
+        }
         dataArea.addComponent(buildDataPanel());
-        
+
         buildMain.setExpandRatio(formArea, 0f);
         buildMain.setExpandRatio(buttonArea, 0f);
         buildMain.setExpandRatio(dataArea, 100f);
-        
-        if(hasTreeSearch) {
+
+        if (hasTreeSearch) {
             treeLayout.setStyleName("DivScrollHorizontal");
             layoutPanel.addComponent(treeLayout);
         }
         layoutPanel.addComponent(buildMain);
-        if(hasTreeSearch) {
+        if (hasTreeSearch) {
             layoutPanel.setExpandRatio(buildMain, 70f);
             buildMain.setStyleName("CenterBodySmall");
             treeSelectedId = rootId;
@@ -662,21 +684,23 @@ public class BaseAction {
         }
         return buildMain;
     }
-    
+
     /**
      * Hàm thực hiện sau khi khởi tạo panel
      *
      * @since 02/01/2015 HienDM
      */
-    public void afterInitPanel() throws Exception {}
-    
+    public void afterInitPanel() throws Exception {
+    }
+
     /**
      * Hàm thực hiện trước khi khởi tạo panel
      *
      * @since 02/01/2015 HienDM
      */
-    public void beforeInitPanel() throws Exception {}    
-    
+    public void beforeInitPanel() throws Exception {
+    }
+
     /**
      * Hàm thêm điều kiện where cho câu query dữ liệu
      *
@@ -688,7 +712,7 @@ public class BaseAction {
         queryWhereFilter = queryWhereCondition;
         queryWhereFilterParameter = (ArrayList) ((ArrayList) queryWhereParameter).clone();
     }
-    
+
     /**
      * Hàm filter dữ liệu một trường theo giá trị của trường khác
      *
@@ -716,13 +740,14 @@ public class BaseAction {
                                                 if (defaultValue != null) {
                                                     component.addItem(defaultValue.toString());
                                                     Object defaultCaption = lstComponent.get(k).get(INT_COMBOBOX_DEFAULTCAPTION);
-                                                    if(defaultCaption != null)
-                                                        component.setItemCaption(defaultValue, 
+                                                    if (defaultCaption != null) {
+                                                        component.setItemCaption(defaultValue,
                                                                 ResourceBundleUtils.getLanguageResource(defaultCaption.toString()));
+                                                    }
                                                 }
                                                 for (int i = 0; i < lstData.size(); i++) {
                                                     Map rows = lstData.get(i);
-                                                    if( rows.get(lstComponent.get(k).get(INT_COMBOBOX_FILTERCHILD)) != null) {
+                                                    if (rows.get(lstComponent.get(k).get(INT_COMBOBOX_FILTERCHILD)) != null) {
                                                         if (rows.get(lstComponent.get(k).get(INT_COMBOBOX_FILTERCHILD)).toString().equals(
                                                                 cbo.getValue().toString())) {
                                                             Object celldata = new Object();
@@ -770,7 +795,7 @@ public class BaseAction {
         };
         cbo.addValueChangeListener(listener);
     }
-    
+
     /**
      * Hàm thêm component tùy chỉnh vào giao diện nhập
      *
@@ -779,28 +804,30 @@ public class BaseAction {
      * @param dataType loại dữ liệu
      * @param isMandatory bắt buộc nhập
      * @param dataLength độ dài dữ liệu
-     * @param format kiểm tra định dạng dữ liệu:
-     *     ví dụ đơn giản: int,long,float,double,email
+     * @param format kiểm tra định dạng dữ liệu: ví dụ đơn giản:
+     * int,long,float,double,email
      * @param caption mô tả thêm
      * @param isPassword Có phải password không
      * @param visibleAdd Hiển thị tại màn hình thêm mới
      * @param visibleEdit Hiển thị tại màn hình sửa
      * @param enableAdd Hiệu lực tại màn hình thêm mới
      * @param enableEdit Hiệu lực tại màn hình sửa
-     * @param defaultValue Giá trị mặc định tại màn hình thêm mới và màn hình sửa
+     * @param defaultValue Giá trị mặc định tại màn hình thêm mới và màn hình
+     * sửa
      * @since 18/11/2014 HienDM
      */
     public void addCustomizeComponentToForm(String label, Component component, String dataType,
-            boolean isMandatory, Integer dataLength, String format, String caption, 
-            boolean isPassword, boolean visibleAdd, boolean visibleEdit, boolean enableAdd, 
+            boolean isMandatory, Integer dataLength, String format, String caption,
+            boolean isPassword, boolean visibleAdd, boolean visibleEdit, boolean enableAdd,
             boolean enableEdit, Object defaultValue) {
         List lstCell = new ArrayList();
         lstCell.add(new Label(ResourceBundleUtils.getLanguageResource(label)));
-        if(dataType.equals("date")) {
-            if(((PopupDateField)component).getResolution().equals(Resolution.DAY))
-                ((PopupDateField)component).setDateFormat("dd/MM/yyyy");
-            else 
-                ((PopupDateField)component).setDateFormat("dd/MM/yyyy HH:mm:ss");
+        if (dataType.equals("date")) {
+            if (((PopupDateField) component).getResolution().equals(Resolution.DAY)) {
+                ((PopupDateField) component).setDateFormat("dd/MM/yyyy");
+            } else {
+                ((PopupDateField) component).setDateFormat("dd/MM/yyyy HH:mm:ss");
+            }
         }
         lstCell.add(component);
         lstCell.add("");
@@ -821,7 +848,7 @@ public class BaseAction {
         lstCell.add(defaultValue);
         component.setCaption(ResourceBundleUtils.getLanguageResource(caption));
         component.setWidth("90%");
-        lstCustomizeComponent.add(lstCell);        
+        lstCustomizeComponent.add(lstCell);
     }
 
     /**
@@ -832,28 +859,30 @@ public class BaseAction {
      * @param dataType loại dữ liệu
      * @param isMandatory bắt buộc nhập
      * @param dataLength độ dài dữ liệu
-     * @param format kiểm tra định dạng dữ liệu:
-     *     ví dụ đơn giản: int,long,float,double,email
+     * @param format kiểm tra định dạng dữ liệu: ví dụ đơn giản:
+     * int,long,float,double,email
      * @param caption mô tả thêm
      * @param isPassword Có phải password không
      * @param visibleAdd Hiển thị tại màn hình thêm mới
      * @param visibleEdit Hiển thị tại màn hình sửa
      * @param enableAdd Hiệu lực tại màn hình thêm mới
      * @param enableEdit Hiệu lực tại màn hình sửa
-     * @param defaultValue Giá trị mặc định tại màn hình thêm mới và màn hình sửa
+     * @param defaultValue Giá trị mặc định tại màn hình thêm mới và màn hình
+     * sửa
      * @since 18/11/2014 HienDM
      */
     public void addCustomizeToSearchForm(String label, Component component, String dataType,
-            boolean isMandatory, Integer dataLength, String format, String caption, 
-            boolean isPassword, boolean visibleAdd, boolean visibleEdit, boolean enableAdd, 
+            boolean isMandatory, Integer dataLength, String format, String caption,
+            boolean isPassword, boolean visibleAdd, boolean visibleEdit, boolean enableAdd,
             boolean enableEdit, Object defaultValue) {
         List lstCell = new ArrayList();
         lstCell.add(new Label(ResourceBundleUtils.getLanguageResource(label)));
-        if(dataType.equals("date")) {
-            if(((PopupDateField)component).getResolution().equals(Resolution.DAY))
-                ((PopupDateField)component).setDateFormat("dd/MM/yyyy");
-            else
-                ((PopupDateField)component).setDateFormat("dd/MM/yyyy HH:mm:ss");
+        if (dataType.equals("date")) {
+            if (((PopupDateField) component).getResolution().equals(Resolution.DAY)) {
+                ((PopupDateField) component).setDateFormat("dd/MM/yyyy");
+            } else {
+                ((PopupDateField) component).setDateFormat("dd/MM/yyyy HH:mm:ss");
+            }
         }
         lstCell.add(component);
         lstCell.add("");
@@ -874,9 +903,9 @@ public class BaseAction {
         lstCell.add(defaultValue);
         component.setCaption(ResourceBundleUtils.getLanguageResource(caption));
         component.setWidth("90%");
-        lstCustomizeComponent.add(lstCell);        
+        lstCustomizeComponent.add(lstCell);
     }
-    
+
     /**
      * Hàm thêm TextField vào giao diện nhập
      *
@@ -888,8 +917,8 @@ public class BaseAction {
                 p.isMandatory(), p.getDataLength(), p.getFormat(), p.getCaption(), p.isUseToSearch(),
                 p.isPassword(), p.getSearchMandatory(), p.isCollapsed(), p.getSearchDefaultValue(),
                 p.isVisibleAdd(), p.isVisibleEdit(), p.isEnableAdd(), p.isEnableEdit(), p.getDefaultValue());
-    }        
-    
+    }
+
     /**
      * Hàm thêm TextField vào giao diện nhập
      *
@@ -899,45 +928,48 @@ public class BaseAction {
      * @param dataType loại dữ liệu
      * @param isMandatory bắt buộc nhập
      * @param dataLength độ dài dữ liệu
-     * @param format kiểm tra định dạng dữ liệu:
-     *     ví dụ đơn giản: int,long,float,double,email
+     * @param format kiểm tra định dạng dữ liệu: ví dụ đơn giản:
+     * int,long,float,double,email
      * @param caption mô tả thêm
      * @param useToSearch sử dụng để tìm kiếm
      * @param isPassword Có phải password không
-     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ DB) 
-     *     ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập, không vượt quá khoảng 100 ngày)
-     *     int:or_mandatory (kiểu số nguyên, chỉ bắt buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
+     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ
+     * DB) ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập,
+     * không vượt quá khoảng 100 ngày) int:or_mandatory (kiểu số nguyên, chỉ bắt
+     * buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
      * @param isCollapsed Có ẩn cột trên table không
      * @param searchDefaultValue Giá trị tìm kiếm mặc định
      * @param visibleAdd Hiển thị tại màn hình thêm mới
      * @param visibleEdit Hiển thị tại màn hình sửa
      * @param enableAdd Hiệu lực tại màn hình thêm mới
      * @param enableEdit Hiệu lực tại màn hình sửa
-     * @param defaultValue Giá trị mặc định tại màn hình thêm mới và màn hình sửa
+     * @param defaultValue Giá trị mặc định tại màn hình thêm mới và màn hình
+     * sửa
      * @since 18/11/2014 HienDM
      */
-    public void addTextFieldToForm(String label, Component component, 
+    public void addTextFieldToForm(String label, Component component,
             String databaseFieldName, String dataType,
-            boolean isMandatory, Integer dataLength, String format, String caption, 
-            boolean useToSearch, boolean isPassword, String searchMandatory, 
+            boolean isMandatory, Integer dataLength, String format, String caption,
+            boolean useToSearch, boolean isPassword, String searchMandatory,
             boolean isCollapsed, Object searchDefaultValue, boolean visibleAdd,
             boolean visibleEdit, boolean enableAdd, boolean enableEdit, Object defaultValue) {
         databaseFieldName = databaseFieldName.toLowerCase();
         dataType = dataType.toLowerCase();
         List lstCell = new ArrayList();
         lstCell.add(new Label(ResourceBundleUtils.getLanguageResource(label)));
-        if(dataType.equals("date") && searchMandatory != null) {
-            ((PopupDateField)component).setValue((Date)((List)searchDefaultValue).get(0));
+        if (dataType.equals("date") && searchMandatory != null) {
+            ((PopupDateField) component).setValue((Date) ((List) searchDefaultValue).get(0));
             List row = new ArrayList();
             row.add(databaseFieldName);
             row.add(searchDefaultValue);
-            lstMandatorySearchValue.add(row);  
+            lstMandatorySearchValue.add(row);
         }
-        if(dataType.equals("date")) {
-            if(((PopupDateField)component).getResolution().equals(Resolution.DAY))
-                ((PopupDateField)component).setDateFormat("dd/MM/yyyy");
-            else 
-                ((PopupDateField)component).setDateFormat("dd/MM/yyyy HH:mm:ss");
+        if (dataType.equals("date")) {
+            if (((PopupDateField) component).getResolution().equals(Resolution.DAY)) {
+                ((PopupDateField) component).setDateFormat("dd/MM/yyyy");
+            } else {
+                ((PopupDateField) component).setDateFormat("dd/MM/yyyy HH:mm:ss");
+            }
         }
         lstCell.add(component);
         lstCell.add(databaseFieldName);
@@ -957,24 +989,24 @@ public class BaseAction {
         lstCell.add(enableEdit);
         lstCell.add(defaultValue);
         component.setCaption(ResourceBundleUtils.getLanguageResource(caption));
-        component.setWidth("90%");        
-        if(databaseFieldName.equals(idColumnName)) {
+        component.setWidth("90%");
+        if (databaseFieldName.equals(idColumnName)) {
             idField = lstComponent.size();
         }
-        if(databaseFieldName.equals(sortColumnName)) {
+        if (databaseFieldName.equals(sortColumnName)) {
             sortField = lstComponent.size();
             sortColumnType = dataType;
         }
-        if(databaseFieldName.equals(parentColumnName)) {
+        if (databaseFieldName.equals(parentColumnName)) {
             parentField = lstComponent.size();
         }
         if (databaseFieldName.equals(nameColumn)) {
             nameField = lstComponent.size();
-        }        
-        if(dataType.equals("date")) {
-            if(searchMandatory != null && searchDefaultValue != null) {
+        }
+        if (dataType.equals("date")) {
+            if (searchMandatory != null && searchDefaultValue != null) {
                 PopupDateField pdfToDate = new PopupDateField();
-                pdfToDate.setValue((Date)((List)searchDefaultValue).get(1));
+                pdfToDate.setValue((Date) ((List) searchDefaultValue).get(1));
                 if (((PopupDateField) component).getResolution().equals(Resolution.DAY)) {
                     pdfToDate.setDateFormat("dd/MM/yyyy");
                 } else {
@@ -985,7 +1017,7 @@ public class BaseAction {
                 lstCell.add(new PopupDateField());
             }
         }
-        lstComponent.add(lstCell);        
+        lstComponent.add(lstCell);
     }
 
     /**
@@ -999,8 +1031,8 @@ public class BaseAction {
                 p.isMandatory(), p.getDataLength(), p.getFormat(), p.getCaption(), p.isUseToSearch(),
                 p.isPassword(), p.getSearchMandatory(), p.isCollapsed(), p.getSearchDefaultValue(),
                 p.isVisibleAdd(), p.isVisibleEdit(), p.isEnableAdd(), p.isEnableEdit(), p.getDefaultValue());
-    } 
-    
+    }
+
     /**
      * Hàm thêm TextArea vào giao diện nhập
      *
@@ -1010,37 +1042,39 @@ public class BaseAction {
      * @param dataType loại dữ liệu
      * @param isMandatory bắt buộc nhập
      * @param dataLength độ dài dữ liệu
-     * @param format kiểm tra định dạng dữ liệu:
-     *     ví dụ đơn giản: int,long,float,double,email
+     * @param format kiểm tra định dạng dữ liệu: ví dụ đơn giản:
+     * int,long,float,double,email
      * @param caption mô tả thêm
      * @param useToSearch sử dụng để tìm kiếm
      * @param isPassword Có phải password không
-     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ DB) 
-     *     ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập, không vượt quá khoảng 100 ngày)
-     *     int:or_mandatory (kiểu số nguyên, chỉ bắt buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
+     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ
+     * DB) ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập,
+     * không vượt quá khoảng 100 ngày) int:or_mandatory (kiểu số nguyên, chỉ bắt
+     * buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
      * @param isCollapsed Có ẩn cột trên table không
      * @param searchDefaultValue Giá trị tìm kiếm mặc định
      * @param visibleAdd Hiển thị tại màn hình thêm mới
      * @param visibleEdit Hiển thị tại màn hình sửa
      * @param enableAdd Hiệu lực tại màn hình thêm mới
      * @param enableEdit Hiệu lực tại màn hình sửa
-     * @param defaultValue Giá trị mặc định tại màn hình thêm mới và màn hình sửa
+     * @param defaultValue Giá trị mặc định tại màn hình thêm mới và màn hình
+     * sửa
      * @since 18/11/2014 HienDM
      */
-    public void addTextAreaToForm(String label, Component component, 
+    public void addTextAreaToForm(String label, Component component,
             String databaseFieldName, String dataType,
-            boolean isMandatory, Integer dataLength, String format, String caption, 
-            boolean useToSearch, boolean isPassword, String searchMandatory, 
+            boolean isMandatory, Integer dataLength, String format, String caption,
+            boolean useToSearch, boolean isPassword, String searchMandatory,
             boolean isCollapsed, Object searchDefaultValue, boolean visibleAdd,
             boolean visibleEdit, boolean enableAdd, boolean enableEdit, Object defaultValue) {
-        addTextFieldToForm(label, component, 
-            databaseFieldName, dataType,
-            isMandatory, dataLength, format, caption, 
-            useToSearch, isPassword, searchMandatory, 
-            isCollapsed, searchDefaultValue, visibleAdd,
-            visibleEdit, enableAdd, enableEdit, defaultValue);        
-    }    
-    
+        addTextFieldToForm(label, component,
+                databaseFieldName, dataType,
+                isMandatory, dataLength, format, caption,
+                useToSearch, isPassword, searchMandatory,
+                isCollapsed, searchDefaultValue, visibleAdd,
+                visibleEdit, enableAdd, enableEdit, defaultValue);
+    }
+
     /**
      * Hàm thêm component vào giao diện nhập
      *
@@ -1048,12 +1082,12 @@ public class BaseAction {
      * @since 18/01/2015 HienDM
      */
     public void addDateToForm(DateParameter p) {
-        addDateToForm(p.getLabel(), p.getComponent(), p.getDatabaseFieldName(), 
+        addDateToForm(p.getLabel(), p.getComponent(), p.getDatabaseFieldName(),
                 p.isMandatory(), p.getCaption(), p.isUseToSearch(),
                 p.getSearchMandatory(), p.isCollapsed(), p.getSearchDefaultValue(),
                 p.isVisibleAdd(), p.isVisibleEdit(), p.isEnableAdd(), p.isEnableEdit(), p.getDefaultValue());
-    }    
-    
+    }
+
     /**
      * Hàm thêm component vào giao diện nhập
      *
@@ -1063,39 +1097,42 @@ public class BaseAction {
      * @param isMandatory bắt buộc nhập
      * @param caption mô tả thêm
      * @param useToSearch sử dụng để tìm kiếm
-     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ DB) 
-     *     ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập, không vượt quá khoảng 100 ngày)
-     *     int:or_mandatory (kiểu số nguyên, chỉ bắt buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
+     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ
+     * DB) ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập,
+     * không vượt quá khoảng 100 ngày) int:or_mandatory (kiểu số nguyên, chỉ bắt
+     * buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
      * @param isCollapsed Có ẩn cột trên table không
      * @param searchDefaultValue Giá trị tìm kiếm mặc định
      * @param visibleAdd Hiển thị tại màn hình thêm mới
      * @param visibleEdit Hiển thị tại màn hình sửa
      * @param enableAdd Hiệu lực tại màn hình thêm mới
      * @param enableEdit Hiệu lực tại màn hình sửa
-     * @param defaultValue Giá trị mặc định tại màn hình thêm mới và màn hình sửa
+     * @param defaultValue Giá trị mặc định tại màn hình thêm mới và màn hình
+     * sửa
      * @since 18/11/2014 HienDM
      */
-    public void addDateToForm(String label, Component component, 
-            String databaseFieldName, boolean isMandatory, String caption, 
-            boolean useToSearch, String searchMandatory, 
+    public void addDateToForm(String label, Component component,
+            String databaseFieldName, boolean isMandatory, String caption,
+            boolean useToSearch, String searchMandatory,
             boolean isCollapsed, Object searchDefaultValue, boolean visibleAdd,
             boolean visibleEdit, boolean enableAdd, boolean enableEdit, Object defaultValue) {
         databaseFieldName = databaseFieldName.toLowerCase();
         String dataType = "date";
         List lstCell = new ArrayList();
         lstCell.add(new Label(ResourceBundleUtils.getLanguageResource(label)));
-        if(dataType.equals("date") && searchMandatory != null) {
-            ((PopupDateField)component).setValue((Date)((List)searchDefaultValue).get(0));
+        if (dataType.equals("date") && searchMandatory != null) {
+            ((PopupDateField) component).setValue((Date) ((List) searchDefaultValue).get(0));
             List row = new ArrayList();
             row.add(databaseFieldName);
             row.add(searchDefaultValue);
-            lstMandatorySearchValue.add(row);  
+            lstMandatorySearchValue.add(row);
         }
-        if(dataType.equals("date")) {
-            if(((PopupDateField)component).getResolution().equals(Resolution.DAY))
-                ((PopupDateField)component).setDateFormat("dd/MM/yyyy");
-            else 
-                ((PopupDateField)component).setDateFormat("dd/MM/yyyy HH:mm:ss");
+        if (dataType.equals("date")) {
+            if (((PopupDateField) component).getResolution().equals(Resolution.DAY)) {
+                ((PopupDateField) component).setDateFormat("dd/MM/yyyy");
+            } else {
+                ((PopupDateField) component).setDateFormat("dd/MM/yyyy HH:mm:ss");
+            }
         }
         lstCell.add(component);
         lstCell.add(databaseFieldName);
@@ -1115,24 +1152,24 @@ public class BaseAction {
         lstCell.add(enableEdit);
         lstCell.add(defaultValue);
         component.setCaption(ResourceBundleUtils.getLanguageResource(caption));
-        component.setWidth("90%");        
-        if(databaseFieldName.equals(idColumnName)) {
+        component.setWidth("90%");
+        if (databaseFieldName.equals(idColumnName)) {
             idField = lstComponent.size();
         }
-        if(databaseFieldName.equals(sortColumnName)) {
+        if (databaseFieldName.equals(sortColumnName)) {
             sortField = lstComponent.size();
             sortColumnType = dataType;
         }
-        if(databaseFieldName.equals(parentColumnName)) {
+        if (databaseFieldName.equals(parentColumnName)) {
             parentField = lstComponent.size();
         }
         if (databaseFieldName.equals(nameColumn)) {
             nameField = lstComponent.size();
-        }        
-        if(dataType.equals("date")) {
-            if(searchMandatory != null && searchDefaultValue != null) {
+        }
+        if (dataType.equals("date")) {
+            if (searchMandatory != null && searchDefaultValue != null) {
                 PopupDateField pdfToDate = new PopupDateField();
-                pdfToDate.setValue((Date)((List)searchDefaultValue).get(1));
+                pdfToDate.setValue((Date) ((List) searchDefaultValue).get(1));
                 if (((PopupDateField) component).getResolution().equals(Resolution.DAY)) {
                     pdfToDate.setDateFormat("dd/MM/yyyy");
                 } else {
@@ -1143,20 +1180,20 @@ public class BaseAction {
                 lstCell.add(new PopupDateField());
             }
         }
-        lstComponent.add(lstCell);        
-    }    
-    
+        lstComponent.add(lstCell);
+    }
+
     /**
      * Hàm thêm component vào giao diện nhập
      *
      * @param p Tham số truyền vào
      * @since 18/11/2014 HienDM
-     */    
+     */
     public void addComponentOnlyViewToForm(OnlyInViewParameter p) {
-        addComponentOnlyViewToForm(p.getLabel(), p.getDatabaseFieldName(), p.getCaption(), 
+        addComponentOnlyViewToForm(p.getLabel(), p.getDatabaseFieldName(), p.getCaption(),
                 p.isUseToSearch(), p.getSearchMandatory(), p.isCollapsed(), p.getSearchDefaultValue());
     }
-    
+
     /**
      * Hàm thêm component vào giao diện nhập
      *
@@ -1164,16 +1201,17 @@ public class BaseAction {
      * @param databaseFieldName tên cột tương ứng trong database
      * @param caption mô tả thêm
      * @param useToSearch sử dụng để tìm kiếm
-     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ DB) 
-     *     ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập, không vượt quá khoảng 100 ngày)
-     *     int:or_mandatory (kiểu số nguyên, chỉ bắt buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
+     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ
+     * DB) ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập,
+     * không vượt quá khoảng 100 ngày) int:or_mandatory (kiểu số nguyên, chỉ bắt
+     * buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
      * @param isCollapsed Có ẩn cột trên table không
      * @param searchDefaultValue Giá trị tìm kiếm mặc định
      * @since 18/11/2014 HienDM
      */
     public void addComponentOnlyViewToForm(String label,
             String databaseFieldName, String caption,
-            boolean useToSearch, String searchMandatory, 
+            boolean useToSearch, String searchMandatory,
             boolean isCollapsed, Object searchDefaultValue) {
         databaseFieldName = databaseFieldName.toLowerCase();
         List lstCell = new ArrayList();
@@ -1197,24 +1235,24 @@ public class BaseAction {
         lstCell.add(true);
         lstCell.add("");
         component.setCaption(ResourceBundleUtils.getLanguageResource(caption));
-        component.setWidth("90%");        
-        if(databaseFieldName.equals(idColumnName)) {
+        component.setWidth("90%");
+        if (databaseFieldName.equals(idColumnName)) {
             idField = lstComponent.size();
         }
-        if(databaseFieldName.equals(sortColumnName)) {
+        if (databaseFieldName.equals(sortColumnName)) {
             sortField = lstComponent.size();
             sortColumnType = "string";
         }
-        if(databaseFieldName.equals(parentColumnName)) {
+        if (databaseFieldName.equals(parentColumnName)) {
             parentField = lstComponent.size();
         }
         if (databaseFieldName.equals(nameColumn)) {
             nameField = lstComponent.size();
-        }        
+        }
 
-        lstComponent.add(lstCell);        
-    }    
-    
+        lstComponent.add(lstCell);
+    }
+
     /**
      * Hàm thêm component vào giao diện nhập
      *
@@ -1253,7 +1291,7 @@ public class BaseAction {
         lstCell.add(null);
         return lstCell;
     }
-    
+
     /**
      * Hàm thêm component là một sysdate không nhập trên giao diện
      *
@@ -1261,31 +1299,32 @@ public class BaseAction {
      * @since 18/01/2015 HienDM
      */
     public void setComponentAsSysdate(SysdateParameter p) throws Exception {
-        setComponentAsSysdate(p.getLabel(), p.getDatabaseFieldName(), p.isUseToSearch(), 
+        setComponentAsSysdate(p.getLabel(), p.getDatabaseFieldName(), p.isUseToSearch(),
                 p.getSearchMandatory(), p.isCollapsed(), p.getSearchDefaultValue());
     }
-    
+
     /**
      * Hàm thêm component là một sysdate không nhập trên giao diện
      *
      * @param label mô tả
      * @param databaseFieldName tên cột tương ứng trong database
      * @param useToSearch sử dụng để tìm kiếm
-     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ DB) 
-     *     ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập, không vượt quá khoảng 100 ngày)
-     *     int:or_mandatory (kiểu số nguyên, chỉ bắt buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
+     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ
+     * DB) ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập,
+     * không vượt quá khoảng 100 ngày) int:or_mandatory (kiểu số nguyên, chỉ bắt
+     * buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
      * @param isCollapsed Có ẩn cột trên table không
      * @param searchDefaultValue Giá trị tìm kiếm mặc định
      * @since 18/11/2014 HienDM
      */
-    public void setComponentAsSysdate(String label, String databaseFieldName, boolean useToSearch, 
+    public void setComponentAsSysdate(String label, String databaseFieldName, boolean useToSearch,
             String searchMandatory, boolean isCollapsed, Object searchDefaultValue) throws Exception {
         databaseFieldName = databaseFieldName.toLowerCase();
         List lstCell = new ArrayList();
         lstCell.add(new Label(ResourceBundleUtils.getLanguageResource(label)));
         PopupDateField component = new PopupDateField();
         component.setResolution(Resolution.SECOND);
-        if(((PopupDateField) component).getResolution().equals(Resolution.DAY)) {
+        if (((PopupDateField) component).getResolution().equals(Resolution.DAY)) {
             component.setDateFormat("dd/MM/yyyy");
         } else {
             component.setDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -1296,7 +1335,7 @@ public class BaseAction {
             row.add(databaseFieldName);
             row.add(searchDefaultValue);
             lstMandatorySearchValue.add(row);
-        }        
+        }
         lstCell.add(component);
         lstCell.add(databaseFieldName);
         lstCell.add("date"); //data type
@@ -1304,7 +1343,7 @@ public class BaseAction {
         lstCell.add(null); //data length
         lstCell.add("date"); //format
         lstCell.add(""); //caption
-        lstCell.add(useToSearch); 
+        lstCell.add(useToSearch);
         lstCell.add(false); //is password
         lstCell.add(searchMandatory); // is search mandatory
         lstCell.add(isCollapsed); // isCollapsed
@@ -1326,7 +1365,7 @@ public class BaseAction {
         }
         if (searchMandatory != null && searchDefaultValue != null) {
             PopupDateField pdfToDate = new PopupDateField();
-            if(((PopupDateField) component).getResolution().equals(Resolution.DAY)) {
+            if (((PopupDateField) component).getResolution().equals(Resolution.DAY)) {
                 pdfToDate.setDateFormat("dd/MM/yyyy");
             } else {
                 pdfToDate.setDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -1336,11 +1375,11 @@ public class BaseAction {
             lstCell.add(pdfToDate);
         } else {
             lstCell.add(new PopupDateField());
-        }      
+        }
         lstCell.add(true); //set as sysdate (INT_SYSDATE)        
         lstComponent.add(lstCell);
     }
-    
+
     /**
      * Hàm thêm component là tên đăng nhập không nhập trên giao diện
      *
@@ -1348,12 +1387,12 @@ public class BaseAction {
      * @since 18/01/2015 HienDM
      */
     public void setComponentAsLoginUser(LoginUserParameter p) throws Exception {
-        setComponentAsLoginUser(p.getLabel(), p.getDatabaseFieldName(), p.isUseToSearch(), 
-                p.getSearchMandatory(), p.isCollapsed(), p.getSearchDefaultValue(), p.isOnlyView(), 
+        setComponentAsLoginUser(p.getLabel(), p.getDatabaseFieldName(), p.isUseToSearch(),
+                p.getSearchMandatory(), p.isCollapsed(), p.getSearchDefaultValue(), p.isOnlyView(),
                 p.isOnlyEdit(), p.getPopup(), p.getFilterParentColumn(), p.getFilterChildColumn(),
                 p.getOnlyViewGroup());
     }
-    
+
     /**
      * Hàm thêm component là tên đăng nhập không nhập trên giao diện
      *
@@ -1365,21 +1404,24 @@ public class BaseAction {
      * không vượt quá khoảng 100 ngày) int:or_mandatory (kiểu số nguyên, chỉ bắt
      * buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
      * @param isCollapsed Có ẩn cột trên table không
-     * @param searchDefaultValue Giá trị tìm kiếm mặc định 
+     * @param searchDefaultValue Giá trị tìm kiếm mặc định
      * @param onlyView chỉ được xem bản ghi do mình tạo ra
      * @param onlyEdit chỉ được sửa bản ghi do mình tạo ra
-     * @param popup Popup chọn người dùng
-     * 2: chỉ được xem bản ghi từ group của mình trở xuống
-     * @param filterParentColumn Tên cột trong bảng của chức năng hiện tại của component cha khi filter
-     * @param filterChildColumn Tên cột trong bảng quan hệ cha con của component cha khi filter
-     * @param onlyViewGroup 0: được xem tất, 1: chỉ được xem bản ghi trong group của mình
+     * @param popup Popup chọn người dùng 2: chỉ được xem bản ghi từ group của
+     * mình trở xuống
+     * @param filterParentColumn Tên cột trong bảng của chức năng hiện tại của
+     * component cha khi filter
+     * @param filterChildColumn Tên cột trong bảng quan hệ cha con của component
+     * cha khi filter
+     * @param onlyViewGroup 0: được xem tất, 1: chỉ được xem bản ghi trong group
+     * của mình
      * @since 18/11/2014 HienDM
      */
     public void setComponentAsLoginUser(String label, String databaseFieldName, boolean useToSearch,
             String searchMandatory, boolean isCollapsed, Object searchDefaultValue, boolean onlyView,
-            boolean onlyEdit, PopupSingleAction popup, String filterParentColumn, String filterChildColumn, 
+            boolean onlyEdit, PopupSingleAction popup, String filterParentColumn, String filterChildColumn,
             int onlyViewGroup
-    ) throws Exception{
+    ) throws Exception {
         databaseFieldName = databaseFieldName.toLowerCase();
         ComboBox component = new ComboBox();
         component.setEnabled(false);
@@ -1426,16 +1468,16 @@ public class BaseAction {
                     popupWindow.setCaption(ResourceBundleUtils.getLanguageResource(label));
                     VerticalLayout bodyPage = new VerticalLayout();
                     bodyPage.addStyleName("page-body");
-                    if(filterParentColumn != null && !filterParentColumn.isEmpty()) {
+                    if (filterParentColumn != null && !filterParentColumn.isEmpty()) {
                         List lstParameter = new ArrayList();
-                        for(int i = 0; i < lstComponent.size(); i++) {
-                            if(lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(filterParentColumn)) {
-                                if(lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
-                                    if(((AbstractField)lstComponent.get(i).get(INT_COMPONENT)).getValue() != null) {
+                        for (int i = 0; i < lstComponent.size(); i++) {
+                            if (lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(filterParentColumn)) {
+                                if (lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
+                                    if (((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue() != null) {
                                         popup.setIsChangeDefaultSearch(true);
-                                        lstParameter.add(((AbstractField)lstComponent.get(i).get(INT_COMPONENT)).getValue());
+                                        lstParameter.add(((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue());
                                         popup.queryWhereCondition = popup.queryWhereFilter;
-                                        popup.queryWhereParameter = (ArrayList)((ArrayList)popup.queryWhereFilterParameter).clone();
+                                        popup.queryWhereParameter = (ArrayList) ((ArrayList) popup.queryWhereFilterParameter).clone();
                                         popup.addQueryWhereParameter(lstParameter);
                                         String strQuery = " and " + filterChildColumn + " = ? ";
                                         popup.addQueryWhereCondition(strQuery);
@@ -1445,7 +1487,7 @@ public class BaseAction {
                             }
                         }
                     }
-                    
+
                     bodyPage.addComponent(popup.initPanel(2, component, popupWindow));
                     popupWindow.setContent(bodyPage);
                     popupWindow.setModal(true);
@@ -1488,22 +1530,22 @@ public class BaseAction {
         }
         if (databaseFieldName.equals(nameColumn)) {
             nameField = lstComponent.size() - 1;
-        } 
-    }    
-    
+        }
+    }
+
     /**
      * Hàm thêm checkbox vào giao diện nhập
      *
      * @param p Tham số truyền vào
      * @since 18/01/2015 HienDM
      */
-    public void addCheckBoxToForm (CheckBoxParameter p) throws Exception {
+    public void addCheckBoxToForm(CheckBoxParameter p) throws Exception {
         addCheckBoxToForm(p.getLabel(), p.getComponent(), p.getDatabaseFieldName(), p.getDataType(), p.isMandatory(),
                 p.getDataLength(), p.getFormat(), p.getCaption(), p.isUseToSearch(), p.isDefaultValue(), p.getSearchMandatory(),
                 p.isCollapsed(), p.getSearchDefaultValue(), p.isVisibleAdd(), p.isVisibleEdit(), p.isEnableAdd(), p.isEnableEdit(),
                 p.getEnable(), p.getDisable());
     }
-    
+
     /**
      * Hàm thêm checkbox vào giao diện nhập
      *
@@ -1513,14 +1555,15 @@ public class BaseAction {
      * @param dataType loại dữ liệu
      * @param isMandatory bắt buộc nhập
      * @param dataLength độ dài dữ liệu
-     * @param format kiểm tra định dạng dữ liệu:
-     *     ví dụ đơn giản: int,long,float,double,email
+     * @param format kiểm tra định dạng dữ liệu: ví dụ đơn giản:
+     * int,long,float,double,email
      * @param caption mô tả thêm
      * @param useToSearch sử dụng để tìm kiếm
      * @param defaultValue có phải password không
-     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ DB) 
-     *     ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập, không vượt quá khoảng 100 ngày)
-     *     int:or_mandatory (kiểu số nguyên, chỉ bắt buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
+     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ
+     * DB) ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập,
+     * không vượt quá khoảng 100 ngày) int:or_mandatory (kiểu số nguyên, chỉ bắt
+     * buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
      * @param isCollapsed Có ẩn cột trên table không
      * @param searchDefaultValue Giá trị tìm kiếm mặc định
      * @param visibleAdd Hiển thị tại màn hình thêm mới
@@ -1531,11 +1574,11 @@ public class BaseAction {
      * @param disable mô tả trạng thái checkbox disable
      * @since 18/11/2014 HienDM
      */
-    public void addCheckBoxToForm(String label, CheckBox component, 
+    public void addCheckBoxToForm(String label, CheckBox component,
             String databaseFieldName, String dataType,
             boolean isMandatory, Integer dataLength, String format, String caption,
-            boolean useToSearch, boolean defaultValue, String searchMandatory, boolean isCollapsed, 
-            Object searchDefaultValue, boolean visibleAdd, boolean visibleEdit, boolean enableAdd, 
+            boolean useToSearch, boolean defaultValue, String searchMandatory, boolean isCollapsed,
+            Object searchDefaultValue, boolean visibleAdd, boolean visibleEdit, boolean enableAdd,
             boolean enableEdit, String enable, String disable) throws Exception {
         databaseFieldName = databaseFieldName.toLowerCase();
         dataType = dataType.toLowerCase();
@@ -1554,9 +1597,9 @@ public class BaseAction {
         lstCell.add(isCollapsed); // is collapsed
         lstCell.add(searchDefaultValue);
         lstCell.add(visibleAdd);
-        lstCell.add(visibleEdit); 
+        lstCell.add(visibleEdit);
         lstCell.add(enableAdd);
-        lstCell.add(enableEdit); 
+        lstCell.add(enableEdit);
         lstCell.add(ResourceBundleUtils.getLanguageResource(enable));
         lstCell.add(ResourceBundleUtils.getLanguageResource(disable));
         component.setCaption(ResourceBundleUtils.getLanguageResource(caption));
@@ -1569,29 +1612,29 @@ public class BaseAction {
             sortField = lstComponent.size() - 1;
             sortColumnType = dataType;
         }
-        if(databaseFieldName.equals(parentColumnName)) {
+        if (databaseFieldName.equals(parentColumnName)) {
             parentField = lstComponent.size() - 1;
         }
         if (databaseFieldName.equals(nameColumn)) {
             nameField = lstComponent.size() - 1;
-        }   
+        }
     }
-    
+
     /**
      * Hàm thêm combobox dữ liệu từ database vào giao diện nhập
-     * 
+     *
      * @param p tham số truyền vào
      * @since 18/01/2015 HienDM
      */
     public void addComboBoxToForm(ComboBoxParameter p) throws Exception {
         addComboBoxToForm(p.getLabel(), p.getComponent(), p.getDatabaseFieldName(), p.getDataType(), p.isMandatory(),
                 p.getDataLength(), p.getFormat(), p.getCaption(), p.isUseToSearch(), p.isPassword(), p.getSearchMandatory(),
-                p.isCollapsed(), p.getSearchDefaultValue(), p.isVisibleAdd(), p.isVisibleEdit(), p.isEnableAdd(), 
+                p.isCollapsed(), p.getSearchDefaultValue(), p.isVisibleAdd(), p.isVisibleEdit(), p.isEnableAdd(),
                 p.isEnableEdit(), p.getQuery(), p.getLstParameter(), p.getCboTableName(), p.getIdColumn(), p.getIdType(),
-                p.getNameColumn(), p.getDefaultValue(), p.getDefaultCaption(), p.isRefresh(), p.isMultiLanguage(), 
+                p.getNameColumn(), p.getDefaultValue(), p.getDefaultCaption(), p.isRefresh(), p.isMultiLanguage(),
                 p.getFilterParentColumn(), p.getFilterChildColumn());
     }
-    
+
     /**
      * Hàm thêm combobox dữ liệu từ database vào giao diện nhập
      *
@@ -1601,14 +1644,15 @@ public class BaseAction {
      * @param dataType loại dữ liệu
      * @param isMandatory bắt buộc nhập
      * @param dataLength độ dài dữ liệu
-     * @param format kiểm tra định dạng dữ liệu:
-     *     ví dụ đơn giản: int,long,float,double,email
+     * @param format kiểm tra định dạng dữ liệu: ví dụ đơn giản:
+     * int,long,float,double,email
      * @param caption mô tả thêm
      * @param useToSearch sử dụng để tìm kiếm
      * @param isPassword có phải password không
-     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ DB) 
-     *     ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập, không vượt quá khoảng 100 ngày)
-     *     int:or_mandatory (kiểu số nguyên, chỉ bắt buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
+     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ
+     * DB) ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập,
+     * không vượt quá khoảng 100 ngày) int:or_mandatory (kiểu số nguyên, chỉ bắt
+     * buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
      * @param isCollapsed Có ẩn cột trên table không
      * @param searchDefaultValue Giá trị tìm kiếm mặc định
      * @param visibleAdd Hiển thị tại màn hình thêm mới
@@ -1629,27 +1673,39 @@ public class BaseAction {
      * @param filterChildColumn trường dữ liệu dùng đề filter của component con
      * @since 18/11/2014 HienDM
      */
-    public void addComboBoxToForm(String label, ComboBox component, 
+    public void addComboBoxToForm(String label, ComboBox component,
             String databaseFieldName, String dataType,
             boolean isMandatory, Integer dataLength, String format, String caption,
-            boolean useToSearch, boolean isPassword, String searchMandatory, boolean isCollapsed, 
-            Object searchDefaultValue, boolean visibleAdd, boolean visibleEdit, boolean enableAdd, 
-            boolean enableEdit, String query, List lstParameter, 
+            boolean useToSearch, boolean isPassword, String searchMandatory, boolean isCollapsed,
+            Object searchDefaultValue, boolean visibleAdd, boolean visibleEdit, boolean enableAdd,
+            boolean enableEdit, String query, List lstParameter,
             String cboTableName, String idColumn, String idType, String nameColumn,
             String defaultValue, String defaultCaption, boolean isRefresh, boolean isMultiLanguage,
             String filterParentColumn, String filterChildColumn
     ) throws Exception {
-        if(databaseFieldName != null)databaseFieldName = databaseFieldName.toLowerCase();
-        if(idColumn != null)idColumn = idColumn.toLowerCase();
-        if(nameColumn != null)nameColumn = nameColumn.toLowerCase();
-        if(cboTableName != null)cboTableName = cboTableName.toLowerCase();
-        if(filterParentColumn != null)filterParentColumn = filterParentColumn.toLowerCase();
-        if(filterChildColumn != null)filterChildColumn = filterChildColumn.toLowerCase();
+        if (databaseFieldName != null) {
+            databaseFieldName = databaseFieldName.toLowerCase();
+        }
+        if (idColumn != null) {
+            idColumn = idColumn.toLowerCase();
+        }
+        if (nameColumn != null) {
+            nameColumn = nameColumn.toLowerCase();
+        }
+        if (cboTableName != null) {
+            cboTableName = cboTableName.toLowerCase();
+        }
+        if (filterParentColumn != null) {
+            filterParentColumn = filterParentColumn.toLowerCase();
+        }
+        if (filterChildColumn != null) {
+            filterChildColumn = filterChildColumn.toLowerCase();
+        }
         dataType = dataType.toLowerCase();
-        idType=idType.toLowerCase();
+        idType = idType.toLowerCase();
         List lstCell = new ArrayList();
         lstCell.add(new Label(ResourceBundleUtils.getLanguageResource(label)));
-        component.setNullSelectionAllowed(!isMandatory); 
+        component.setNullSelectionAllowed(!isMandatory);
         component.setPageLength(30);
         component.setSizeFull();
         component.setCaption(ResourceBundleUtils.getLanguageResource(caption));
@@ -1660,23 +1716,29 @@ public class BaseAction {
         } else {
             lstData = C3p0Connector.queryData(query);
         }
-        if(filterParentColumn == null) {
-            for(int i = 0; i < lstData.size(); i++) {
+        if (filterParentColumn == null) {
+            for (int i = 0; i < lstData.size(); i++) {
                 Map rows = lstData.get(i);
                 Object celldata = new Object();
 
                 celldata = rows.get(idColumn);
-                if (celldata != null) component.addItem(celldata.toString());
-                else component.addItem("");
+                if (celldata != null) {
+                    component.addItem(celldata.toString());
+                } else {
+                    component.addItem("");
+                }
 
                 String cellCaption = "";
-                if(rows.get(nameColumn) != null) {
-                    if(isMultiLanguage)
+                if (rows.get(nameColumn) != null) {
+                    if (isMultiLanguage) {
                         cellCaption = ResourceBundleUtils.getLanguageResource(rows.get(nameColumn).toString());
-                    else
+                    } else {
                         cellCaption = rows.get(nameColumn).toString();
+                    }
                 }
-                if (cellCaption != null) component.setItemCaption(celldata.toString(), cellCaption);
+                if (cellCaption != null) {
+                    component.setItemCaption(celldata.toString(), cellCaption);
+                }
             }
             if (searchMandatory != null) {
                 component.setValue(searchDefaultValue);
@@ -1701,31 +1763,31 @@ public class BaseAction {
         lstCell.add(isCollapsed);
         lstCell.add(searchDefaultValue);
         lstCell.add(visibleAdd);
-        lstCell.add(visibleEdit); 
+        lstCell.add(visibleEdit);
         lstCell.add(enableAdd);
-        lstCell.add(enableEdit); 
+        lstCell.add(enableEdit);
         lstCell.add(defaultValue);
         lstCell.add(ResourceBundleUtils.getLanguageResource(defaultCaption));
         lstCell.add(isRefresh);
-        lstCell.add(isMultiLanguage);        
+        lstCell.add(isMultiLanguage);
         lstCell.add(query);
         lstCell.add(lstParameter);
         lstCell.add(idColumn);
         lstCell.add(idType);
         lstCell.add(nameColumn);
-        lstCell.add(cboTableName);        
+        lstCell.add(cboTableName);
         lstCell.add(filterParentColumn);
         lstCell.add(filterChildColumn);
         lstCell.add(lstData);
-        if(filterParentColumn != null) {
+        if (filterParentColumn != null) {
             boolean check = true;
-            for(int i = 0; i < lstFilter.size(); i++) {
-                if(lstFilter.get(i).get(0).equals(filterParentColumn)) {
-                    ((List)lstFilter.get(i).get(1)).add(databaseFieldName);
+            for (int i = 0; i < lstFilter.size(); i++) {
+                if (lstFilter.get(i).get(0).equals(filterParentColumn)) {
+                    ((List) lstFilter.get(i).get(1)).add(databaseFieldName);
                     check = false;
                 }
             }
-            if(check) {
+            if (check) {
                 List lstRow = new ArrayList();
                 lstRow.add(filterParentColumn);
                 List lstChild = new ArrayList();
@@ -1742,17 +1804,17 @@ public class BaseAction {
             sortField = lstComponent.size() - 1;
             sortColumnType = dataType;
         }
-        if(databaseFieldName.equals(parentColumnName)) {
+        if (databaseFieldName.equals(parentColumnName)) {
             parentField = lstComponent.size() - 1;
         }
         if (databaseFieldName.equals(nameColumn)) {
             nameField = lstComponent.size() - 1;
-        }   
+        }
     }
-    
+
     /**
      * Hàm thêm combobox dữ liệu từ database vào giao diện nhập
-     * 
+     *
      * @param p tham số truyền vào
      * @since 18/01/2015 HienDM
      */
@@ -1762,7 +1824,7 @@ public class BaseAction {
                 p.isCollapsed(), p.getSearchDefaultValue(), p.isVisibleAdd(), p.isVisibleEdit(), p.isEnableAdd(),
                 p.isEnableEdit(), p.getData(), p.getDefaultValue(), p.getDefaultCaption());
     }
-    
+
     /**
      * Hàm thêm combobox dữ liệu fix cứng vào giao diện nhập
      *
@@ -1772,14 +1834,15 @@ public class BaseAction {
      * @param dataType loại dữ liệu
      * @param isMandatory bắt buộc nhập
      * @param dataLength độ dài dữ liệu
-     * @param format kiểm tra định dạng dữ liệu:
-     *     ví dụ đơn giản: int,long,float,double,email
+     * @param format kiểm tra định dạng dữ liệu: ví dụ đơn giản:
+     * int,long,float,double,email
      * @param caption mô tả thêm
      * @param useToSearch dùng để tìm kiếm
      * @param isPassword có phải password không
-     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ DB) 
-     *     ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập, không vượt quá khoảng 100 ngày)
-     *     int:or_mandatory (kiểu số nguyên, chỉ bắt buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
+     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ
+     * DB) ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập,
+     * không vượt quá khoảng 100 ngày) int:or_mandatory (kiểu số nguyên, chỉ bắt
+     * buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
      * @param isCollapsed Có ẩn cột trên table không
      * @param searchDefaultValue Giá trị tìm kiếm mặc định
      * @param visibleAdd Hiển thị tại màn hình thêm mới
@@ -1795,18 +1858,23 @@ public class BaseAction {
             String databaseFieldName, String dataType,
             boolean isMandatory, Integer dataLength, String format, String caption,
             boolean useToSearch, boolean isPassword, String searchMandatory, boolean isCollapsed,
-            Object searchDefaultValue, boolean visibleAdd, boolean visibleEdit, boolean enableAdd, 
+            Object searchDefaultValue, boolean visibleAdd, boolean visibleEdit, boolean enableAdd,
             boolean enableEdit, Object[][] data, String defaultValue, String defaultCaption
     ) throws Exception {
-        if(databaseFieldName != null)databaseFieldName = databaseFieldName.toLowerCase();
+        if (databaseFieldName != null) {
+            databaseFieldName = databaseFieldName.toLowerCase();
+        }
         dataType = dataType.toLowerCase();
         List lstCell = new ArrayList();
-        lstCell.add(new Label(ResourceBundleUtils.getLanguageResource(label)));      
+        lstCell.add(new Label(ResourceBundleUtils.getLanguageResource(label)));
         for (int i = 0; i < data.length; i++) {
-            if(data[i][0] != null) component.addItem(data[i][0].toString());
-            if(data[i][0] != null && data[i][1] != null) 
+            if (data[i][0] != null) {
+                component.addItem(data[i][0].toString());
+            }
+            if (data[i][0] != null && data[i][1] != null) {
                 component.setItemCaption(
-                    data[i][0].toString(), ResourceBundleUtils.getLanguageResource(data[i][1].toString()));
+                        data[i][0].toString(), ResourceBundleUtils.getLanguageResource(data[i][1].toString()));
+            }
         }
         component.setSizeFull();
         if (searchMandatory != null) {
@@ -1830,9 +1898,9 @@ public class BaseAction {
         lstCell.add(isCollapsed);
         lstCell.add(searchDefaultValue);
         lstCell.add(visibleAdd);
-        lstCell.add(visibleEdit); 
+        lstCell.add(visibleEdit);
         lstCell.add(enableAdd);
-        lstCell.add(enableEdit); 
+        lstCell.add(enableEdit);
         lstCell.add(defaultValue);
         lstCell.add(ResourceBundleUtils.getLanguageResource(defaultCaption));
         component.setCaption(ResourceBundleUtils.getLanguageResource(caption));
@@ -1845,14 +1913,14 @@ public class BaseAction {
             sortField = lstComponent.size() - 1;
             sortColumnType = dataType;
         }
-        if(databaseFieldName.equals(parentColumnName)) {
+        if (databaseFieldName.equals(parentColumnName)) {
             parentField = lstComponent.size() - 1;
         }
         if (databaseFieldName.equals(nameColumn)) {
             nameField = lstComponent.size() - 1;
-        }   
+        }
     }
-    
+
     /**
      * Hàm thêm Single popup vào giao diện nhập
      *
@@ -1862,8 +1930,8 @@ public class BaseAction {
     public void addSinglePopupToForm(PopupSingleParameter p) throws Exception {
         addSinglePopupToForm(p.getLabel(), p.getDatabaseFieldName(), p.getDataType(), p.isMandatory(), p.getDataLength(),
                 p.getFormat(), p.getCaption(), p.isUseToSearch(), p.getSearchMandatory(), p.isCollapsed(), p.getSearchDefaultValue(),
-                p.isVisibleAdd(), p.isVisibleEdit(), p.isEnableAdd(), p.isEnableEdit(), p.getPopup(), p.getColumn(), 
-                p.getDefaultValue(), p.getDefaultCaption(), p.getIdColumn(), p.getNameColumn(), p.getCboTableName(), 
+                p.isVisibleAdd(), p.isVisibleEdit(), p.isEnableAdd(), p.isEnableEdit(), p.getPopup(), p.getColumn(),
+                p.getDefaultValue(), p.getDefaultCaption(), p.getIdColumn(), p.getNameColumn(), p.getCboTableName(),
                 p.getFilterParentColumn(), p.getFilterChildColumn());
     }
 
@@ -1872,7 +1940,8 @@ public class BaseAction {
      *
      * @since 18/01/2015 HienDM
      */
-    public void prepareOpenPopup() throws Exception {}
+    public void prepareOpenPopup() throws Exception {
+    }
 
     /**
      * Hàm thêm Single popup vào giao diện nhập
@@ -1882,13 +1951,14 @@ public class BaseAction {
      * @param dataType loại dữ liệu
      * @param isMandatory bắt buộc nhập
      * @param dataLength độ dài dữ liệu
-     * @param format kiểm tra định dạng dữ liệu:
-     *     ví dụ đơn giản: int,long,float,double,email
+     * @param format kiểm tra định dạng dữ liệu: ví dụ đơn giản:
+     * int,long,float,double,email
      * @param caption mô tả thêm
      * @param useToSearch dùng để tìm kiếm
-     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ DB) 
-     *     ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập, không vượt quá khoảng 100 ngày)
-     *     int:or_mandatory (kiểu số nguyên, chỉ bắt buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
+     * @param searchMandatory Bắt buộc nhập khi tìm kiếm (Để lấy dữ liệu mới từ
+     * DB) ví dụ: date:and_mandatory:100 (kiểu thời gian, luôn bắt buộc nhập,
+     * không vượt quá khoảng 100 ngày) int:or_mandatory (kiểu số nguyên, chỉ bắt
+     * buộc nhập khi tất cả trường bắt buộc chưa có dữ liệu)
      * @param isCollapsed Có ẩn cột trên table không
      * @param searchDefaultValue Giá trị tìm kiếm mặc định
      * @param visibleAdd Hiển thị tại màn hình thêm mới
@@ -1914,10 +1984,18 @@ public class BaseAction {
             String defaultCaption, String idColumn, String nameColumn, String cboTableName,
             String filterParentColumn, String filterChildColumn
     ) throws Exception {
-        if(databaseFieldName != null)databaseFieldName = databaseFieldName.toLowerCase();
-        if(idColumn != null)idColumn = idColumn.toLowerCase();
-        if(nameColumn != null)nameColumn = nameColumn.toLowerCase();
-        if(cboTableName != null)cboTableName = cboTableName.toLowerCase();
+        if (databaseFieldName != null) {
+            databaseFieldName = databaseFieldName.toLowerCase();
+        }
+        if (idColumn != null) {
+            idColumn = idColumn.toLowerCase();
+        }
+        if (nameColumn != null) {
+            nameColumn = nameColumn.toLowerCase();
+        }
+        if (cboTableName != null) {
+            cboTableName = cboTableName.toLowerCase();
+        }
         dataType = dataType.toLowerCase();
         ComboBox component = new ComboBox();
         component.setEnabled(false);
@@ -1937,15 +2015,16 @@ public class BaseAction {
         lstCell.add(isCollapsed);
         lstCell.add(searchDefaultValue);
         lstCell.add(visibleAdd);
-        lstCell.add(visibleEdit); 
+        lstCell.add(visibleEdit);
         lstCell.add(enableAdd);
-        lstCell.add(enableEdit); 
+        lstCell.add(enableEdit);
         lstCell.add(defaultValue); // default value
         BaseDAO baseDao = new BaseDAO();
-        if(defaultValue != null && !defaultValue.trim().isEmpty())
+        if (defaultValue != null && !defaultValue.trim().isEmpty()) {
             lstCell.add(baseDao.getNameById(idColumn, nameColumn, cboTableName, defaultValue));
-        else
+        } else {
             lstCell.add(null);
+        }
         lstCell.add(false);
         lstCell.add(false);
         lstCell.add("");
@@ -1971,15 +2050,15 @@ public class BaseAction {
                     VerticalLayout bodyPage = new VerticalLayout();
                     bodyPage.addStyleName("page-body");
                     popup.setIsChangeDefaultSearch(true);
-                    if(filterParentColumn != null && !filterParentColumn.isEmpty()) {
+                    if (filterParentColumn != null && !filterParentColumn.isEmpty()) {
                         List lstParameter = new ArrayList();
-                        for(int i = 0; i < lstComponent.size(); i++) {
-                            if(lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(filterParentColumn.toLowerCase())) {
-                                if(lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
-                                    if(((AbstractField)lstComponent.get(i).get(INT_COMPONENT)).getValue() != null) {
+                        for (int i = 0; i < lstComponent.size(); i++) {
+                            if (lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(filterParentColumn.toLowerCase())) {
+                                if (lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
+                                    if (((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue() != null) {
                                         popup.queryWhereCondition = popup.queryWhereFilter;
-                                        popup.queryWhereParameter = (ArrayList)((ArrayList)popup.queryWhereFilterParameter).clone();
-                                        lstParameter.add(((AbstractField)lstComponent.get(i).get(INT_COMPONENT)).getValue());
+                                        popup.queryWhereParameter = (ArrayList) ((ArrayList) popup.queryWhereFilterParameter).clone();
+                                        lstParameter.add(((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue());
                                         popup.addQueryWhereParameter(lstParameter);
                                         String strQuery = " and " + filterChildColumn.toLowerCase() + " = ? ";
                                         popup.addQueryWhereCondition(strQuery);
@@ -2030,10 +2109,10 @@ public class BaseAction {
             nameField = lstComponent.size() - 1;
         }
     }
-    
+
     /**
      * Hàm thêm popup multi choice vào giao diện nhập
-     * 
+     *
      * @param p tham số truyền vào
      * @since 18/01/2015 HienDM
      */
@@ -2042,7 +2121,7 @@ public class BaseAction {
                 p.getTableName(), p.getIdPopup(), p.getIdConnect(), p.getIdFieldDB(), p.getSequenceName(),
                 p.getFilterParentColumn(), p.getFilterChildColumn(), p.getFilterTableName());
     }
-    
+
     /**
      * Hàm thêm popup multi choice vào giao diện nhập
      *
@@ -2064,22 +2143,22 @@ public class BaseAction {
      */
     public void addMultiPopupToForm(String label, boolean isMandatory, boolean isCollapsed,
             PopupMultiAction popup, Integer column, List<List> lstAttachField, String tableName,
-            String idPopup, String idConnect, String idFieldDB, String sequenceName, 
+            String idPopup, String idConnect, String idFieldDB, String sequenceName,
             String filterParentColumn, String filterChildColumn, String filterTableName
     ) throws Exception {
         List lstCell = new ArrayList();
         lstCell.add(new Label(ResourceBundleUtils.getLanguageResource(label)));
-        
+
         Table component = new Table();
         component.removeAllItems();
         component.setPageLength(5);
         component.addContainerProperty(ResourceBundleUtils.getLanguageResource(
                 ((Label) popup.lstComponent.get(popup.nameField).get(INT_LABEL)).getValue()), String.class, null);
 
-        if(lstAttachField != null) {
+        if (lstAttachField != null) {
             for (int i = 0; i < lstAttachField.size(); i++) {
                 List lstRow = lstAttachField.get(i);
-                component.addContainerProperty(((Label)lstRow.get(INT_LABEL)).getValue(), HorizontalLayout.class, null);
+                component.addContainerProperty(((Label) lstRow.get(INT_LABEL)).getValue(), HorizontalLayout.class, null);
             }
         }
         component.setWidth("100%");
@@ -2099,16 +2178,16 @@ public class BaseAction {
                     VerticalLayout bodyPage = new VerticalLayout();
                     bodyPage.addStyleName("page-body");
                     popup.setIsChangeDefaultSearch(true);
-                    if(filterParentColumn != null && !filterParentColumn.isEmpty()) {
+                    if (filterParentColumn != null && !filterParentColumn.isEmpty()) {
                         List lstParameter = new ArrayList();
-                        for(int i = 0; i < lstComponent.size(); i++) {
-                            if(lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(filterParentColumn.toLowerCase())) {
-                                if(lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
+                        for (int i = 0; i < lstComponent.size(); i++) {
+                            if (lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(filterParentColumn.toLowerCase())) {
+                                if (lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
                                     popup.queryWhereCondition = popup.queryWhereFilter;
-                                    popup.queryWhereParameter = (ArrayList)((ArrayList)popup.queryWhereFilterParameter).clone();  
-                                    
-                                    TextField idComponent = ((TextField)lstComponent.get(idField).get(INT_COMPONENT));
-                                    if(!popup.queryWhereCondition.isEmpty() && idComponent.getValue() != null && !idComponent.getValue().toString().isEmpty()) {
+                                    popup.queryWhereParameter = (ArrayList) ((ArrayList) popup.queryWhereFilterParameter).clone();
+
+                                    TextField idComponent = ((TextField) lstComponent.get(idField).get(INT_COMPONENT));
+                                    if (!popup.queryWhereCondition.isEmpty() && idComponent.getValue() != null && !idComponent.getValue().toString().isEmpty()) {
                                         popup.queryWhereCondition = " and (( 1 = 1 " + popup.queryWhereCondition + ") or ("
                                                 + idPopup + " in (select " + idPopup + " from "
                                                 + tableName + " where " + idConnect + " = ?))) ";
@@ -2118,13 +2197,13 @@ public class BaseAction {
                                     }
 
                                     String strQuery = "";
-                                    if(((AbstractField)lstComponent.get(i).get(INT_COMPONENT)).getValue() != null) {
-                                        lstParameter.add(((AbstractField)lstComponent.get(i).get(INT_COMPONENT)).getValue());
+                                    if (((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue() != null) {
+                                        lstParameter.add(((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue());
                                         popup.addQueryWhereParameter(lstParameter);
-                                        
-                                        if(filterTableName != null) {
-                                            strQuery = " and " + idPopup + " in (select " + idPopup + " from " + 
-                                                filterTableName + " where " + filterChildColumn + " = ?) ";
+
+                                        if (filterTableName != null) {
+                                            strQuery = " and " + idPopup + " in (select " + idPopup + " from "
+                                                    + filterTableName + " where " + filterChildColumn + " = ?) ";
                                         } else {
                                             strQuery = " and " + filterChildColumn + " = ?) ";
                                         }
@@ -2138,10 +2217,11 @@ public class BaseAction {
                         }
                     }
                     popup.prepareOpenPopup();
-                    if(lstAttachField != null)
+                    if (lstAttachField != null) {
                         bodyPage.addComponent(popup.initPanel(column, component, popupWindow, lstAttachField));
-                    else
+                    } else {
                         bodyPage.addComponent(popup.initPanel(column, component, popupWindow, new ArrayList()));
+                    }
                     popupWindow.setContent(bodyPage);
                     popupWindow.setModal(true);
                     mainUI.addWindow(popupWindow);
@@ -2156,19 +2236,22 @@ public class BaseAction {
         lstCell.add(popup.getViewName().toLowerCase());
         lstCell.add(idPopup.toLowerCase());
         lstCell.add(idConnect.toLowerCase());
-        if(idFieldDB != null) lstCell.add(idFieldDB.toLowerCase());
-        else lstCell.add(null);
+        if (idFieldDB != null) {
+            lstCell.add(idFieldDB.toLowerCase());
+        } else {
+            lstCell.add(null);
+        }
         lstCell.add(sequenceName);
         lstCell.add(popup);
-        if(filterParentColumn != null) {
+        if (filterParentColumn != null) {
             boolean check = true;
-            for(int i = 0; i < lstFilter.size(); i++) {
-                if(lstFilter.get(i).get(0).equals(filterParentColumn.toLowerCase())) {
-                    ((List)lstFilter.get(i).get(1)).add(tableName);
+            for (int i = 0; i < lstFilter.size(); i++) {
+                if (lstFilter.get(i).get(0).equals(filterParentColumn.toLowerCase())) {
+                    ((List) lstFilter.get(i).get(1)).add(tableName);
                     check = false;
                 }
             }
-            if(check) {
+            if (check) {
                 List lstRow = new ArrayList();
                 lstRow.add(filterParentColumn.toLowerCase());
                 List lstChild = new ArrayList();
@@ -2179,10 +2262,10 @@ public class BaseAction {
         }
         lstCell.add(null);
         lstCell.add(tableName);
-        
+
         lstComponentMulti.add(lstCell);
     }
-    
+
     /**
      * Hàm thêm File vào giao diện nhập
      *
@@ -2194,7 +2277,7 @@ public class BaseAction {
                 p.getDataLength(), p.getFormat(), p.getCaption(), p.isCollapsed(), p.getFileDirectory(),
                 p.getMaxFileSize());
     }
-    
+
     /**
      * Hàm thêm File vào giao diện nhập
      *
@@ -2204,8 +2287,8 @@ public class BaseAction {
      * @param dataType loại dữ liệu
      * @param isMandatory bắt buộc nhập
      * @param dataLength độ dài tên file
-     * @param format kiểm tra định dạng dữ liệu:
-     *     ví dụ đơn giản: int,long,float,double,email
+     * @param format kiểm tra định dạng dữ liệu: ví dụ đơn giản:
+     * int,long,float,double,email
      * @param caption mô tả thêm
      * @param isCollapsed Có hiển thị trên table không
      * @param isPicture có phải là ảnh không
@@ -2217,7 +2300,9 @@ public class BaseAction {
             String databaseFieldName, String dataType,
             boolean isMandatory, Integer dataLength, String format, String caption,
             boolean isCollapsed, String fileDirectory, int maxFileSize) throws Exception {
-        if(databaseFieldName != null)databaseFieldName = databaseFieldName.toLowerCase();
+        if (databaseFieldName != null) {
+            databaseFieldName = databaseFieldName.toLowerCase();
+        }
         dataType = dataType.toLowerCase();
         component.setFieldType(UploadField.FieldType.FILE);
         component.setImmediate(false);
@@ -2260,7 +2345,7 @@ public class BaseAction {
         }
         if (databaseFieldName.equals(nameColumn)) {
             nameField = lstComponent.size() - 1;
-        }   
+        }
         if (dataType.equals("date")) {
             lstCell.add(new PopupDateField());
         }
@@ -2272,14 +2357,14 @@ public class BaseAction {
      * @param p tham số truyền vào
      * @since 28/03/2013 HienDM
      */
-    public void addMultiUploadFieldToForm(MultiUploadFieldParameter p) throws Exception {    
+    public void addMultiUploadFieldToForm(MultiUploadFieldParameter p) throws Exception {
         addMultiUploadFieldToForm(p.getLabel(), p.getComponent(),
-            p.getAttachTableName(), p.getDataType(),
-            p.isMandatory(), p.getDataLength(), p.getFormat(), p.getCaption(),
-            p.isCollapsed(), p.getFileDirectory(), p.getMaxFileSize(), 
-            p.getIdConnectColumn(), p.getAttachColumn(), p.getIdPrimary(), p.getAttachSequence());
+                p.getAttachTableName(), p.getDataType(),
+                p.isMandatory(), p.getDataLength(), p.getFormat(), p.getCaption(),
+                p.isCollapsed(), p.getFileDirectory(), p.getMaxFileSize(),
+                p.getIdConnectColumn(), p.getAttachColumn(), p.getIdPrimary(), p.getAttachSequence());
     }
-    
+
     /**
      * Hàm thêm nhiều File vào giao diện nhập
      *
@@ -2305,7 +2390,7 @@ public class BaseAction {
     public void addMultiUploadFieldToForm(String label, MultiUploadField component,
             String attachTableName, String dataType,
             boolean isMandatory, Integer dataLength, String format, String caption,
-            boolean isCollapsed, String fileDirectory, int maxFileSize, 
+            boolean isCollapsed, String fileDirectory, int maxFileSize,
             String idConnectColumn, String attachColumn, String idPrimary, String attachSequence) throws Exception {
         if (attachTableName != null) {
             attachTableName = attachTableName.toLowerCase();
@@ -2357,77 +2442,84 @@ public class BaseAction {
         if (attachTableName.equals(nameColumn)) {
             nameField = lstComponent.size() - 1;
         }
-    }    
-    
+    }
+
     private List getRowToBuildFormPanel(List<List> lstComp, boolean hasIdField) {
-        Object idvalue = ((AbstractField)lstComponent.get(idField).get(INT_COMPONENT)).getValue();
+        Object idvalue = ((AbstractField) lstComponent.get(idField).get(INT_COMPONENT)).getValue();
         List lstAccept = new ArrayList();
-        for(int i = 0; i < lstComp.size(); i++) {
-            if(hasIdField)
-                if(i == idField) continue; // Bỏ qua nếu là ID Field
-            if (!(idvalue != null && !idvalue.toString().isEmpty())) {   
+        for (int i = 0; i < lstComp.size(); i++) {
+            if (hasIdField) {
+                if (i == idField) {
+                    continue; // Bỏ qua nếu là ID Field
+                }
+            }
+            if (!(idvalue != null && !idvalue.toString().isEmpty())) {
                 if (lstComp.get(i).get(INT_COMPONENT) instanceof CheckBox) {
-                    if((boolean)lstComp.get(i).get(INT_CHECKBOX_DEFAULT))
+                    if ((boolean) lstComp.get(i).get(INT_CHECKBOX_DEFAULT)) {
                         ((CheckBox) lstComp.get(i).get(INT_COMPONENT)).setValue(true);
-                    else 
+                    } else {
                         ((CheckBox) lstComp.get(i).get(INT_COMPONENT)).setValue(false);
+                    }
                 } else if (lstComp.get(i).get(INT_COMPONENT) instanceof AbstractField) {
-                    if (lstComp.get(i).get(INT_DEFAULT) != null ) {
+                    if (lstComp.get(i).get(INT_DEFAULT) != null) {
                         ((AbstractField) lstComp.get(i).get(INT_COMPONENT)).setValue(
-                                lstComp.get(i).get(INT_DEFAULT));                        
+                                lstComp.get(i).get(INT_DEFAULT));
                     }
                 }
-            }            
+            }
             // Bỏ qua nếu là sysdate
-            if(lstComp.get(i).size() > INT_SYSDATE && 
-                    lstComp.get(i).get(INT_SYSDATE) instanceof Boolean &&
-                    lstComp.get(i).get(INT_TO_DATE_COMPONENT) instanceof PopupDateField
-                    ) continue;
+            if (lstComp.get(i).size() > INT_SYSDATE
+                    && lstComp.get(i).get(INT_SYSDATE) instanceof Boolean
+                    && lstComp.get(i).get(INT_TO_DATE_COMPONENT) instanceof PopupDateField) {
+                continue;
+            }
             // Bỏ qua nếu là login user 
-            if(lstComp.get(i).size() > INT_LOGINUSER && 
-                    lstComp.get(i).get(INT_LOGINUSER) != null &&
-                    lstComp.get(i).get(INT_LOGINUSER).equals("LoginUser")) continue;
+            if (lstComp.get(i).size() > INT_LOGINUSER
+                    && lstComp.get(i).get(INT_LOGINUSER) != null
+                    && lstComp.get(i).get(INT_LOGINUSER).equals("LoginUser")) {
+                continue;
+            }
             // Bỏ qua nếu visibleAdd = false
-            if(lstComp.get(i).size() > INT_VISIBLE_ADD &&
-                    lstComp.get(i).get(INT_VISIBLE_ADD).equals(false) &&
-                    !(idvalue != null && !idvalue.toString().isEmpty())) {
+            if (lstComp.get(i).size() > INT_VISIBLE_ADD
+                    && lstComp.get(i).get(INT_VISIBLE_ADD).equals(false)
+                    && !(idvalue != null && !idvalue.toString().isEmpty())) {
                 continue;
             }
             // Bỏ qua nếu visibleEdit = false
-            if(lstComp.get(i).size() > INT_VISIBLE_EDIT &&
-                    lstComp.get(i).get(INT_VISIBLE_EDIT).equals(false) &&
-                    (idvalue != null && !idvalue.toString().isEmpty())) {
+            if (lstComp.get(i).size() > INT_VISIBLE_EDIT
+                    && lstComp.get(i).get(INT_VISIBLE_EDIT).equals(false)
+                    && (idvalue != null && !idvalue.toString().isEmpty())) {
                 continue;
             }
             // disable component nếu enableAdd = false
-            if(lstComp.get(i).size() > INT_ENABLE_ADD &&
-                    lstComp.get(i).get(INT_ENABLE_ADD).equals(false) &&
-                    !(idvalue != null && !idvalue.toString().isEmpty())) {
-                if(lstComp.get(i).size() > INT_POPUP_BUTTON && 
-                        (lstComp.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
-                    ((Button)lstComp.get(i).get(INT_POPUP_BUTTON)).setVisible(false);
-                    ((Button)lstComp.get(i).get(INT_POPUP_DELETE)).setVisible(false);
-                } else {
-                    ((AbstractField)lstComp.get(i).get(INT_COMPONENT)).setEnabled(false);
-                }
-            }
-            // disable component nếu enableEdit = false
-            if(lstComp.get(i).size() > INT_ENABLE_EDIT &&
-                    lstComp.get(i).get(INT_ENABLE_EDIT).equals(false) &&
-                    (idvalue != null && !idvalue.toString().isEmpty())) {
+            if (lstComp.get(i).size() > INT_ENABLE_ADD
+                    && lstComp.get(i).get(INT_ENABLE_ADD).equals(false)
+                    && !(idvalue != null && !idvalue.toString().isEmpty())) {
                 if (lstComp.get(i).size() > INT_POPUP_BUTTON
                         && (lstComp.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
                     ((Button) lstComp.get(i).get(INT_POPUP_BUTTON)).setVisible(false);
                     ((Button) lstComp.get(i).get(INT_POPUP_DELETE)).setVisible(false);
                 } else {
-                    ((AbstractField)lstComp.get(i).get(INT_COMPONENT)).setEnabled(false);
+                    ((AbstractField) lstComp.get(i).get(INT_COMPONENT)).setEnabled(false);
+                }
+            }
+            // disable component nếu enableEdit = false
+            if (lstComp.get(i).size() > INT_ENABLE_EDIT
+                    && lstComp.get(i).get(INT_ENABLE_EDIT).equals(false)
+                    && (idvalue != null && !idvalue.toString().isEmpty())) {
+                if (lstComp.get(i).size() > INT_POPUP_BUTTON
+                        && (lstComp.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
+                    ((Button) lstComp.get(i).get(INT_POPUP_BUTTON)).setVisible(false);
+                    ((Button) lstComp.get(i).get(INT_POPUP_DELETE)).setVisible(false);
+                } else {
+                    ((AbstractField) lstComp.get(i).get(INT_COMPONENT)).setEnabled(false);
                 }
             }
             lstAccept.add(lstComp.get(i));
         }
         return lstAccept;
     }
-    
+
     /**
      * Hàm khởi tạo vùng giao diện nhập dữ liệu
      *
@@ -2436,8 +2528,8 @@ public class BaseAction {
      * @return Vùng giao diện nhập dữ liệu
      */
     public VerticalLayout buildFormPanel(int column) throws Exception {
-        Object idvalue = ((AbstractField)lstComponent.get(idField).get(INT_COMPONENT)).getValue();
-        if(idvalue != null && !idvalue.toString().isEmpty()) { // Nếu là màn hình sửa
+        Object idvalue = ((AbstractField) lstComponent.get(idField).get(INT_COMPONENT)).getValue();
+        if (idvalue != null && !idvalue.toString().isEmpty()) { // Nếu là màn hình sửa
             this.currentForm = INT_EDIT_FORM;
         } else { // Nếu là màn hình thêm mới
             this.currentForm = INT_ADD_FORM;
@@ -2445,16 +2537,17 @@ public class BaseAction {
         VerticalLayout formPanel = new VerticalLayout();
         formPanel.setSizeFull();
         formPanel.setSpacing(true);
-        formPanel.addComponent((Component)lstComponent.get(idField).get(INT_COMPONENT));
+        formPanel.addComponent((Component) lstComponent.get(idField).get(INT_COMPONENT));
         formPanel.addComponent(txtButtonState);
         txtButtonState.setVisible(false);
         List lstAccept = getRowToBuildFormPanel(lstComponent, true);
-        
-        for(int i = 0; i < lstAccept.size(); i++) {
+
+        for (int i = 0; i < lstAccept.size(); i++) {
             List lstRow = new ArrayList();
-            for(int j = 0; j < column; j++) {
-                if(i < lstAccept.size()) lstRow.add(lstAccept.get(i));
-                else { // Dùng phần tử rỗng khi hết phần tử trong lstComponent
+            for (int j = 0; j < column; j++) {
+                if (i < lstAccept.size()) {
+                    lstRow.add(lstAccept.get(i));
+                } else { // Dùng phần tử rỗng khi hết phần tử trong lstComponent
                     List lstEmpty = new ArrayList();
                     lstEmpty.add(new Label(" "));
                     lstEmpty.add(ComponentUtils.buildEmptyHorizontalLayout());
@@ -2463,16 +2556,19 @@ public class BaseAction {
                     lstEmpty.add(false); //INT_MANDATORY
                     lstRow.add(lstEmpty);
                 }
-                if(j < column - 1) i++;
-            }            
+                if (j < column - 1) {
+                    i++;
+                }
+            }
             formPanel.addComponent(buildRow(lstRow, false));
         }
-        
+
         for (int i = 0; i < lstComponentMulti.size(); i++) {
             List lstRow = new ArrayList();
-            for(int j = 0; j < column; j++) {
-                if(i < lstComponentMulti.size()) lstRow.add(lstComponentMulti.get(i));
-                else { // Dùng phần tử rỗng khi hết phần tử trong lstComponent
+            for (int j = 0; j < column; j++) {
+                if (i < lstComponentMulti.size()) {
+                    lstRow.add(lstComponentMulti.get(i));
+                } else { // Dùng phần tử rỗng khi hết phần tử trong lstComponent
                     List lstEmpty = new ArrayList();
                     lstEmpty.add(new Label(" "));
                     lstEmpty.add(ComponentUtils.buildEmptyHorizontalLayout());
@@ -2481,18 +2577,21 @@ public class BaseAction {
                     lstEmpty.add(false); //INT_MANDATORY
                     lstRow.add(lstEmpty);
                 }
-                if(j < column - 1) i++;
-            }            
+                if (j < column - 1) {
+                    i++;
+                }
+            }
             formPanel.addComponent(buildRow(lstRow, false));
         }
-        
+
         List lstAccept2 = getRowToBuildFormPanel(lstCustomizeComponent, false);
-        
+
         for (int i = 0; i < lstAccept2.size(); i++) {
             List lstRow = new ArrayList();
-            for(int j = 0; j < column; j++) {
-                if(i < lstAccept2.size()) lstRow.add(lstAccept2.get(i));
-                else { // Dùng phần tử rỗng khi hết phần tử trong lstComponent
+            for (int j = 0; j < column; j++) {
+                if (i < lstAccept2.size()) {
+                    lstRow.add(lstAccept2.get(i));
+                } else { // Dùng phần tử rỗng khi hết phần tử trong lstComponent
                     List lstEmpty = new ArrayList();
                     lstEmpty.add(new Label(" "));
                     lstEmpty.add(ComponentUtils.buildEmptyHorizontalLayout());
@@ -2501,21 +2600,26 @@ public class BaseAction {
                     lstEmpty.add(false); //INT_MANDATORY
                     lstRow.add(lstEmpty);
                 }
-                if(j < column - 1) i++;
-            }            
+                if (j < column - 1) {
+                    i++;
+                }
+            }
             formPanel.addComponent(buildRow(lstRow, false));
-        } 
-        
+        }
+
         treeLayout.setVisible(false);
         //hideComponentNotUseToSearch(false);
         formArea.setStyleName("panel-highlight");
-        buttonArea.setStyleName("panel-highlight"); 
+        buttonArea.setStyleName("panel-highlight");
         buttonArea.removeAllComponents();
         panelButton = buildUpdatePanelButton();
         buttonArea.addComponent(panelButton);
         buttonArea.setComponentAlignment(panelButton, Alignment.MIDDLE_CENTER);
-        if(idField == 0) ((AbstractField)lstComponent.get(1).get(INT_COMPONENT)).focus();
-        else ((AbstractField)lstComponent.get(0).get(INT_COMPONENT)).focus();
+        if (idField == 0) {
+            ((AbstractField) lstComponent.get(1).get(INT_COMPONENT)).focus();
+        } else {
+            ((AbstractField) lstComponent.get(0).get(INT_COMPONENT)).focus();
+        }
         return formPanel;
     }
 
@@ -2531,20 +2635,23 @@ public class BaseAction {
         VerticalLayout formPanel = new VerticalLayout();
         formPanel.setSizeFull();
         formPanel.setSpacing(true);
-        formPanel.addComponent((Component)lstComponent.get(idField).get(INT_COMPONENT));
+        formPanel.addComponent((Component) lstComponent.get(idField).get(INT_COMPONENT));
         formPanel.addComponent(txtButtonState);
         txtButtonState.setVisible(false);
         List lstAccept = new ArrayList();
-        for(int i = 0; i < lstComponent.size(); i++) {
-            if(i == idField) continue; // Bỏ qua nếu là ID Field
+        for (int i = 0; i < lstComponent.size(); i++) {
+            if (i == idField) {
+                continue; // Bỏ qua nếu là ID Field
+            }
             lstAccept.add(lstComponent.get(i));
         }
-        
-        for(int i = 0; i < lstAccept.size(); i++) {
+
+        for (int i = 0; i < lstAccept.size(); i++) {
             List lstRow = new ArrayList();
-            for(int j = 0; j < column; j++) {
-                if(i < lstAccept.size()) lstRow.add(lstAccept.get(i));
-                else { // Dùng phần tử rỗng khi hết phần tử trong lstComponent
+            for (int j = 0; j < column; j++) {
+                if (i < lstAccept.size()) {
+                    lstRow.add(lstAccept.get(i));
+                } else { // Dùng phần tử rỗng khi hết phần tử trong lstComponent
                     List lstEmpty = new ArrayList();
                     lstEmpty.add(new Label(" "));
                     lstEmpty.add(ComponentUtils.buildEmptyHorizontalLayout());
@@ -2553,16 +2660,19 @@ public class BaseAction {
                     lstEmpty.add(false); //INT_MANDATORY
                     lstRow.add(lstEmpty);
                 }
-                if(j < column - 1) i++;
-            }            
+                if (j < column - 1) {
+                    i++;
+                }
+            }
             formPanel.addComponent(buildRowDetail(lstRow));
         }
-        
+
         for (int i = 0; i < lstComponentMulti.size(); i++) {
             List lstRow = new ArrayList();
-            for(int j = 0; j < column; j++) {
-                if(i < lstComponentMulti.size()) lstRow.add(lstComponentMulti.get(i));
-                else { // Dùng phần tử rỗng khi hết phần tử trong lstComponent
+            for (int j = 0; j < column; j++) {
+                if (i < lstComponentMulti.size()) {
+                    lstRow.add(lstComponentMulti.get(i));
+                } else { // Dùng phần tử rỗng khi hết phần tử trong lstComponent
                     List lstEmpty = new ArrayList();
                     lstEmpty.add(new Label(" "));
                     lstEmpty.add(ComponentUtils.buildEmptyHorizontalLayout());
@@ -2571,26 +2681,37 @@ public class BaseAction {
                     lstEmpty.add(false); //INT_MANDATORY
                     lstRow.add(lstEmpty);
                 }
-                if(j < column - 1) i++;
-            }            
+                if (j < column - 1) {
+                    i++;
+                }
+            }
             formPanel.addComponent(buildRowDetail(lstRow));
         }
-        
+
         treeLayout.setVisible(false);
         //hideComponentNotUseToSearch(false);
         formArea.setStyleName("panel-highlight");
-        buttonArea.setStyleName("panel-highlight"); 
+        buttonArea.setStyleName("panel-highlight");
         buttonArea.removeAllComponents();
         panelButton = buildUpdatePanelButton();
         buttonArea.addComponent(panelButton);
         buttonArea.setComponentAlignment(panelButton, Alignment.MIDDLE_CENTER);
-        if(idField == 0) ((AbstractField)lstComponent.get(1).get(INT_COMPONENT)).focus();
-        else ((AbstractField)lstComponent.get(0).get(INT_COMPONENT)).focus();
+        if (idField == 0) {
+            ((AbstractField) lstComponent.get(1).get(INT_COMPONENT)).focus();
+        } else {
+            ((AbstractField) lstComponent.get(0).get(INT_COMPONENT)).focus();
+        }
         return formPanel;
     }
-    
-    public void prepareSearch() throws Exception {};
-    public void afterPrepareSearch() throws Exception {};
+
+    public void prepareSearch() throws Exception {
+    }
+
+    ;
+    public void afterPrepareSearch() throws Exception {
+    }
+
+    ;
     
     /**
      * Hàm khởi tạo vùng giao diện tìm kiếm dữ liệu
@@ -2605,87 +2726,93 @@ public class BaseAction {
         VerticalLayout formPanel = new VerticalLayout();
         formPanel.setSizeFull();
         formPanel.setSpacing(true);
-        formPanel.addComponent((Component)lstComponent.get(idField).get(INT_COMPONENT));
+        formPanel.addComponent((Component) lstComponent.get(idField).get(INT_COMPONENT));
         formPanel.addComponent(txtButtonState);
         txtButtonState.setVisible(false);
-        
+
         List<List> lstSearch = new ArrayList();
         List<List> lstNotSearch = new ArrayList();
-        for(int i = 0; i < lstComponent.size(); i++) {
-            if(i == idField) continue; // Bỏ qua nếu là ID Field
-            // enable component nếu enableAdd = false
-            if(lstComponent.get(i).size() > INT_ENABLE_ADD &&
-                        lstComponent.get(i).get(INT_ENABLE_ADD).equals(false)) {
-                if(lstComponent.get(i).size() > INT_POPUP_BUTTON && 
-                        (lstComponent.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
-                    ((Button)lstComponent.get(i).get(INT_POPUP_BUTTON)).setVisible(true);
-                    ((Button)lstComponent.get(i).get(INT_POPUP_DELETE)).setVisible(true);
+        for (int i = 0; i < lstComponent.size(); i++) {
+            if (i == idField) {
+                continue; // Bỏ qua nếu là ID Field
+            }            // enable component nếu enableAdd = false
+            if (lstComponent.get(i).size() > INT_ENABLE_ADD
+                    && lstComponent.get(i).get(INT_ENABLE_ADD).equals(false)) {
+                if (lstComponent.get(i).size() > INT_POPUP_BUTTON
+                        && (lstComponent.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
+                    ((Button) lstComponent.get(i).get(INT_POPUP_BUTTON)).setVisible(true);
+                    ((Button) lstComponent.get(i).get(INT_POPUP_DELETE)).setVisible(true);
                 } else {
-                    ((AbstractField)lstComponent.get(i).get(INT_COMPONENT)).setEnabled(true);
+                    ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setEnabled(true);
                 }
             }
             // enable component nếu enableEdit = false
-            if(lstComponent.get(i).size() > INT_ENABLE_EDIT &&
-                        lstComponent.get(i).get(INT_ENABLE_EDIT).equals(false)) {
-                if(lstComponent.get(i).size() > INT_POPUP_BUTTON && 
-                        (lstComponent.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
-                    ((Button)lstComponent.get(i).get(INT_POPUP_BUTTON)).setVisible(true);
-                    ((Button)lstComponent.get(i).get(INT_POPUP_DELETE)).setVisible(true);
+            if (lstComponent.get(i).size() > INT_ENABLE_EDIT
+                    && lstComponent.get(i).get(INT_ENABLE_EDIT).equals(false)) {
+                if (lstComponent.get(i).size() > INT_POPUP_BUTTON
+                        && (lstComponent.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
+                    ((Button) lstComponent.get(i).get(INT_POPUP_BUTTON)).setVisible(true);
+                    ((Button) lstComponent.get(i).get(INT_POPUP_DELETE)).setVisible(true);
                 } else {
-                    ((AbstractField)lstComponent.get(i).get(INT_COMPONENT)).setEnabled(true);
+                    ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setEnabled(true);
                 }
             }
-            if((boolean)lstComponent.get(i).get(INT_USE_TO_SEARCH)) {
+            if ((boolean) lstComponent.get(i).get(INT_USE_TO_SEARCH)) {
                 lstSearch.add(lstComponent.get(i));
             } else {
                 // Bỏ qua nếu là sysdate
                 if (lstComponent.get(i).size() > INT_SYSDATE
-                        && lstComponent.get(i).get(INT_SYSDATE) instanceof Boolean && 
-                        lstComponent.get(i).get(INT_TO_DATE_COMPONENT) instanceof PopupDateField) continue;
+                        && lstComponent.get(i).get(INT_SYSDATE) instanceof Boolean
+                        && lstComponent.get(i).get(INT_TO_DATE_COMPONENT) instanceof PopupDateField) {
+                    continue;
+                }
                 // Bỏ qua nếu là login user 
-                if(lstComponent.get(i).size() > INT_LOGINUSER && 
-                        lstComponent.get(i).get(INT_LOGINUSER) != null &&
-                        lstComponent.get(i).get(INT_LOGINUSER).equals("LoginUser")) continue;
+                if (lstComponent.get(i).size() > INT_LOGINUSER
+                        && lstComponent.get(i).get(INT_LOGINUSER) != null
+                        && lstComponent.get(i).get(INT_LOGINUSER).equals("LoginUser")) {
+                    continue;
+                }
                 lstNotSearch.add(lstComponent.get(i));
             }
         }
-        for(int i = 0; i < lstComponentMulti.size(); i++) {
+        for (int i = 0; i < lstComponentMulti.size(); i++) {
             lstNotSearch.add(lstComponentMulti.get(i));
         }
-        
-        for(int i = 0; i < lstCustomizeComponent.size(); i++) {
+
+        for (int i = 0; i < lstCustomizeComponent.size(); i++) {
             // enable component nếu enableAdd = false
-            if(lstCustomizeComponent.get(i).size() > INT_ENABLE_ADD &&
-                        lstCustomizeComponent.get(i).get(INT_ENABLE_ADD).equals(false)) {
-                if(lstCustomizeComponent.get(i).size() > INT_POPUP_BUTTON && 
-                        (lstCustomizeComponent.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
-                    ((Button)lstCustomizeComponent.get(i).get(INT_POPUP_BUTTON)).setVisible(true);
-                    ((Button)lstCustomizeComponent.get(i).get(INT_POPUP_DELETE)).setVisible(true);
+            if (lstCustomizeComponent.get(i).size() > INT_ENABLE_ADD
+                    && lstCustomizeComponent.get(i).get(INT_ENABLE_ADD).equals(false)) {
+                if (lstCustomizeComponent.get(i).size() > INT_POPUP_BUTTON
+                        && (lstCustomizeComponent.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
+                    ((Button) lstCustomizeComponent.get(i).get(INT_POPUP_BUTTON)).setVisible(true);
+                    ((Button) lstCustomizeComponent.get(i).get(INT_POPUP_DELETE)).setVisible(true);
                 } else {
-                    ((AbstractField)lstCustomizeComponent.get(i).get(INT_COMPONENT)).setEnabled(true);
+                    ((AbstractField) lstCustomizeComponent.get(i).get(INT_COMPONENT)).setEnabled(true);
                 }
             }
             // enable component nếu enableEdit = false
-            if(lstCustomizeComponent.get(i).size() > INT_ENABLE_EDIT &&
-                        lstCustomizeComponent.get(i).get(INT_ENABLE_EDIT).equals(false)) {
-                if(lstCustomizeComponent.get(i).size() > INT_POPUP_BUTTON && 
-                        (lstCustomizeComponent.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
-                    ((Button)lstCustomizeComponent.get(i).get(INT_POPUP_BUTTON)).setVisible(true);
-                    ((Button)lstCustomizeComponent.get(i).get(INT_POPUP_DELETE)).setVisible(true);
+            if (lstCustomizeComponent.get(i).size() > INT_ENABLE_EDIT
+                    && lstCustomizeComponent.get(i).get(INT_ENABLE_EDIT).equals(false)) {
+                if (lstCustomizeComponent.get(i).size() > INT_POPUP_BUTTON
+                        && (lstCustomizeComponent.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
+                    ((Button) lstCustomizeComponent.get(i).get(INT_POPUP_BUTTON)).setVisible(true);
+                    ((Button) lstCustomizeComponent.get(i).get(INT_POPUP_DELETE)).setVisible(true);
                 } else {
-                    ((AbstractField)lstCustomizeComponent.get(i).get(INT_COMPONENT)).setEnabled(true);
+                    ((AbstractField) lstCustomizeComponent.get(i).get(INT_COMPONENT)).setEnabled(true);
                 }
             }
-            if((boolean)lstCustomizeComponent.get(i).get(INT_USE_TO_SEARCH)) {
+            if ((boolean) lstCustomizeComponent.get(i).get(INT_USE_TO_SEARCH)) {
                 lstSearch.add(lstCustomizeComponent.get(i));
             }
-        }        
+        }
         // Thêm các phần tử dùng để tìm kiếm vào giao diện
-        for(int i = 0; i < lstSearch.size(); i++) {
+        for (int i = 0; i < lstSearch.size(); i++) {
             List lstRow = new ArrayList();
-            for(int j = 0; j < column; j++) {
-                if(i < lstSearch.size()) lstRow.add(lstSearch.get(i));
-                else { // Dùng phần tử rỗng khi hết phần tử trong lstComponent
+            for (int j = 0; j < column; j++) {
+                if (i < lstSearch.size()) {
+                    lstRow.add(lstSearch.get(i));
+                } else { // Dùng phần tử rỗng khi hết phần tử trong lstComponent
                     List lstEmpty = new ArrayList();
                     lstEmpty.add(new Label(" "));
                     lstEmpty.add(ComponentUtils.buildEmptyHorizontalLayout());
@@ -2694,17 +2821,23 @@ public class BaseAction {
                     lstEmpty.add(false); //INT_MANDATORY
                     lstRow.add(lstEmpty);
                 }
-                if(j < column - 1) i++;
+                if (j < column - 1) {
+                    i++;
+                }
             }
             formPanel.addComponent(buildRow(lstRow, true));
         }
         VerticalLayout formNotSearchPanel = new VerticalLayout();
         // Thêm các phần tử không dùng để tìm kiếm vào giao diện
-        for(int i = 0; i < lstNotSearch.size(); i++) {
+        for (int i = 0; i < lstNotSearch.size(); i++) {
             List lstRow = new ArrayList();
-            for(int j = 0; j < column; j++) {
-                if(i < lstNotSearch.size()) lstRow.add(lstNotSearch.get(i));
-                if(j < column - 1) i++;
+            for (int j = 0; j < column; j++) {
+                if (i < lstNotSearch.size()) {
+                    lstRow.add(lstNotSearch.get(i));
+                }
+                if (j < column - 1) {
+                    i++;
+                }
             }
             formNotSearchPanel.addComponent(buildRow(lstRow, false));
         }
@@ -2713,21 +2846,22 @@ public class BaseAction {
         buttonArea.removeAllComponents();
         panelButton = buildPanelButton();
         buttonArea.addComponent(panelButton);
-        buttonArea.setComponentAlignment(panelButton, Alignment.MIDDLE_CENTER);        
+        buttonArea.setComponentAlignment(panelButton, Alignment.MIDDLE_CENTER);
         formArea.removeStyleName("panel-highlight");
-        buttonArea.removeStyleName("panel-highlight");        
-        hideComponentNotUseToSearch(true,formNotSearchPanel);
-        if(!(lstSearch != null && lstSearch.isEmpty()))
-            ((AbstractField)lstSearch.get(0).get(INT_COMPONENT)).focus();
+        buttonArea.removeStyleName("panel-highlight");
+        hideComponentNotUseToSearch(true, formNotSearchPanel);
+        if (!(lstSearch != null && lstSearch.isEmpty())) {
+            ((AbstractField) lstSearch.get(0).get(INT_COMPONENT)).focus();
+        }
         clearForm();
         for (int i = 0; i < lstComponent.size(); i++) {
             for (int j = 0; j < lstMandatorySearchValue.size(); j++) {
                 if (lstComponent.get(i).get(INT_SEARCH_MANDATORY) != null) {
                     if (lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(
                             lstMandatorySearchValue.get(j).get(0))) {
-                        if(lstMandatorySearchValue.get(j).get(1) instanceof ArrayList) {
+                        if (lstMandatorySearchValue.get(j).get(1) instanceof ArrayList) {
                             ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setValue(
-                                    ((List)lstMandatorySearchValue.get(j).get(1)).get(0));
+                                    ((List) lstMandatorySearchValue.get(j).get(1)).get(0));
                             ((AbstractField) lstComponent.get(i).get(INT_TO_DATE_COMPONENT)).setValue(
                                     ((List) lstMandatorySearchValue.get(j).get(1)).get(1));
                         } else {
@@ -2737,80 +2871,82 @@ public class BaseAction {
                     }
                 }
             }
-        }        
+        }
         refreshAlready = false;
         afterPrepareSearch();
         return formPanel;
     }
-    
+
     /**
      * Hàm tạo giao diện theo từng hàng
      *
      * @since 18/11/2014 HienDM
      * @param lstRow danh sách thành phần giao diện
-     * @param isSearchForm nếu giao diện search thì trường date bổ sung component to date
+     * @param isSearchForm nếu giao diện search thì trường date bổ sung
+     * component to date
      * @return giao diện theo từng hàng
      */
     private HorizontalLayout buildRow(List<List> lstRow, boolean isSearchForm) throws Exception {
         HorizontalLayout row = new HorizontalLayout();
         row.setWidth("100%");
-        for(int i = 0; i < lstRow.size(); i++) {
-            if(lstRow.get(i).get(INT_MULTI_TABLE) instanceof Table) {
-                Label lbl = (Label)lstRow.get(i).get(INT_MULTI_LABEL);
+        for (int i = 0; i < lstRow.size(); i++) {
+            if (lstRow.get(i).get(INT_MULTI_TABLE) instanceof Table) {
+                Label lbl = (Label) lstRow.get(i).get(INT_MULTI_LABEL);
                 lbl.removeStyleName("BoldLabel");
-                if(lstRow.get(i).size() > INT_MULTI_MANDATORY)
-                if (!isSearchForm && (boolean) lstRow.get(i).get(INT_MULTI_MANDATORY)) {
-                    lbl.setStyleName("BoldLabel");
+                if (lstRow.get(i).size() > INT_MULTI_MANDATORY) {
+                    if (!isSearchForm && (boolean) lstRow.get(i).get(INT_MULTI_MANDATORY)) {
+                        lbl.setStyleName("BoldLabel");
+                    }
                 }
                 row.addComponent(lbl);
-                if(!lstRow.get(i).get(2).equals("empty")) {
+                if (!lstRow.get(i).get(2).equals("empty")) {
                     VerticalLayout popupRow = new VerticalLayout();
                     popupRow.addComponent((Button) lstRow.get(i).get(INT_MULTI_BROWSE));
                     popupRow.addComponent((Component) lstRow.get(i).get(INT_MULTI_TABLE));
                     popupRow.setWidth("90%");
-                    row.addComponent(popupRow);                
+                    row.addComponent(popupRow);
                 } else {
-                    row.addComponent((Component)lstRow.get(i).get(INT_COMPONENT));
+                    row.addComponent((Component) lstRow.get(i).get(INT_COMPONENT));
                 }
             } else {
-                Label lbl = (Label)lstRow.get(i).get(INT_LABEL);
+                Label lbl = (Label) lstRow.get(i).get(INT_LABEL);
                 lbl.removeStyleName("BoldLabel");
-                if(lstRow.get(i).size() > INT_MANDATORY)
-                if (!isSearchForm && (boolean) lstRow.get(i).get(INT_MANDATORY)) {
-                    lbl.setStyleName("BoldLabel");
-                }
-                if(lstRow.get(i).size() > INT_SEARCH_MANDATORY)
-                if (isSearchForm && lstRow.get(i).get(INT_SEARCH_MANDATORY) != null) {
-                    lbl.setStyleName("BoldLabel");
-                }                
-                row.addComponent(lbl);
-                if(lstRow.get(i).get(INT_COMPONENT) instanceof ComboBox) {
-                    if(isSearchForm) {
-                        ((ComboBox)lstRow.get(i).get(INT_COMPONENT)).setNullSelectionAllowed(true);
-                    } else {
-                        if(lstRow.get(i).size() > INT_MANDATORY) {
-                            boolean allowNull = !(boolean)lstRow.get(i).get(INT_MANDATORY);
-                            ((ComboBox)lstRow.get(i).get(INT_COMPONENT)).setNullSelectionAllowed(allowNull);
-                        }
+                if (lstRow.get(i).size() > INT_MANDATORY) {
+                    if (!isSearchForm && (boolean) lstRow.get(i).get(INT_MANDATORY)) {
+                        lbl.setStyleName("BoldLabel");
                     }
                 }
-                
-                if(lstRow.get(i).get(INT_COMPONENT) instanceof PopupDateField) {
-                    ((Component)lstRow.get(i).get(INT_COMPONENT)).setWidth("90%");
+                if (lstRow.get(i).size() > INT_SEARCH_MANDATORY) {
+                    if (isSearchForm && lstRow.get(i).get(INT_SEARCH_MANDATORY) != null) {
+                        lbl.setStyleName("BoldLabel");
+                    }
                 }
-                
-                if(!lstRow.get(i).get(2).equals("empty")) {
-                    if(isSearchForm && lstRow.get(i).get(INT_DATA_TYPE).equals("date")) {
+                row.addComponent(lbl);
+                if (lstRow.get(i).get(INT_COMPONENT) instanceof ComboBox) {
+                    if (isSearchForm) {
+                        ((ComboBox) lstRow.get(i).get(INT_COMPONENT)).setNullSelectionAllowed(true);
+                    } else if (lstRow.get(i).size() > INT_MANDATORY) {
+                        boolean allowNull = !(boolean) lstRow.get(i).get(INT_MANDATORY);
+                        ((ComboBox) lstRow.get(i).get(INT_COMPONENT)).setNullSelectionAllowed(allowNull);
+                    }
+                }
+
+                if (lstRow.get(i).get(INT_COMPONENT) instanceof PopupDateField) {
+                    ((Component) lstRow.get(i).get(INT_COMPONENT)).setWidth("90%");
+                }
+
+                if (!lstRow.get(i).get(2).equals("empty")) {
+                    if (isSearchForm && lstRow.get(i).get(INT_DATA_TYPE).equals("date")) {
                         VerticalLayout dateArea = new VerticalLayout();
                         HorizontalLayout firstRow = new HorizontalLayout();
-                        ((Component)lstRow.get(i).get(INT_COMPONENT)).setWidth("143px");
-                        firstRow.addComponent((Component)lstRow.get(i).get(INT_COMPONENT));
+                        ((Component) lstRow.get(i).get(INT_COMPONENT)).setWidth("143px");
+                        firstRow.addComponent((Component) lstRow.get(i).get(INT_COMPONENT));
                         firstRow.addComponent(new Label(ResourceBundleUtils.getLanguageResource("Common.From")));
                         HorizontalLayout secondRow = new HorizontalLayout();
-                        PopupDateField toDate = (PopupDateField)lstRow.get(i).get(INT_TO_DATE_COMPONENT);
-                        if(((PopupDateField)lstRow.get(i).get(INT_COMPONENT)).getResolution().equals(Resolution.DAY))
+                        PopupDateField toDate = (PopupDateField) lstRow.get(i).get(INT_TO_DATE_COMPONENT);
+                        if (((PopupDateField) lstRow.get(i).get(INT_COMPONENT)).getResolution().equals(Resolution.DAY)) {
                             toDate.setDateFormat("dd/MM/yyyy");
-                        else {
+                        } else {
                             toDate.setDateFormat("dd/MM/yyyy HH:mm:ss");
                             toDate.setResolution(Resolution.SECOND);
                         }
@@ -2820,107 +2956,110 @@ public class BaseAction {
                         dateArea.addComponent(firstRow);
                         dateArea.addComponent(secondRow);
                         row.addComponent(dateArea);
-                    } else if(lstRow.get(i).size() > INT_POPUP_BUTTON && (lstRow.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
+                    } else if (lstRow.get(i).size() > INT_POPUP_BUTTON && (lstRow.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
                         HorizontalLayout popupRow = new HorizontalLayout();
-                        popupRow.addComponent((Component)lstRow.get(i).get(INT_COMPONENT));
-                        popupRow.setExpandRatio((Component)lstRow.get(i).get(INT_COMPONENT), 70f);
-                        popupRow.addComponent((Button)lstRow.get(i).get(INT_POPUP_BUTTON));
-                        popupRow.addComponent((Button)lstRow.get(i).get(INT_POPUP_DELETE));
+                        popupRow.addComponent((Component) lstRow.get(i).get(INT_COMPONENT));
+                        popupRow.setExpandRatio((Component) lstRow.get(i).get(INT_COMPONENT), 70f);
+                        popupRow.addComponent((Button) lstRow.get(i).get(INT_POPUP_BUTTON));
+                        popupRow.addComponent((Button) lstRow.get(i).get(INT_POPUP_DELETE));
                         popupRow.setWidth("90%");
                         row.addComponent(popupRow);
                     } else {
-                        row.addComponent((Component)lstRow.get(i).get(INT_COMPONENT));
+                        row.addComponent((Component) lstRow.get(i).get(INT_COMPONENT));
                     }
                 } else {
-                    row.addComponent((Component)lstRow.get(i).get(INT_COMPONENT));
+                    row.addComponent((Component) lstRow.get(i).get(INT_COMPONENT));
                 }
             }
         }
         return row;
     }
-    
+
     /**
      * Hàm tạo giao diện xem chi tiết theo từng hàng
      *
      * @since 18/11/2014 HienDM
      * @param lstRow danh sách thành phần giao diện
-     * @param isSearchForm nếu giao diện search thì trường date bổ sung component to date
+     * @param isSearchForm nếu giao diện search thì trường date bổ sung
+     * component to date
      * @return giao diện theo từng hàng
      */
     private HorizontalLayout buildRowDetail(List<List> lstRow) throws Exception {
         HorizontalLayout row = new HorizontalLayout();
         row.setWidth("100%");
-        for(int i = 0; i < lstRow.size(); i++) {
+        for (int i = 0; i < lstRow.size(); i++) {
             Label lbl = (Label) lstRow.get(i).get(INT_MULTI_LABEL);
             lbl.setStyleName("BoldLabel");
             row.addComponent(lbl);
-            if(lstRow.get(i).get(INT_MULTI_TABLE) instanceof Table) {
-                if(!lstRow.get(i).get(2).equals("empty")) {
+            if (lstRow.get(i).get(INT_MULTI_TABLE) instanceof Table) {
+                if (!lstRow.get(i).get(2).equals("empty")) {
                     VerticalLayout popupRow = new VerticalLayout();
                     popupRow.addComponent((Component) lstRow.get(i).get(INT_MULTI_TABLE));
                     popupRow.setWidth("90%");
                     row.addComponent(popupRow);
                 } else {
-                    row.addComponent((Component)lstRow.get(i).get(INT_COMPONENT));
+                    row.addComponent((Component) lstRow.get(i).get(INT_COMPONENT));
                 }
-            } else {
-                if(!lstRow.get(i).get(2).equals("empty")) {
-                    if(lstRow.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
-                        MultiUploadField upload = (MultiUploadField)lstRow.get(i).get(INT_COMPONENT);
-                        if(upload.lstDownloadLink != null && !upload.lstDownloadLink.isEmpty()) {
-                            row.addComponent(upload.downloadLinkArea);
-                            upload.hideDeleteIcon();
-                        } else row.addComponent(new Label(""));
-                    } else if(lstRow.get(i).get(INT_COMPONENT) instanceof UploadField) {
-                        UploadField upload = (UploadField)lstRow.get(i).get(INT_COMPONENT);
-                        if (upload.downloadLink.getFilePath() != null) {
-                            File downloadFile = new File(ResourceBundleUtils.getConfigureResource("FileBaseDirectory")
-                                    + upload.downloadLink.getFilePath());
-                            if (!downloadFile.exists()) {
-                                upload.downloadLink.setComponentError(new UserError(ResourceBundleUtils.getLanguageResource("Common.FileNotExist")));
-                            }
-                        }
-                        if(upload.downloadLink != null) {
-                            if(upload.isPicture) {
-                                row.addComponent(upload.image);
-                            } else {
-                                row.addComponent(upload.downloadLink);
-                            }
-                        }
-                        else row.addComponent(new Label(""));
+            } else if (!lstRow.get(i).get(2).equals("empty")) {
+                if (lstRow.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
+                    MultiUploadField upload = (MultiUploadField) lstRow.get(i).get(INT_COMPONENT);
+                    if (upload.lstDownloadLink != null && !upload.lstDownloadLink.isEmpty()) {
+                        row.addComponent(upload.downloadLinkArea);
+                        upload.hideDeleteIcon();
                     } else {
-                        AbstractField field = (AbstractField)lstRow.get(i).get(INT_COMPONENT);
-                        if(field.getValue() != null) {
-                            if(field instanceof PopupDateField) {
-                                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                                if(((PopupDateField)field).getResolution().equals(Resolution.DAY))
-                                    formatter = new SimpleDateFormat("dd/MM/yyyy");
-                                else
-                                    formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                                row.addComponent(new Label(formatter.format(field.getValue())));
-                            } else if(field instanceof ComboBox) {
-                                row.addComponent(new Label(((ComboBox)field).getItemCaption(field.getValue())));
-                            } else if(field instanceof CheckBox) { 
-                                if(((CheckBox)field).getValue()) {
-                                    row.addComponent(new Label(lstRow.get(i).get(INT_CHECKBOX_ENABLE).toString()));
-                                } else {
-                                    row.addComponent(new Label(lstRow.get(i).get(INT_CHECKBOX_DISABLE).toString()));
-                                }
-                            } else {
-                                row.addComponent(new Label(field.getValue().toString()));
-                            }
-                        } else {
-                            row.addComponent(new Label(""));
+                        row.addComponent(new Label(""));
+                    }
+                } else if (lstRow.get(i).get(INT_COMPONENT) instanceof UploadField) {
+                    UploadField upload = (UploadField) lstRow.get(i).get(INT_COMPONENT);
+                    if (upload.downloadLink.getFilePath() != null) {
+                        File downloadFile = new File(ResourceBundleUtils.getConfigureResource("FileBaseDirectory")
+                                + upload.downloadLink.getFilePath());
+                        if (!downloadFile.exists()) {
+                            upload.downloadLink.setComponentError(new UserError(ResourceBundleUtils.getLanguageResource("Common.FileNotExist")));
                         }
                     }
+                    if (upload.downloadLink != null) {
+                        if (upload.isPicture) {
+                            row.addComponent(upload.image);
+                        } else {
+                            row.addComponent(upload.downloadLink);
+                        }
+                    } else {
+                        row.addComponent(new Label(""));
+                    }
                 } else {
-                    row.addComponent((Component)lstRow.get(i).get(INT_COMPONENT));
+                    AbstractField field = (AbstractField) lstRow.get(i).get(INT_COMPONENT);
+                    if (field.getValue() != null) {
+                        if (field instanceof PopupDateField) {
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                            if (((PopupDateField) field).getResolution().equals(Resolution.DAY)) {
+                                formatter = new SimpleDateFormat("dd/MM/yyyy");
+                            } else {
+                                formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                            }
+                            row.addComponent(new Label(formatter.format(field.getValue())));
+                        } else if (field instanceof ComboBox) {
+                            row.addComponent(new Label(((ComboBox) field).getItemCaption(field.getValue())));
+                        } else if (field instanceof CheckBox) {
+                            if (((CheckBox) field).getValue()) {
+                                row.addComponent(new Label(lstRow.get(i).get(INT_CHECKBOX_ENABLE).toString()));
+                            } else {
+                                row.addComponent(new Label(lstRow.get(i).get(INT_CHECKBOX_DISABLE).toString()));
+                            }
+                        } else {
+                            row.addComponent(new Label(field.getValue().toString()));
+                        }
+                    } else {
+                        row.addComponent(new Label(""));
+                    }
                 }
+            } else {
+                row.addComponent((Component) lstRow.get(i).get(INT_COMPONENT));
             }
         }
         return row;
     }
-    
+
     /**
      * Hàm thực hiện nút tìm kiếm
      *
@@ -2935,8 +3074,8 @@ public class BaseAction {
                     if (lstComponent.get(i).get(INT_SEARCH_MANDATORY) != null) {
                         if (lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(
                                 lstMandatorySearchValue.get(j).get(0))) {
-                            if (!(lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField || 
-                                    lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField)) {
+                            if (!(lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField
+                                    || lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField)) {
                                 if (lstComponent.get(i).get(INT_COMPONENT) instanceof PopupDateField) {
                                     if (((PopupDateField) lstComponent.get(i).get(INT_COMPONENT)).getValue() == null) {
                                         if (lstMandatorySearchValue.get(j).get(1) != null) {
@@ -2961,19 +3100,17 @@ public class BaseAction {
                                         ((List) lstMandatorySearchValue.get(j).get(1)).set(1, ((AbstractField) lstComponent.get(i).
                                                 get(INT_TO_DATE_COMPONENT)).getValue());
                                     }
-                                } else {
-                                    if (((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue() == null) {
-                                        if (lstMandatorySearchValue.get(j).get(1) != null) {
-                                            isChangeDefaultSearch = true;
-                                            lstMandatorySearchValue.get(j).set(1, ((AbstractField) lstComponent.get(i).
-                                                    get(INT_COMPONENT)).getValue());
-                                        }
-                                    } else if (!(((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue().equals(
-                                            lstMandatorySearchValue.get(j).get(1)))) {
+                                } else if (((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue() == null) {
+                                    if (lstMandatorySearchValue.get(j).get(1) != null) {
                                         isChangeDefaultSearch = true;
                                         lstMandatorySearchValue.get(j).set(1, ((AbstractField) lstComponent.get(i).
                                                 get(INT_COMPONENT)).getValue());
                                     }
+                                } else if (!(((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue().equals(
+                                        lstMandatorySearchValue.get(j).get(1)))) {
+                                    isChangeDefaultSearch = true;
+                                    lstMandatorySearchValue.get(j).set(1, ((AbstractField) lstComponent.get(i).
+                                            get(INT_COMPONENT)).getValue());
                                 }
                             }
                         }
@@ -2981,32 +3118,40 @@ public class BaseAction {
                 }
             }
             searchNormalData();
-        }        
+        }
     }
-    
+
     /**
      * Hàm thực hiện khi nhấn nút thêm
      *
      * @since 18/01/2015 HienDM
      */
-    public boolean prepareAdd() throws Exception {return true;}
-    public void afterPrepareAdd() throws Exception {}
-    
+    public boolean prepareAdd() throws Exception {
+        return true;
+    }
+
+    public void afterPrepareAdd() throws Exception {
+    }
+
     /**
      * Hàm thực hiện khi nhấn nút sửa
      *
      * @since 18/01/2015 HienDM
      */
-    public boolean prepareEdit() throws Exception {return true;}
-    public void afterPrepareEdit() throws Exception {}
-    
+    public boolean prepareEdit() throws Exception {
+        return true;
+    }
+
+    public void afterPrepareEdit() throws Exception {
+    }
+
     /**
      * Hàm thực hiện nút thêm mới
      *
      * @since 15/10/2014 HienDM
      */
     private void buttonAddClick() throws Exception {
-        if(prepareAdd()) {
+        if (prepareAdd()) {
             formArea.removeAllComponents();
             clearForm();
             formArea.addComponent(buildFormPanel(numberOfTD));
@@ -3019,7 +3164,7 @@ public class BaseAction {
      * Hàm kiểm tra điều kiện xóa
      *
      * @since 16/01/2015 HienDM
-     */    
+     */
     public boolean validateDelete(Object[] selectedArray) throws Exception {
         return true;
     }
@@ -3028,9 +3173,9 @@ public class BaseAction {
      * Hàm kiểm tra có quyền xóa hay không
      *
      * @since 15/10/2014 HienDM
-     */    
-    public boolean checkPermission(Object[] selectedArray) throws Exception{
-        for(int j = 0; j < selectedArray.length; j++) {
+     */
+    public boolean checkPermission(Object[] selectedArray) throws Exception {
+        for (int j = 0; j < selectedArray.length; j++) {
             Item data = table.getItem(selectedArray[j]);
             // Kiểm tra nếu chỉ được sửa bản ghi do mình tạo ra
             for (int i = 0; i < lstComponent.size(); i++) {
@@ -3051,7 +3196,7 @@ public class BaseAction {
         }
         return true;
     }
-    
+
     /**
      * Hàm thực hiện nút sửa
      *
@@ -3059,7 +3204,7 @@ public class BaseAction {
      */
     public void buttonEditClick() throws Exception {
         Object[] selectedArray = ((java.util.Collection) table.getValue()).toArray();
-        if(prepareEdit()) {
+        if (prepareEdit()) {
             if (selectedArray != null && selectedArray.length > 0) {
                 if (checkPermission(selectedArray)) {
                     Item data = table.getItem(selectedArray[0]);
@@ -3078,17 +3223,17 @@ public class BaseAction {
                             continue;
                         }
                         // Bỏ qua nếu trường này chỉ có trong view, không có trong table
-                        if (lstComponent.get(i).get(BaseAction.INT_FORMAT) != null && 
-                                lstComponent.get(i).get(BaseAction.INT_FORMAT).equals("OnlyView")) {
+                        if (lstComponent.get(i).get(BaseAction.INT_FORMAT) != null
+                                && lstComponent.get(i).get(BaseAction.INT_FORMAT).equals("OnlyView")) {
                             continue;
                         }
                         if (lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
                             BaseDAO baseDao = new BaseDAO();
-                            List<Map> lstMultiUpload = baseDao.selectMultiUploadData(lstComponent.get(i), 
+                            List<Map> lstMultiUpload = baseDao.selectMultiUploadData(lstComponent.get(i),
                                     Long.parseLong(selectedArray[0].toString()));
                             MultiUploadField upload = (MultiUploadField) lstComponent.get(i).get(INT_COMPONENT);
                             upload.removeAllDownloadLink();
-                            for(int n = 0; n < lstMultiUpload.size(); n++) {
+                            for (int n = 0; n < lstMultiUpload.size(); n++) {
                                 DownloadLink dl = new DownloadLink();
                                 // Giải mã tên file
                                 String fileName = lstMultiUpload.get(n).get("attach_file").toString();
@@ -3108,7 +3253,7 @@ public class BaseAction {
                                 }
                                 dl.setCaption(fileName);
                                 // End: Giải mã tên file                              
-                                
+
                                 // Gán đường dẫn download
                                 dl.setFilePath(lstMultiUpload.get(n).get("attach_file").toString());
                                 if (dl.getFilePath() != null) {
@@ -3129,9 +3274,9 @@ public class BaseAction {
                                 });
                                 downloaderForLink.extend(dl);
                                 // End: Gán đường dẫn download
-                                
+
                                 upload.lstDownloadLink.add(dl);
-                                
+
                                 // Them link vao vung download
                                 HorizontalLayout cell = new HorizontalLayout();
                                 Embedded iconDelete = new Embedded(null, new ThemeResource("img/industry/button/delete.png"));
@@ -3177,7 +3322,7 @@ public class BaseAction {
                             if (((AbstractField) lstComponent.get(i).get(INT_COMPONENT)) instanceof CheckBox) {
                                 if (data.getItemProperty(((Label) lstComponent.get(i).get(INT_LABEL)).getValue()).getValue().
                                         toString().equals(ResourceBundleUtils.getLanguageResource(
-                                                        lstComponent.get(i).get(INT_CHECKBOX_ENABLE).toString()))) {
+                                                lstComponent.get(i).get(INT_CHECKBOX_ENABLE).toString()))) {
                                     ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setValue(true);
                                 } else {
                                     ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setValue(false);
@@ -3201,23 +3346,22 @@ public class BaseAction {
                                 if (!data.getItemProperty(((Label) lstComponent.get(i).get(INT_LABEL)).
                                         getValue()).getValue().toString().isEmpty()) {
                                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                                    if(((PopupDateField) lstComponent.get(i).get(INT_COMPONENT)).getResolution().equals(Resolution.DAY))
+                                    if (((PopupDateField) lstComponent.get(i).get(INT_COMPONENT)).getResolution().equals(Resolution.DAY)) {
                                         formatter = new SimpleDateFormat("dd/MM/yyyy");
-                                    else
+                                    } else {
                                         formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                                    }
                                     Date date = formatter.parse(data.getItemProperty(((Label) lstComponent.get(i).
                                             get(INT_LABEL)).getValue()).getValue().toString());
                                     ((PopupDateField) lstComponent.get(i).get(INT_COMPONENT)).setValue(date);
                                 }
                             } else if (((AbstractField) lstComponent.get(i).get(INT_COMPONENT)) instanceof PasswordField) {
                                 ((PasswordField) lstComponent.get(i).get(INT_COMPONENT)).setValue("");
-                            } else {
-                                if (data.getItemProperty(((Label) lstComponent.get(i).get(INT_LABEL)).getValue()).
-                                        getValue() != null) {
-                                    ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setValue(
-                                            data.getItemProperty(((Label) lstComponent.get(i).get(INT_LABEL)).getValue()).
-                                            getValue().toString());
-                                }
+                            } else if (data.getItemProperty(((Label) lstComponent.get(i).get(INT_LABEL)).getValue()).
+                                    getValue() != null) {
+                                ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setValue(
+                                        data.getItemProperty(((Label) lstComponent.get(i).get(INT_LABEL)).getValue()).
+                                        getValue().toString());
                             }
                         }
                     }
@@ -3227,15 +3371,17 @@ public class BaseAction {
                             List lstRow = lstComponentMulti.get(k);
                             List<Map> lstResult = baseDao.selectAttachData(lstRow,
                                     Long.parseLong(selectedArray[0].toString()));
-                            if(lstRow.get(INT_MULTI_IDFIELD) != null) {
+                            if (lstRow.get(INT_MULTI_IDFIELD) != null) {
                                 List<List> lstAttach = (List) lstRow.get(INT_MULTI_ATTACH);
                                 int size = 0;
-                                if(lstAttach != null && !lstAttach.isEmpty()) size = lstAttach.size();
+                                if (lstAttach != null && !lstAttach.isEmpty()) {
+                                    size = lstAttach.size();
+                                }
                                 for (int i = 0; i < lstResult.size(); i++) {
                                     Object[] rowData = new Object[1 + size];
                                     PopupMultiAction popup = (PopupMultiAction) lstRow.get(INT_MULTI_POPUP);
                                     rowData[0] = lstResult.get(i).get(popup.getNameColumn());
-                                    if(lstAttach != null && !lstAttach.isEmpty()) {
+                                    if (lstAttach != null && !lstAttach.isEmpty()) {
                                         for (int j = 0; j < lstAttach.size(); j++) {
                                             HorizontalLayout txtLayout = new HorizontalLayout();
                                             AbstractField txt = new TextField();
@@ -3258,11 +3404,11 @@ public class BaseAction {
                                     rowData[0] = lstResult.get(i).get(popup.getNameColumn());
                                     ((Table) lstRow.get(INT_MULTI_TABLE)).addItem(
                                             rowData, lstResult.get(i).get(popup.getIdColumnName()).toString());
-                                }                            
+                                }
                             }
-                            if(lstRow.size() > INT_MULTI_OLDIDS) {
+                            if (lstRow.size() > INT_MULTI_OLDIDS) {
                                 lstRow.set(INT_MULTI_OLDIDS, ((Table) lstRow.get(INT_MULTI_TABLE)).getItemIds().toArray());
-                            } else if(lstRow.size() == INT_MULTI_OLDIDS){
+                            } else if (lstRow.size() == INT_MULTI_OLDIDS) {
                                 lstRow.add(((Table) lstRow.get(INT_MULTI_TABLE)).getItemIds().toArray());
                             }
                         }
@@ -3333,7 +3479,7 @@ public class BaseAction {
                             fileName = fileName.substring(0, 25) + "---" + FileUtils.extractFileExt(fileName);
                         }
                         dl.setCaption(fileName);
-                                // End: Giải mã tên file                              
+                        // End: Giải mã tên file                              
 
                         // Gán đường dẫn download
                         dl.setFilePath(lstMultiUpload.get(n).get("attach_file").toString());
@@ -3354,7 +3500,7 @@ public class BaseAction {
                             }
                         });
                         downloaderForLink.extend(dl);
-                                // End: Gán đường dẫn download
+                        // End: Gán đường dẫn download
 
                         upload.lstDownloadLink.add(dl);
 
@@ -3379,7 +3525,7 @@ public class BaseAction {
                             }
                         });
                         // End: Them link vao vung download
-                    }                 
+                    }
                 } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField) {
                     DownloadLink dl = (DownloadLink) data.getItemProperty(
                             ((Label) lstComponent.get(i).get(INT_LABEL)).getValue()).getValue();
@@ -3394,7 +3540,7 @@ public class BaseAction {
                     if (((AbstractField) lstComponent.get(i).get(INT_COMPONENT)) instanceof CheckBox) {
                         if (data.getItemProperty(((Label) lstComponent.get(i).get(INT_LABEL)).getValue()).getValue().
                                 toString().equals(ResourceBundleUtils.getLanguageResource(
-                                                lstComponent.get(i).get(INT_CHECKBOX_ENABLE).toString()))) {
+                                        lstComponent.get(i).get(INT_CHECKBOX_ENABLE).toString()))) {
                             ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setValue(true);
                         } else {
                             ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setValue(false);
@@ -3429,13 +3575,11 @@ public class BaseAction {
                         }
                     } else if (((AbstractField) lstComponent.get(i).get(INT_COMPONENT)) instanceof PasswordField) {
                         ((PasswordField) lstComponent.get(i).get(INT_COMPONENT)).setValue("");
-                    } else {
-                        if (data.getItemProperty(((Label) lstComponent.get(i).get(INT_LABEL)).getValue()).
-                                getValue() != null) {
-                            ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setValue(
-                                    data.getItemProperty(((Label) lstComponent.get(i).get(INT_LABEL)).getValue()).
-                                    getValue().toString());
-                        }
+                    } else if (data.getItemProperty(((Label) lstComponent.get(i).get(INT_LABEL)).getValue()).
+                            getValue() != null) {
+                        ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setValue(
+                                data.getItemProperty(((Label) lstComponent.get(i).get(INT_LABEL)).getValue()).
+                                getValue().toString());
                     }
                 }
             }
@@ -3445,15 +3589,17 @@ public class BaseAction {
                     List lstRow = lstComponentMulti.get(k);
                     List<Map> lstResult = baseDao.selectAttachData(lstRow,
                             Long.parseLong(selectedArray[0].toString()));
-                    if(lstRow.get(INT_MULTI_IDFIELD) != null) {
+                    if (lstRow.get(INT_MULTI_IDFIELD) != null) {
                         List<List> lstAttach = (List) lstRow.get(INT_MULTI_ATTACH);
                         int size = 0;
-                        if(lstAttach != null && !lstAttach.isEmpty()) size = lstAttach.size();
+                        if (lstAttach != null && !lstAttach.isEmpty()) {
+                            size = lstAttach.size();
+                        }
                         for (int i = 0; i < lstResult.size(); i++) {
                             Object[] rowData = new Object[1 + size];
                             PopupMultiAction popup = (PopupMultiAction) lstRow.get(INT_MULTI_POPUP);
                             rowData[0] = lstResult.get(i).get(popup.getNameColumn());
-                            if(lstAttach != null && !lstAttach.isEmpty()) {
+                            if (lstAttach != null && !lstAttach.isEmpty()) {
                                 for (int j = 0; j < lstAttach.size(); j++) {
                                     HorizontalLayout txtLayout = new HorizontalLayout();
                                     AbstractField txt = new TextField();
@@ -3476,11 +3622,11 @@ public class BaseAction {
                             rowData[0] = lstResult.get(i).get(popup.getNameColumn());
                             ((Table) lstRow.get(INT_MULTI_TABLE)).addItem(
                                     rowData, lstResult.get(i).get(popup.getIdColumnName()).toString());
-                        }                            
+                        }
                     }
-                    if(lstRow.size() > INT_MULTI_OLDIDS) {
+                    if (lstRow.size() > INT_MULTI_OLDIDS) {
                         lstRow.set(INT_MULTI_OLDIDS, ((Table) lstRow.get(INT_MULTI_TABLE)).getItemIds().toArray());
-                    } else if(lstRow.size() == INT_MULTI_OLDIDS){
+                    } else if (lstRow.size() == INT_MULTI_OLDIDS) {
                         lstRow.add(((Table) lstRow.get(INT_MULTI_TABLE)).getItemIds().toArray());
                     }
                 }
@@ -3491,7 +3637,7 @@ public class BaseAction {
         } else {
             Notification.show(ResourceBundleUtils.getLanguageResource("Common.SelectRequire1"),
                     null, Notification.Type.ERROR_MESSAGE);
-        }        
+        }
     }
 
     /**
@@ -3503,7 +3649,7 @@ public class BaseAction {
         Object[] deleteArray = ((java.util.Collection) table.getValue()).toArray();
         if (deleteArray != null && deleteArray.length > 0) {
             if (checkPermission(deleteArray)) {
-                if(validateDelete(deleteArray)) {
+                if (validateDelete(deleteArray)) {
                     ConfirmationDialog.Callback ccbl = new ConfirmationDialog.Callback() {
                         @Override
                         public void onDialogResult(String buttonName) {
@@ -3517,9 +3663,9 @@ public class BaseAction {
                                     beforeDeleteData(connection, deleteArray);
                                     //---
                                     if (lstComponentMulti != null && !lstComponentMulti.isEmpty()) {
-                                        for( int i = 0; i < deleteArray.length; i++) {
+                                        for (int i = 0; i < deleteArray.length; i++) {
                                             long idConnector = Long.parseLong(deleteArray[i].toString());
-                                            baseDao.deleteDataAttach(lstComponentMulti, idConnector, connection);                                        
+                                            baseDao.deleteDataAttach(lstComponentMulti, idConnector, connection);
                                         }
                                     }
                                     baseDao.deleteData(tableName, idColumnName, deleteArray, connection);
@@ -3529,13 +3675,13 @@ public class BaseAction {
                                             long idConnector = Long.parseLong(deleteArray[i].toString());
                                             baseDao.deleteMultiUploadData(lstComponent.get(i), idConnector, connection);
                                         }
-                                    }                                    
+                                    }
                                     afterDeleteData(connection, deleteArray);
                                     //---
                                     connection.commit();
                                     for (int j = 0; j < deleteArray.length; j++) {
                                         for (int i = lstTableData.size() - 1; i >= 0; i--) {
-                                            if (lstTableData.get(i).get(idColumnName).toString().equals(deleteArray[j])){
+                                            if (lstTableData.get(i).get(idColumnName).toString().equals(deleteArray[j])) {
                                                 lstTableData.remove(i);
                                             }
                                         }
@@ -3546,20 +3692,24 @@ public class BaseAction {
                                             null, Notification.Type.WARNING_MESSAGE);
                                 }
                             } catch (Exception ex) {
-                                if(connection != null) try {
-                                    connection.rollback();
-                                } catch (SQLException ex1) {
-                                    VaadinUtils.handleException(ex);
-                                    MainUI.mainLogger.debug("Install error: ", ex1);
+                                if (connection != null) {
+                                    try {
+                                        connection.rollback();
+                                    } catch (SQLException ex1) {
+                                        VaadinUtils.handleException(ex);
+                                        MainUI.mainLogger.debug("Install error: ", ex1);
+                                    }
                                 }
                                 VaadinUtils.handleException(ex);
                                 MainUI.mainLogger.debug("Install error: ", ex);
                             } finally {
-                                if(connection != null) try {
-                                    connection.close();
-                                } catch (SQLException ex) {
-                                    VaadinUtils.handleException(ex);
-                                    MainUI.mainLogger.debug("Install error: ", ex);
+                                if (connection != null) {
+                                    try {
+                                        connection.close();
+                                    } catch (SQLException ex) {
+                                        VaadinUtils.handleException(ex);
+                                        MainUI.mainLogger.debug("Install error: ", ex);
+                                    }
                                 }
                                 connection = null;
                             }
@@ -3573,13 +3723,18 @@ public class BaseAction {
         } else {
             Notification.show(ResourceBundleUtils.getLanguageResource("Common.SelectRequireAtLeast1"),
                     null, Notification.Type.ERROR_MESSAGE);
-        }        
-    }    
+        }
+    }
 
-    public void finishAdd(long id) throws Exception {}
-    public void finishEdit(long id) throws Exception {}
-    public void finishDelete(Object[] arrayId) throws Exception {}
-    
+    public void finishAdd(long id) throws Exception {
+    }
+
+    public void finishEdit(long id) throws Exception {
+    }
+
+    public void finishDelete(Object[] arrayId) throws Exception {
+    }
+
     /**
      * Hàm thực hiện nút cập nhật
      *
@@ -3645,7 +3800,7 @@ public class BaseAction {
                                 afterAddData(connection, id);
                                 //---
                                 connection.commit();
-                                if(!refreshAlready) {
+                                if (!refreshAlready) {
                                     refreshAlready = false;
                                     Map row = new HashMap();
                                     row.put(idColumnName, "" + id);
@@ -3663,22 +3818,24 @@ public class BaseAction {
                                                 && (lstComponent.get(i).get(INT_POPUP_BUTTON) instanceof Button)) {
                                             ComboBox cbo = (ComboBox) lstComponent.get(i).get(INT_COMPONENT);
                                             row.put(lstComponent.get(i).get(INT_DB_FIELD_NAME), cbo.getValue());
-                                            
+
                                             String aliasTableName = lstComponent.get(i).get(BaseAction.INT_COMBOBOX_TABLENAME).toString();
                                             String aliasDbFieldName = lstComponent.get(i).get(BaseAction.INT_DB_FIELD_NAME).toString();
-                                            if (aliasTableName.length() > 10) aliasTableName = aliasTableName.substring(0, 10);
-                                            if (aliasDbFieldName.length() > 10) aliasDbFieldName = aliasDbFieldName.substring(0, 10);          
-                                            row.put(aliasTableName + aliasDbFieldName, cbo.getItemCaption(cbo.getValue()));
-                                        } else {
-                                            if (lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
-                                                // Không làm gì
-                                            } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField) {
-                                                row.put(lstComponent.get(i).get(INT_DB_FIELD_NAME),
-                                                        lstComponent.get(i).get(INT_FILE_PATH));
-                                            } else {
-                                                row.put(lstComponent.get(i).get(INT_DB_FIELD_NAME),
-                                                        ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue());
+                                            if (aliasTableName.length() > 10) {
+                                                aliasTableName = aliasTableName.substring(0, 10);
                                             }
+                                            if (aliasDbFieldName.length() > 10) {
+                                                aliasDbFieldName = aliasDbFieldName.substring(0, 10);
+                                            }
+                                            row.put(aliasTableName + aliasDbFieldName, cbo.getItemCaption(cbo.getValue()));
+                                        } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
+                                            // Không làm gì
+                                        } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField) {
+                                            row.put(lstComponent.get(i).get(INT_DB_FIELD_NAME),
+                                                    lstComponent.get(i).get(INT_FILE_PATH));
+                                        } else {
+                                            row.put(lstComponent.get(i).get(INT_DB_FIELD_NAME),
+                                                    ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue());
                                         }
                                     }
                                     lstTableData.add(row);
@@ -3727,11 +3884,11 @@ public class BaseAction {
                                 connection.setAutoCommit(false);
                                 // Xử lý trước khi sửa dữ liệu
                                 long idConnector = Long.parseLong(((AbstractField) lstComponent.get(idField).get(
-                                    BaseAction.INT_COMPONENT)).getValue().toString());                                
+                                        BaseAction.INT_COMPONENT)).getValue().toString());
                                 beforeEditData(connection, idConnector);
                                 //---
                                 baseDao.updateData(lstComponent, tableName, idField, connection);
-                                if(!isIgnoreAttachWhenEdit()) {
+                                if (!isIgnoreAttachWhenEdit()) {
                                     if (lstComponentMulti != null && !lstComponentMulti.isEmpty()) {
                                         baseDao.deleteDataAttach(lstComponentMulti, idConnector, connection);
                                         baseDao.insertDataAttach(lstComponentMulti, idConnector, connection);
@@ -3747,7 +3904,7 @@ public class BaseAction {
                                 afterEditData(connection, idConnector);
                                 //---
                                 connection.commit();
-                                if(!refreshAlready) {
+                                if (!refreshAlready) {
                                     refreshAlready = false;
                                     for (int i = 0; i < lstTableData.size(); i++) {
                                         if (lstTableData.get(i).get(idColumnName).toString().equals(
@@ -3778,14 +3935,18 @@ public class BaseAction {
                                                         lstTableData.get(i).put(lstComponent.get(j).get(INT_DB_FIELD_NAME),
                                                                 lstComponent.get(j).get(INT_FILE_PATH));
                                                     } else if (lstComponent.get(j).size() > INT_POPUP_BUTTON
-                                                                && (lstComponent.get(j).get(INT_POPUP_BUTTON) instanceof Button)) {
+                                                            && (lstComponent.get(j).get(INT_POPUP_BUTTON) instanceof Button)) {
                                                         ComboBox cbo = (ComboBox) lstComponent.get(j).get(INT_COMPONENT);
-                                                        lstTableData.get(i).put(lstComponent.get(j).get(INT_DB_FIELD_NAME),cbo.getValue());
-                                                        
+                                                        lstTableData.get(i).put(lstComponent.get(j).get(INT_DB_FIELD_NAME), cbo.getValue());
+
                                                         String aliasTableName = lstComponent.get(j).get(BaseAction.INT_COMBOBOX_TABLENAME).toString();
                                                         String aliasDbFieldName = lstComponent.get(j).get(BaseAction.INT_DB_FIELD_NAME).toString();
-                                                        if (aliasTableName.length() > 10) aliasTableName = aliasTableName.substring(0, 10);
-                                                        if (aliasDbFieldName.length() > 10) aliasDbFieldName = aliasDbFieldName.substring(0, 10);
+                                                        if (aliasTableName.length() > 10) {
+                                                            aliasTableName = aliasTableName.substring(0, 10);
+                                                        }
+                                                        if (aliasDbFieldName.length() > 10) {
+                                                            aliasDbFieldName = aliasDbFieldName.substring(0, 10);
+                                                        }
                                                         lstTableData.get(i).put(aliasTableName + aliasDbFieldName, cbo.getItemCaption(cbo.getValue()));
                                                     } else {
                                                         lstTableData.get(i).put(lstComponent.get(j).get(INT_DB_FIELD_NAME),
@@ -3798,11 +3959,13 @@ public class BaseAction {
                                     }
                                     updateData();
                                 }
-                                if(!isNotUpdateForm()) updateForm();
+                                if (!isNotUpdateForm()) {
+                                    updateForm();
+                                }
                                 finishEdit(idConnector);
                                 Notification.show(ResourceBundleUtils.getLanguageResource("Common.UpdateSuccess"),
                                         null, Notification.Type.WARNING_MESSAGE);
-                                if(!isNotUpdateForm()) {
+                                if (!isNotUpdateForm()) {
                                     formArea.removeAllComponents();
                                     formArea.addComponent(buildSearchFormPanel(numberOfTD));
                                 }
@@ -3835,9 +3998,9 @@ public class BaseAction {
             mainUI.addWindow(new ConfirmationDialog(
                     ResourceBundleUtils.getLanguageResource("Common.Confirm"),
                     ResourceBundleUtils.getLanguageResource("Common.ConfirmExecute"), ccbl));
-        }        
-    }        
-    
+        }
+    }
+
     /**
      * Hàm thực hiện nút bỏ qua
      *
@@ -3852,23 +4015,23 @@ public class BaseAction {
         buttonArea.removeStyleName("panel-highlight");
         formArea.removeAllComponents();
         formArea.addComponent(buildSearchFormPanel(numberOfTD));
-        clearForm();        
-    } 
-    
+        clearForm();
+    }
+
     public void addExportParameter(String name, Object value) {
         List lstRow = new ArrayList();
         lstRow.add(name);
         lstRow.add(value);
         lstExportParameter.add(lstRow);
     }
-    
+
     /**
      * Hàm thực hiện nút xuất file
-     * 
+     *
      * @param downloaderForLink thành phần download
      * @since 15/10/2014 HienDM
      */
-    private void buttonExportClick(AdvancedFileDownloader downloaderForLink) throws Exception {      
+    private void buttonExportClick(AdvancedFileDownloader downloaderForLink) throws Exception {
         // Tạo file download
         Object[] allItemIds = ((java.util.Collection) table.getItemIds()).toArray();
         Object[][] totalData = new Object[allItemIds.length + 1][table.getColumnHeaders().length];
@@ -3878,7 +4041,9 @@ public class BaseAction {
         }
         int countON = 0;
         Object[] header = new Object[lstComponent.size() - 1 + order];
-        if(includeOrder) header[0] = ResourceBundleUtils.getLanguageResource("Common.Order");
+        if (includeOrder) {
+            header[0] = ResourceBundleUtils.getLanguageResource("Common.Order");
+        }
         int countHeader = 1;
         for (int j = 0; j < lstComponent.size(); j++) {
             if (j != idField) {
@@ -3899,8 +4064,8 @@ public class BaseAction {
                 if (j != idField) {
                     Object value = item.getItemProperty(((Label) lstComponent.get(j).
                             get(INT_LABEL)).getValue()).getValue();
-                    if(value instanceof ComboboxItem) {
-                        data[count] = ((ComboboxItem)value).getCaption();
+                    if (value instanceof ComboboxItem) {
+                        data[count] = ((ComboboxItem) value).getCaption();
                     } else {
                         data[count] = value;
                     }
@@ -3909,17 +4074,19 @@ public class BaseAction {
             }
             totalData[i + 1] = data;
         }
-        String strDirectory = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + 
-                "Temp";
-        String strTemplate = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + "Templates" +
-                File.separator + templateFile;
+        String strDirectory = ResourceBundleUtils.getConfigureResource("FileBaseDirectory")
+                + "Temp";
+        String strTemplate = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + "Templates"
+                + File.separator + templateFile;
         File fileDirectory = new File(strDirectory);
-        if(!fileDirectory.exists()) fileDirectory.mkdir();
+        if (!fileDirectory.exists()) {
+            fileDirectory.mkdir();
+        }
         EncryptDecryptUtils edu = new EncryptDecryptUtils();
         Calendar cal = Calendar.getInstance();
-        String strName = cal.get(Calendar.YEAR) + (cal.get(Calendar.MONTH) + 1) + 
-                cal.get(Calendar.DATE) + cal.get(Calendar.HOUR) + cal.get(Calendar.MINUTE) + 
-                cal.get(Calendar.SECOND) + VaadinUtils.getSessionAttribute("G_UserName").toString();
+        String strName = cal.get(Calendar.YEAR) + (cal.get(Calendar.MONTH) + 1)
+                + cal.get(Calendar.DATE) + cal.get(Calendar.HOUR) + cal.get(Calendar.MINUTE)
+                + cal.get(Calendar.SECOND) + VaadinUtils.getSessionAttribute("G_UserName").toString();
         strName = edu.encodePassword(strName);
         String pattern = Pattern.quote(System.getProperty("file.separator"));
         strName = strName.replaceAll(pattern, "_");
@@ -3933,9 +4100,8 @@ public class BaseAction {
         } else if (ResourceBundleUtils.getConfigureResource("ExcelMaxRow").equals("excel")) {
             filePath = strPath + ".xls";
             FileUtils.exportExcelWithTemplate(totalData, strTemplate, filePath, templateHeight, lstExportParameter);
-        } else {
-            // Nếu lớn hơn ExcelMaxRow thì xuất CSV
-            if (table.size() > Long.parseLong(
+        } else // Nếu lớn hơn ExcelMaxRow thì xuất CSV
+         if (table.size() > Long.parseLong(
                     ResourceBundleUtils.getConfigureResource("ExcelMaxRow"))) {
                 filePath = strPath + ".csv";
                 CSVTransformer.transformCSV(totalData, filePath);
@@ -3943,7 +4109,6 @@ public class BaseAction {
                 filePath = strPath + ".xlsx";
                 FileUtils.exportExcel(totalData, filePath);
             }
-        }
         //Download file
 
         File downloadFile = new File(filePath);
@@ -3953,60 +4118,66 @@ public class BaseAction {
         }
         downloaderForLink.setFilePath(filePath);
     }
-    
+
     /**
      * Hàm xử lý trước khi add dữ liệu
-     * 
+     *
      * @param connection kết nối đến cơ sở dữ liệu
      * @since 15/01/2015 HienDM
      */
-    public void beforeAddData(Connection connection) throws Exception {}
-    
+    public void beforeAddData(Connection connection) throws Exception {
+    }
+
     /**
      * Hàm xử lý sau khi add dữ liệu
-     * 
+     *
      * @param connection kết nối đến cơ sở dữ liệu
      * @param id khóa chính dữ liệu
      * @since 15/01/2015 HienDM
      */
-    public void afterAddData(Connection connection, long id) throws Exception {}
-    
+    public void afterAddData(Connection connection, long id) throws Exception {
+    }
+
     /**
      * Hàm xử lý trước khi sửa dữ liệu
-     * 
+     *
      * @param connection kết nối đến cơ sở dữ liệu
      * @param id khóa chính dữ liệu
      * @since 15/01/2015 HienDM
      */
-    public void beforeEditData(Connection connection, long id) throws Exception {}
-    
+    public void beforeEditData(Connection connection, long id) throws Exception {
+    }
+
     /**
      * Hàm xử lý sau khi sửa dữ liệu
-     * 
+     *
      * @param connection kết nối đến cơ sở dữ liệu
      * @param id khóa chính dữ liệu
      * @since 15/01/2015 HienDM
      */
-    public void afterEditData(Connection connection, long id) throws Exception {}
-    
+    public void afterEditData(Connection connection, long id) throws Exception {
+    }
+
     /**
      * Hàm xử lý trước khi xóa dữ liệu
-     * 
+     *
      * @param connection kết nối đến cơ sở dữ liệu
      * @param deleteArray danh sách khóa chính của bản ghi cần xóa
      * @since 15/01/2015 HienDM
      */
-    public void beforeDeleteData(Connection connection, Object[] deleteArray) throws Exception {}
-    
+    public void beforeDeleteData(Connection connection, Object[] deleteArray) throws Exception {
+    }
+
     /**
      * Hàm xử lý sau khi xóa dữ liệu
-     * 
+     *
      * @param connection kết nối đến cơ sở dữ liệu
      * @param deleteArray danh sách khóa chính của bản ghi cần xóa
      * @since 15/01/2015 HienDM
      */
-    public void afterDeleteData(Connection connection, Object[] deleteArray) throws Exception {}
-    
+    public void afterDeleteData(Connection connection, Object[] deleteArray) throws Exception {
+    }
+
     /**
      * Hàm khời tạo vùng giao diện nút bấm
      *
@@ -4014,7 +4185,9 @@ public class BaseAction {
      * @return Vùng giao diện các nút bấm
      */
     public HorizontalLayout buildPanelButton() throws Exception {
-        if(panelButton != null) panelButton.removeAllComponents();
+        if (panelButton != null) {
+            panelButton.removeAllComponents();
+        }
         panelButton.setSpacing(true);
 
         buttonFind = new Button(ResourceBundleUtils.getLanguageResource("Button.Find"));
@@ -4029,8 +4202,10 @@ public class BaseAction {
                 }
             }
         });
-        if(isAllowSearch()) panelButton.addComponent(buttonFind);
-        
+        if (isAllowSearch()) {
+            panelButton.addComponent(buttonFind);
+        }
+
         Button buttonAdd = new Button(ResourceBundleUtils.getLanguageResource("Button.Add"));
         buttonAdd.addClickListener(new Button.ClickListener() {
             @Override
@@ -4043,7 +4218,9 @@ public class BaseAction {
                 }
             }
         });
-        if(isAllowAdd()) panelButton.addComponent(buttonAdd);
+        if (isAllowAdd()) {
+            panelButton.addComponent(buttonAdd);
+        }
 
         final Button buttonDetail = new Button(ResourceBundleUtils.getLanguageResource("Button.Detail"));
         buttonDetail.addClickListener(new Button.ClickListener() {
@@ -4057,8 +4234,10 @@ public class BaseAction {
                 }
             }
         });
-        if(isAllowDetail()) panelButton.addComponent(buttonDetail);
-        
+        if (isAllowDetail()) {
+            panelButton.addComponent(buttonDetail);
+        }
+
         final Button buttonEdit = new Button(ResourceBundleUtils.getLanguageResource("Button.Edit"));
         buttonEdit.addClickListener(new Button.ClickListener() {
             @Override
@@ -4071,7 +4250,9 @@ public class BaseAction {
                 }
             }
         });
-        if(isAllowEdit()) panelButton.addComponent(buttonEdit);
+        if (isAllowEdit()) {
+            panelButton.addComponent(buttonEdit);
+        }
 
         Button buttonDelete = new Button(ResourceBundleUtils.getLanguageResource("Button.Delete"));
         buttonDelete.addClickListener(new Button.ClickListener() {
@@ -4082,11 +4263,13 @@ public class BaseAction {
                 } catch (Exception ex) {
                     VaadinUtils.handleException(ex);
                     MainUI.mainLogger.debug("Install error: ", ex);
-                }                
+                }
             }
         });
-        if(isAllowDelete()) panelButton.addComponent(buttonDelete);
-        
+        if (isAllowDelete()) {
+            panelButton.addComponent(buttonDelete);
+        }
+
         Button buttonExport = new Button(ResourceBundleUtils.getLanguageResource("Button.Export"));
         final AdvancedFileDownloader downloaderForLink = new AdvancedFileDownloader();
         downloaderForLink.addAdvancedDownloaderListener(new AdvancedDownloaderListener() {
@@ -4097,53 +4280,56 @@ public class BaseAction {
                 } catch (Exception ex) {
                     VaadinUtils.handleException(ex);
                     MainUI.mainLogger.debug("Install error: ", ex);
-                } 
+                }
             }
-        });        
+        });
         downloaderForLink.extend(buttonExport);
-        if(isAllowExport()) panelButton.addComponent(buttonExport);
-        
-        if(lstButton != null && !lstButton.isEmpty()) {
+        if (isAllowExport()) {
+            panelButton.addComponent(buttonExport);
+        }
+
+        if (lstButton != null && !lstButton.isEmpty()) {
             for (int i = 0; i < lstButton.size(); i++) {
                 panelButton.addComponent(lstButton.get(i));
             }
         }
-        
+
         buttonFind.setStyleName(Reindeer.BUTTON_DEFAULT);
         buttonFind.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         return panelButton;
     }
-    
+
     public void addButton(Button button) {
         lstButton.add(button);
     }
-    
+
     /**
      * Hàm kiểm tra dữ liệu đầu vào có hợp lệ hay không
      *
      * @since 07/12/2014 HienDM
      * @return true: hợp lệ, false: không hợp lệ
-     */    
-    public boolean validateAdd() throws Exception{
+     */
+    public boolean validateAdd() throws Exception {
         return true;
     }
-    
+
     /**
      * Hàm kiểm tra dữ liệu đầu vào có hợp lệ hay không
      *
      * @since 07/12/2014 HienDM
      * @return true: hợp lệ, false: không hợp lệ
-     */    
-    public boolean validateEdit(long id) throws Exception{
+     */
+    public boolean validateEdit(long id) throws Exception {
         return true;
     }
-    
+
     /**
      * Hàm xóa lỗi trên giao diện theo list
+     *
      * @param lstComp list component truyền vào
      * @since 15/10/2014 HienDM
      */
-    public void clearErrorList(List<List> lstComp) throws Exception{
+    public void clearErrorList(List<List> lstComp) throws Exception {
         for (int i = 0; i < lstComp.size(); i++) {
             if (lstComp.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
                 ((MultiUploadField) lstComp.get(i).get(INT_COMPONENT)).setComponentError(null);
@@ -4154,7 +4340,7 @@ public class BaseAction {
             }
         }
     }
-    
+
     /**
      * Hàm xóa lỗi trên giao diện
      *
@@ -4164,9 +4350,9 @@ public class BaseAction {
         clearErrorList(lstComponent);
         for (int i = 0; i < lstComponentMulti.size(); i++) {
             ((Table) lstComponentMulti.get(i).get(INT_MULTI_TABLE)).setComponentError(null);
-            
+
             List<List> lstAttach = (List<List>) lstComponentMulti.get(i).get(INT_MULTI_ATTACH);
-            if(lstAttach != null && !lstAttach.isEmpty()) {
+            if (lstAttach != null && !lstAttach.isEmpty()) {
                 Table attachTable = (Table) lstComponentMulti.get(i).get(INT_MULTI_TABLE);
                 Object[] arrayIdAttach = attachTable.getItemIds().toArray();
                 for (int m = 0; m < lstAttach.size(); m++) { // danh sách các cột
@@ -4183,7 +4369,7 @@ public class BaseAction {
         }
         clearErrorList(lstCustomizeComponent);
     }
-    
+
     /**
      * Hàm kiểm tra dữ liệu đầu vào có hợp lệ hay không
      *
@@ -4194,7 +4380,7 @@ public class BaseAction {
     public boolean validateInput(String actionType) throws Exception {
         clearError();
         boolean check = true;
-        if(!validateInput(actionType, lstComponent)) {
+        if (!validateInput(actionType, lstComponent)) {
             check = false;
         }
         for (int i = 0; i < lstComponentMulti.size(); i++) {
@@ -4207,17 +4393,17 @@ public class BaseAction {
                 }
             }
             List<List> lstAttach = (List<List>) lstComponentMulti.get(i).get(INT_MULTI_ATTACH);
-            if(lstAttach != null && !lstAttach.isEmpty()) {
-                Table attachTable = (Table)lstComponentMulti.get(i).get(INT_MULTI_TABLE);
+            if (lstAttach != null && !lstAttach.isEmpty()) {
+                Table attachTable = (Table) lstComponentMulti.get(i).get(INT_MULTI_TABLE);
                 Object[] arrayIdAttach = attachTable.getItemIds().toArray();
-                for(int m = 0; m < lstAttach.size(); m++) { // danh sách các cột
+                for (int m = 0; m < lstAttach.size(); m++) { // danh sách các cột
                     List lstCompInColumn = new ArrayList();
-                    for(int n = 0; n < arrayIdAttach.length; n++) { // danh sách các phần tử trong cột
-                        ArrayList lstCell = (ArrayList)((ArrayList)lstAttach.get(m)).clone();
+                    for (int n = 0; n < arrayIdAttach.length; n++) { // danh sách các phần tử trong cột
+                        ArrayList lstCell = (ArrayList) ((ArrayList) lstAttach.get(m)).clone();
                         Item itemAttach = attachTable.getItem(arrayIdAttach[n]);
-                        HorizontalLayout txtLayout = (HorizontalLayout)itemAttach.getItemProperty(
-                                ((Label)lstCell.get(INT_LABEL)).getValue()).getValue();
-                        TextField txt = (TextField)txtLayout.getComponent(0);
+                        HorizontalLayout txtLayout = (HorizontalLayout) itemAttach.getItemProperty(
+                                ((Label) lstCell.get(INT_LABEL)).getValue()).getValue();
+                        TextField txt = (TextField) txtLayout.getComponent(0);
                         txt.setStyleName("scaleShort");
                         lstCell.set(INT_COMPONENT, txt);
                         lstCompInColumn.add(lstCell);
@@ -4228,7 +4414,7 @@ public class BaseAction {
                 }
             }
         }
-        if(!validateInput(actionType, lstCustomizeComponent)) {
+        if (!validateInput(actionType, lstCustomizeComponent)) {
             check = false;
         }
         if (actionType.equals("add")) {
@@ -4246,24 +4432,24 @@ public class BaseAction {
         }
         return check;
     }
-    
+
     /**
      * Hàm kiểm tra dữ liệu đầu vào có hợp lệ hay không
      *
      * @since 07/12/2014 HienDM
      * @param actionType kiểu tác động insert hay update
      * @return true: hợp lệ, false: không hợp lệ
-     */    
+     */
     private boolean validateInput(String actionType, List<List> lstComp) throws Exception {
         boolean check = true;
-        Object idvalue = ((AbstractField)lstComponent.get(idField).get(INT_COMPONENT)).getValue();
-        for(int i = 0; i < lstComp.size(); i++) {
+        Object idvalue = ((AbstractField) lstComponent.get(idField).get(INT_COMPONENT)).getValue();
+        for (int i = 0; i < lstComp.size(); i++) {
             // Thiet lap default value tai man hinh them moi
             if (lstComp.get(i).size() > INT_VISIBLE_ADD && lstComp.get(i).get(INT_VISIBLE_ADD).equals(false)
                     && !(idvalue != null && !idvalue.toString().isEmpty())) {
                 if (lstComp.get(i).get(INT_COMPONENT) instanceof AbstractField) {
                     if (lstComp.get(i).get(INT_COMPONENT) instanceof CheckBox) {
-                        if((boolean) lstComp.get(i).get(INT_CHECKBOX_DEFAULT)) {
+                        if ((boolean) lstComp.get(i).get(INT_CHECKBOX_DEFAULT)) {
                             ((CheckBox) lstComp.get(i).get(INT_COMPONENT)).setValue(true);
                         } else {
                             ((CheckBox) lstComp.get(i).get(INT_COMPONENT)).setValue(false);
@@ -4274,64 +4460,64 @@ public class BaseAction {
                     }
                 }
             }
-            if(ResourceBundleUtils.getConfigureResource("strongPassword") != null &&
-                    ResourceBundleUtils.getConfigureResource("strongPassword").equals("true")) {
-                if(lstComp.get(i).get(INT_COMPONENT) instanceof PasswordField && (boolean)lstComp.get(i).get(INT_IS_PASSWORD)) {
-                    String passValue = ((PasswordField)lstComp.get(i).get(INT_COMPONENT)).getValue();
-                    if(passValue != null && !passValue.isEmpty()) {
+            if (ResourceBundleUtils.getConfigureResource("strongPassword") != null
+                    && ResourceBundleUtils.getConfigureResource("strongPassword").equals("true")) {
+                if (lstComp.get(i).get(INT_COMPONENT) instanceof PasswordField && (boolean) lstComp.get(i).get(INT_IS_PASSWORD)) {
+                    String passValue = ((PasswordField) lstComp.get(i).get(INT_COMPONENT)).getValue();
+                    if (passValue != null && !passValue.isEmpty()) {
                         // Kiểm tra mật khẩu mạnh
                         String passwordCondition = "((?=.*\\d)(?=.*[a-z])(?=.*[@#$%]).{8,200})";
                         Pattern pattern = Pattern.compile(passwordCondition);
                         Matcher matcher = pattern.matcher(passValue);
-                        if(!matcher.matches()) {
-                            ((PasswordField)lstComp.get(i).get(INT_COMPONENT)).setComponentError(
+                        if (!matcher.matches()) {
+                            ((PasswordField) lstComp.get(i).get(INT_COMPONENT)).setComponentError(
                                     new UserError(ResourceBundleUtils.getLanguageResource("Common.Error.StrongPassword")));
                             check = false;
                         }
                     }
                 }
             }
-            if(lstComp.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
-                MultiUploadField uf = (MultiUploadField)lstComp.get(i).get(INT_COMPONENT);
+            if (lstComp.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
+                MultiUploadField uf = (MultiUploadField) lstComp.get(i).get(INT_COMPONENT);
                 if ((boolean) lstComp.get(i).get(INT_MANDATORY)) {
-                    if(uf.lstDownloadLink == null || uf.lstDownloadLink.isEmpty()) {
+                    if (uf.lstDownloadLink == null || uf.lstDownloadLink.isEmpty()) {
                         uf.setComponentError(new UserError(
                                 "[" + ((Label) lstComp.get(i).get(INT_LABEL)).getValue() + "] "
                                 + ResourceBundleUtils.getLanguageResource("Common.Error.IsRequired")));
                         check = false;
                     }
-                }                
-            } else if(lstComp.get(i).get(INT_COMPONENT) instanceof UploadField) {
-                UploadField uf = (UploadField)lstComp.get(i).get(INT_COMPONENT);
+                }
+            } else if (lstComp.get(i).get(INT_COMPONENT) instanceof UploadField) {
+                UploadField uf = (UploadField) lstComp.get(i).get(INT_COMPONENT);
                 String fileName = uf.getLastFileName();
-                if(fileName != null) {
-                    if(!FileUtils.checkSafeFileName(fileName)) {
+                if (fileName != null) {
+                    if (!FileUtils.checkSafeFileName(fileName)) {
                         uf.setComponentError(new UserError(ResourceBundleUtils.
                                 getLanguageResource("Common.Error.FileInvalid")));
                         check = false;
                     }
-                    if(!FileUtils.isAllowedType(fileName,
+                    if (!FileUtils.isAllowedType(fileName,
                             ResourceBundleUtils.getConfigureResource("FileAllowList"))) {
                         uf.setComponentError(new UserError(
-                                ResourceBundleUtils.getLanguageResource("Common.Error.FileFormat") + " (" +
-                                ResourceBundleUtils.getConfigureResource("FileAllowList") + ")"));
+                                ResourceBundleUtils.getLanguageResource("Common.Error.FileFormat") + " ("
+                                + ResourceBundleUtils.getConfigureResource("FileAllowList") + ")"));
                         check = false;
                     }
-                } else if((boolean)lstComp.get(i).get(INT_MANDATORY)) {
+                } else if ((boolean) lstComp.get(i).get(INT_MANDATORY)) {
                     uf.setComponentError(new UserError(
                             "[" + ((Label) lstComp.get(i).get(INT_LABEL)).getValue() + "] "
                             + ResourceBundleUtils.getLanguageResource("Common.Error.IsRequired")));
-                    check = false;                    
+                    check = false;
                 }
-            } else if(!lstComp.get(i).get(INT_DB_FIELD_NAME).toString().toLowerCase().equals(idColumnName)) {
-                AbstractField component = (AbstractField)lstComp.get(i).get(INT_COMPONENT);
-                if(!(actionType.equals("edit") && (component instanceof PasswordField))) {
-                    if(component.getValue() != null && !component.getValue().toString().trim().equals("")) {                        
+            } else if (!lstComp.get(i).get(INT_DB_FIELD_NAME).toString().toLowerCase().equals(idColumnName)) {
+                AbstractField component = (AbstractField) lstComp.get(i).get(INT_COMPONENT);
+                if (!(actionType.equals("edit") && (component instanceof PasswordField))) {
+                    if (component.getValue() != null && !component.getValue().toString().trim().equals("")) {
                         // Validate định dạng dữ liệu
-                        if(lstComp.get(i).get(INT_FORMAT) != null) {
+                        if (lstComp.get(i).get(INT_FORMAT) != null) {
                             String format = lstComp.get(i).get(INT_FORMAT).toString().toLowerCase().trim();
                             //validate số nguyên
-                            if(format.contains("long") || format.contains("int")) {
+                            if (format.contains("long") || format.contains("int")) {
                                 Long value = null;
                                 try {
                                     value = Long.parseLong(component.getValue().toString());
@@ -4341,24 +4527,24 @@ public class BaseAction {
                                     check = false;
                                 }
                                 // validate max
-                                if(value != null) {
+                                if (value != null) {
                                     // validate max
-                                    if(format.contains("<=")) {
+                                    if (format.contains("<=")) {
                                         Long maxValue = Long.parseLong(format.split("<=")[1]);
                                         format = format.split("<=")[0];
-                                        if(value > maxValue) {
+                                        if (value > maxValue) {
                                             component.setComponentError(new UserError(
-                                                ResourceBundleUtils.getLanguageResource("Common.ValidateFormat") + 
-                                                        " <= " + maxValue));
+                                                    ResourceBundleUtils.getLanguageResource("Common.ValidateFormat")
+                                                    + " <= " + maxValue));
                                             check = false;
                                         }
-                                    } else if(format.contains("<")) {
+                                    } else if (format.contains("<")) {
                                         Long maxValue = Long.parseLong(format.split("<")[1]);
                                         format = format.split("<")[0];
                                         if (value >= maxValue) {
                                             component.setComponentError(new UserError(
-                                                ResourceBundleUtils.getLanguageResource("Common.ValidateFormat") +
-                                                        " < " + maxValue));
+                                                    ResourceBundleUtils.getLanguageResource("Common.ValidateFormat")
+                                                    + " < " + maxValue));
                                             check = false;
                                         }
                                     }
@@ -4440,8 +4626,8 @@ public class BaseAction {
                                         if (component.getValue().toString().split(".")[1].length() > doubleScale) {
                                             component.setComponentError(new UserError(
                                                     ResourceBundleUtils.getLanguageResource("Common.ValidateFormat")
-                                                    + " < " + doubleScale + " " + 
-                                                    ResourceBundleUtils.getLanguageResource("Common.ValidateDoubleScale")));
+                                                    + " < " + doubleScale + " "
+                                                    + ResourceBundleUtils.getLanguageResource("Common.ValidateDoubleScale")));
                                             check = false;
                                         }
                                     }
@@ -4449,7 +4635,7 @@ public class BaseAction {
                             }
                             if (format.contains("email")) {
                                 EmailValidator ev = new EmailValidator();
-                                if(!ev.validate(component.getValue().toString())) {
+                                if (!ev.validate(component.getValue().toString())) {
                                     component.setComponentError(new UserError(
                                             ResourceBundleUtils.getLanguageResource("Common.ValidateEmailFailed")));
                                     check = false;
@@ -4457,10 +4643,10 @@ public class BaseAction {
                             }
                         }
                         //Validate độ dài dữ liệu
-                        if(!(component instanceof CheckBox)) {
-                            if(!lstComp.get(i).get(INT_DATA_TYPE).equals("date")) {
-                                if (lstComp.get(i).get(INT_DATA_LENGTH) != null &&
-                                        component.getValue().toString().trim().length()
+                        if (!(component instanceof CheckBox)) {
+                            if (!lstComp.get(i).get(INT_DATA_TYPE).equals("date")) {
+                                if (lstComp.get(i).get(INT_DATA_LENGTH) != null
+                                        && component.getValue().toString().trim().length()
                                         > (int) lstComp.get(i).get(INT_DATA_LENGTH)) {
                                     component.setComponentError(new UserError(
                                             "[" + ((Label) lstComp.get(i).get(INT_LABEL)).getValue() + "] "
@@ -4471,25 +4657,23 @@ public class BaseAction {
                                 }
                             }
                         }
-                    } else if((boolean)lstComp.get(i).get(INT_MANDATORY)) {
+                    } else if ((boolean) lstComp.get(i).get(INT_MANDATORY)) {
                         component.setComponentError(new UserError(
-                                "[" + ((Label)lstComp.get(i).get(INT_LABEL)).getValue() + "] " +
-                                        ResourceBundleUtils.getLanguageResource("Common.Error.IsRequired")));
+                                "[" + ((Label) lstComp.get(i).get(INT_LABEL)).getValue() + "] "
+                                + ResourceBundleUtils.getLanguageResource("Common.Error.IsRequired")));
                         check = false;
-                    } else {
-                        if (lstComp.get(i).get(INT_DATA_TYPE).equals("date")) {
-                            if (component.getErrorMessage() != null) {
-                                component.setComponentError(new UserError(
+                    } else if (lstComp.get(i).get(INT_DATA_TYPE).equals("date")) {
+                        if (component.getErrorMessage() != null) {
+                            component.setComponentError(new UserError(
                                     ResourceBundleUtils.getLanguageResource("Common.ValidateDateFailed")));
-                                check = false;
-                            }
-                        }                        
+                            check = false;
+                        }
                     }
                 }
             }
         }
         return check;
-    } 
+    }
 
     /**
      * Hàm khời tạo vùng giao diện nút bấm khi cập nhật
@@ -4498,7 +4682,9 @@ public class BaseAction {
      * @return Vùng giao diện các nút bấm khi cập nhật
      */
     private HorizontalLayout buildUpdatePanelButton() throws Exception {
-        if(panelButton != null) panelButton.removeAllComponents();
+        if (panelButton != null) {
+            panelButton.removeAllComponents();
+        }
         panelButton.setSpacing(true);
 
         buttonUpdate = new Button(ResourceBundleUtils.getLanguageResource("Button.Update"));
@@ -4528,7 +4714,7 @@ public class BaseAction {
             }
         });
         panelButton.addComponent(buttonCancel);
-        
+
         buttonUpdate.setStyleName(Reindeer.BUTTON_DEFAULT);
         buttonUpdate.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         return panelButton;
@@ -4536,39 +4722,40 @@ public class BaseAction {
 
     /**
      * Hàm xóa và cập nhật dữ liệu nhập trên giao diện
+     *
      * @since 15/10/2014 HienDM
      */
     public void updateForm() throws Exception {
         boolean checkFocus = true;
         for (int i = 0; i < lstComponent.size(); i++) {
-            if(lstComponent.get(i).get(INT_COMPONENT) instanceof CheckBox) {
+            if (lstComponent.get(i).get(INT_COMPONENT) instanceof CheckBox) {
                 ((CheckBox) lstComponent.get(i).get(INT_COMPONENT)).setValue(false);
-            } else if(lstComponent.get(i).get(INT_COMPONENT) instanceof ComboBox && 
-                    lstComponent.get(i).size() > INT_COMBOBOX_REFRESH &&
-                    (boolean)lstComponent.get(i).get(INT_COMBOBOX_REFRESH)) {
-                ComboBox component = (ComboBox)lstComponent.get(i).get(INT_COMPONENT);
+            } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof ComboBox
+                    && lstComponent.get(i).size() > INT_COMBOBOX_REFRESH
+                    && (boolean) lstComponent.get(i).get(INT_COMBOBOX_REFRESH)) {
+                ComboBox component = (ComboBox) lstComponent.get(i).get(INT_COMPONENT);
                 component.removeAllItems();
                 Object defaultValue = lstComponent.get(i).get(INT_COMBOBOX_DEFAULTVALUE);
-                if(defaultValue != null) {
-                    String defaultCaption = (String)lstComponent.get(i).get(INT_COMBOBOX_DEFAULTCAPTION);
+                if (defaultValue != null) {
+                    String defaultCaption = (String) lstComponent.get(i).get(INT_COMBOBOX_DEFAULTCAPTION);
                     component.addItem(defaultValue);
                     component.setItemCaption(defaultValue, defaultCaption);
                     component.setValue(defaultValue);
                 }
                 component.setPageLength(30);
                 List<Map> lstData = null;
-                String query = (String)lstComponent.get(i).get(INT_COMBOBOX_QUERY);
-                List lstParameter = (List)lstComponent.get(i).get(INT_COMBOBOX_PARAMETER);
-                boolean isMultiLanguage = (boolean)lstComponent.get(i).get(INT_COMBOBOX_MULTILANGUAGE);
-                String idColumn = (String)lstComponent.get(i).get(INT_COMBOBOX_IDCOLUMN);
-                String nameColumn = (String)lstComponent.get(i).get(INT_COMBOBOX_NAMECOLUMN);
+                String query = (String) lstComponent.get(i).get(INT_COMBOBOX_QUERY);
+                List lstParameter = (List) lstComponent.get(i).get(INT_COMBOBOX_PARAMETER);
+                boolean isMultiLanguage = (boolean) lstComponent.get(i).get(INT_COMBOBOX_MULTILANGUAGE);
+                String idColumn = (String) lstComponent.get(i).get(INT_COMBOBOX_IDCOLUMN);
+                String nameColumn = (String) lstComponent.get(i).get(INT_COMBOBOX_NAMECOLUMN);
                 if (lstParameter != null) {
                     lstData = C3p0Connector.queryData(query, lstParameter);
                 } else {
                     lstData = C3p0Connector.queryData(query);
                 }
-                
-                for(int j = 0; j < lstData.size(); j++) {
+
+                for (int j = 0; j < lstData.size(); j++) {
                     Map rows = lstData.get(j);
                     Object celldata = new Object();
                     celldata = rows.get(idColumn);
@@ -4587,22 +4774,22 @@ public class BaseAction {
                     if (cellCaption != null) {
                         component.setItemCaption(celldata.toString(), cellCaption);
                     }
-                }                
+                }
             } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof PopupDateField) {
                 ((PopupDateField) lstComponent.get(i).get(INT_COMPONENT)).setValue(null);
             } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField) {
                 ((UploadField) lstComponent.get(i).get(INT_COMPONENT)).buildDefaulLayout();
             } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
-                
+
             } else {
                 ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setValue("");
             }
-            if(lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
+            if (lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
                 ((MultiUploadField) lstComponent.get(i).get(INT_COMPONENT)).setComponentError(null);
-            } else if(lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField) {
+            } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField) {
                 ((UploadField) lstComponent.get(i).get(INT_COMPONENT)).setComponentError(null);
             } else {
-                if(checkFocus) {
+                if (checkFocus) {
                     ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).focus();
                     checkFocus = false;
                 }
@@ -4610,20 +4797,20 @@ public class BaseAction {
             }
         }
         for (int i = 0; i < lstComponentMulti.size(); i++) {
-            if((boolean)lstComponentMulti.get(i).get(INT_MULTI_MANDATORY)) {
-                ((Table)lstComponentMulti.get(i).get(INT_MULTI_TABLE)).setComponentError(null);
-            }            
-        }        
+            if ((boolean) lstComponentMulti.get(i).get(INT_MULTI_MANDATORY)) {
+                ((Table) lstComponentMulti.get(i).get(INT_MULTI_TABLE)).setComponentError(null);
+            }
+        }
     }
-    
+
     /**
      * Hàm xóa dữ liệu nhập theo list
-     * 
+     *
      * @param lstComp List component truyền vào
      * @param checkFocus Có thiết lập focus hay không
      * @since 15/10/2014 HienDM
      */
-    public void clearListComponent(List<List> lstComp, boolean checkFocus) throws Exception{
+    public void clearListComponent(List<List> lstComp, boolean checkFocus) throws Exception {
         for (int i = 0; i < lstComp.size(); i++) {
             if (lstComp.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
                 ((MultiUploadField) lstComp.get(i).get(INT_COMPONENT)).setComponentError(null);
@@ -4659,26 +4846,29 @@ public class BaseAction {
             }
         }
     }
-    
+
     /**
      * Hàm xóa dữ liệu nhập trên giao diện
+     *
      * @since 15/10/2014 HienDM
      */
     public void clearForm() throws Exception {
         clearListComponent(lstComponent, true);
         for (int i = 0; i < lstComponentMulti.size(); i++) {
-            ((Table)lstComponentMulti.get(i).get(INT_MULTI_TABLE)).removeAllItems();
-            if(lstComponentMulti.get(i).get(INT_MULTI_POPUP) != null) {
-                if(((PopupMultiAction)lstComponentMulti.get(i).get(INT_MULTI_POPUP)).storeTable != null)
-               ((PopupMultiAction)lstComponentMulti.get(i).get(INT_MULTI_POPUP)).storeTable.removeAllItems();
+            ((Table) lstComponentMulti.get(i).get(INT_MULTI_TABLE)).removeAllItems();
+            if (lstComponentMulti.get(i).get(INT_MULTI_POPUP) != null) {
+                if (((PopupMultiAction) lstComponentMulti.get(i).get(INT_MULTI_POPUP)).storeTable != null) {
+                    ((PopupMultiAction) lstComponentMulti.get(i).get(INT_MULTI_POPUP)).storeTable.removeAllItems();
+                }
             }
-            ((Table)lstComponentMulti.get(i).get(INT_MULTI_TABLE)).setComponentError(null);
+            ((Table) lstComponentMulti.get(i).get(INT_MULTI_TABLE)).setComponentError(null);
         }
         clearListComponent(lstCustomizeComponent, false);
     }
-    
+
     /**
      * Hàm ẩn những component không dùng để search
+     *
      * @param isHide Ẩn component hay không
      * @param formNotSearch Vùng giao diện cần ẩn đi
      * @since 15/10/2014 HienDM
@@ -4686,7 +4876,7 @@ public class BaseAction {
     private void hideComponentNotUseToSearch(boolean isHide, VerticalLayout formNotSearch) throws Exception {
         formNotSearch.setVisible(!isHide);
     }
-    
+
     /**
      * Hàm kiểm tra dữ liệu tìm kiếm
      *
@@ -4695,22 +4885,23 @@ public class BaseAction {
     private boolean validateSearch() throws Exception {
         boolean check = true;
         boolean check_or = validateSearchAtLeastOneSuccess();
-        for(int i = 0; i < lstComponent.size(); i++) {
-            if(lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField)
+        for (int i = 0; i < lstComponent.size(); i++) {
+            if (lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
                 ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setComponentError(null);
-            else if (lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField)
+            } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField) {
                 ((UploadField) lstComponent.get(i).get(INT_COMPONENT)).setComponentError(null);
-            else if (lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField)
+            } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
                 ((MultiUploadField) lstComponent.get(i).get(INT_COMPONENT)).setComponentError(null);
-            if(!(lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField)) {
-                if(lstComponent.get(i).get(INT_SEARCH_MANDATORY) != null) {
+            }
+            if (!(lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField)) {
+                if (lstComponent.get(i).get(INT_SEARCH_MANDATORY) != null) {
                     String format = lstComponent.get(i).get(INT_SEARCH_MANDATORY).toString();
-                    if(check_or) {
-                        if(format != null && format.contains(":") && format.split(":")[1].toLowerCase().equals("and_mandatory")) {
+                    if (check_or) {
+                        if (format != null && format.contains(":") && format.split(":")[1].toLowerCase().equals("and_mandatory")) {
                             check = validateSearchDefaultValue(i);
                         }
                     } else {
-                        check = validateSearchDefaultValue(i);                   
+                        check = validateSearchDefaultValue(i);
                     }
                 }
             }
@@ -4740,27 +4931,25 @@ public class BaseAction {
                             break;
                         }
                     }
-                } else {
-                    if(lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
-                        AbstractField component = (AbstractField) lstComponent.get(i).get(INT_COMPONENT);
-                        if (component.getValue() != null && !component.getValue().toString().trim().equals("")) {
-                            check_or = true;
-                            break;
-                        }
+                } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
+                    AbstractField component = (AbstractField) lstComponent.get(i).get(INT_COMPONENT);
+                    if (component.getValue() != null && !component.getValue().toString().trim().equals("")) {
+                        check_or = true;
+                        break;
                     }
                 }
             }
         }
         return check_or;
     }
-    
+
     /**
      * Hàm kiểm tra điều kiện tìm kiếm của các component
      *
      * @since 01/03/2014 HienDM
      * @return kiểm tra điều kiện tìm kiếm của các component
      */
-    private boolean validateSearchDefaultValue(int i){
+    private boolean validateSearchDefaultValue(int i) {
         boolean check = true;
         String format = lstComponent.get(i).get(INT_SEARCH_MANDATORY).toString();
         if (format.split(":")[0].toLowerCase().equals("date")) {
@@ -4768,44 +4957,42 @@ public class BaseAction {
             PopupDateField toDate = (PopupDateField) lstComponent.get(i).get(INT_TO_DATE_COMPONENT);
             if (!(fromDate.getValue() != null && !fromDate.getValue().toString().trim().equals(""))) {
                 fromDate.setComponentError(new UserError(
-                        "[" + ((Label) lstComponent.get(i).get(INT_LABEL)).getValue() + "] " + 
-                        ResourceBundleUtils.getLanguageResource("Common.From") + " " +
-                        ResourceBundleUtils.getLanguageResource("Common.Error.IsRequired")));
-                check = false;                
+                        "[" + ((Label) lstComponent.get(i).get(INT_LABEL)).getValue() + "] "
+                        + ResourceBundleUtils.getLanguageResource("Common.From") + " "
+                        + ResourceBundleUtils.getLanguageResource("Common.Error.IsRequired")));
+                check = false;
             } else if (!(toDate.getValue() != null && !toDate.getValue().toString().trim().equals(""))) {
                 toDate.setComponentError(new UserError(
-                        "[" + ((Label) lstComponent.get(i).get(INT_LABEL)).getValue() + "] " + 
-                        ResourceBundleUtils.getLanguageResource("Common.To") + " " +
-                        ResourceBundleUtils.getLanguageResource("Common.Error.IsRequired")));
-                check = false;                
+                        "[" + ((Label) lstComponent.get(i).get(INT_LABEL)).getValue() + "] "
+                        + ResourceBundleUtils.getLanguageResource("Common.To") + " "
+                        + ResourceBundleUtils.getLanguageResource("Common.Error.IsRequired")));
+                check = false;
             } else if (toDate.getValue().getTime() - fromDate.getValue().getTime()
-                        >= Long.parseLong(format.split(":")[2]) * 24l * 3600l * 1000l) {
+                    >= Long.parseLong(format.split(":")[2]) * 24l * 3600l * 1000l) {
                 fromDate.setComponentError(new UserError(
-                        ResourceBundleUtils.getLanguageResource("Common.To") + " - " +
-                        ResourceBundleUtils.getLanguageResource("Common.From") + " < " +
-                        Long.parseLong(format.split(":")[2]) + " " +
-                        ResourceBundleUtils.getLanguageResource("Common.Day")));
+                        ResourceBundleUtils.getLanguageResource("Common.To") + " - "
+                        + ResourceBundleUtils.getLanguageResource("Common.From") + " < "
+                        + Long.parseLong(format.split(":")[2]) + " "
+                        + ResourceBundleUtils.getLanguageResource("Common.Day")));
                 check = false;
             }
-        } else {
-            if(lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
-                AbstractField component = (AbstractField) lstComponent.get(i).get(INT_COMPONENT);
-                if (!(component.getValue() != null && !component.getValue().toString().trim().equals(""))) {
-                    component.setComponentError(new UserError(
-                            "[" + ((Label) lstComponent.get(i).get(INT_LABEL)).getValue() + "] "
-                            + ResourceBundleUtils.getLanguageResource("Common.Error.IsRequired")));
-                    check = false;
-                }
+        } else if (lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
+            AbstractField component = (AbstractField) lstComponent.get(i).get(INT_COMPONENT);
+            if (!(component.getValue() != null && !component.getValue().toString().trim().equals(""))) {
+                component.setComponentError(new UserError(
+                        "[" + ((Label) lstComponent.get(i).get(INT_LABEL)).getValue() + "] "
+                        + ResourceBundleUtils.getLanguageResource("Common.Error.IsRequired")));
+                check = false;
             }
         }
         return check;
     }
-    
+
     /**
      * Hàm tìm kiếm dữ liệu
      *
      * @since 15/10/2014 HienDM
-     */    
+     */
     private void searchNormalData() throws Exception {
         updateData();
         Collection itemIds = table.getItemIds();
@@ -4847,7 +5034,7 @@ public class BaseAction {
                             }
                             SimpleDateFormat formatterTime = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                             Date dateValue = formatter.parse(dataValue.toString());
-                            if(pdfFrom.getValue() != null) {
+                            if (pdfFrom.getValue() != null) {
                                 Date fromValue = new Date();
                                 if (pdfFrom.getResolution().equals(Resolution.DAY)) {
                                     fromValue = formatterTime.parse(formatter.format(pdfFrom.getValue()) + " 00:00:00");
@@ -4855,11 +5042,11 @@ public class BaseAction {
                                     fromValue = new Date(pdfFrom.getValue().getTime());
                                 }
                                 fromValue.setTime(fromValue.getTime() - 1000);
-                                if(dateValue.getTime() <= fromValue.getTime()) {
+                                if (dateValue.getTime() <= fromValue.getTime()) {
                                     lstItemId.add(itemId);
                                 }
                             }
-                            if(pdfTo.getValue() != null) {
+                            if (pdfTo.getValue() != null) {
                                 Date toValue = new Date();
                                 if (pdfFrom.getResolution().equals(Resolution.DAY)) {
                                     toValue = formatterTime.parse(formatter.format(pdfTo.getValue()) + " 23:59:59");
@@ -4867,7 +5054,7 @@ public class BaseAction {
                                     toValue = new Date(pdfTo.getValue().getTime());
                                 }
                                 toValue.setTime(toValue.getTime() + 1000);
-                                if(dateValue.getTime() >= toValue.getTime()) {
+                                if (dateValue.getTime() >= toValue.getTime()) {
                                     lstItemId.add(itemId);
                                 }
                             }
@@ -4878,14 +5065,12 @@ public class BaseAction {
                         if (dataValue != null) {
                             Object componentValue = ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).getValue();
                             if (componentValue != null && !componentValue.toString().trim().equals("")) {
-                                if(lstComponent.get(i).get(INT_DATA_TYPE).equals("string")) {
+                                if (lstComponent.get(i).get(INT_DATA_TYPE).equals("string")) {
                                     if (!dataValue.toString().toLowerCase().trim().contains(componentValue.toString().toLowerCase().trim())) {
                                         lstItemId.add(itemId);
                                     }
-                                } else {
-                                    if (!dataValue.toString().toLowerCase().trim().equals(componentValue.toString().toLowerCase().trim())) {
-                                        lstItemId.add(itemId);
-                                    }
+                                } else if (!dataValue.toString().toLowerCase().trim().equals(componentValue.toString().toLowerCase().trim())) {
+                                    lstItemId.add(itemId);
                                 }
                             }
                         }
@@ -4896,9 +5081,11 @@ public class BaseAction {
         for (int i = 0; i < lstItemId.size(); i++) {
             table.removeItem(lstItemId.get(i));
         }
-        if(hasTreeSearch) searchByTree();
+        if (hasTreeSearch) {
+            searchByTree();
+        }
         // Cập nhật lại số thứ tự
-        if(includeOrder) {
+        if (includeOrder) {
             Object[] arrayItemId = ((java.util.Collection) table.getItemIds()).toArray();
             int countON = 0;
             for (int i = 0; i < arrayItemId.length; i++) {
@@ -4907,24 +5094,24 @@ public class BaseAction {
                 item.getItemProperty(ResourceBundleUtils.getLanguageResource("Common.Order")).setValue(countON);
             }
         }
-        if(tableType == INT_PAGED_TABLE) {
-            ((PagedTable)table).updateControl();
-            ((PagedTable)table).setCurrentPage(1);
+        if (tableType == INT_PAGED_TABLE) {
+            ((PagedTable) table).updateControl();
+            ((PagedTable) table).setCurrentPage(1);
         }
     }
-    
+
     /**
      * Hàm tìm kiếm dữ liệu theo tree
      *
      * @since 15/10/2014 HienDM
      */
     private void searchByTree() throws Exception {
-        if(!treeSelectedId.equals(rootId)) {
+        if (!treeSelectedId.equals(rootId)) {
             String tableColumnConnectTree = "";
-            for(int i = 0; i < lstComponent.size(); i++) {
-                if(lstComponent.get(i).get(INT_DB_FIELD_NAME).toString().equals(
+            for (int i = 0; i < lstComponent.size(); i++) {
+                if (lstComponent.get(i).get(INT_DB_FIELD_NAME).toString().equals(
                         columnConnectTree)) {
-                    tableColumnConnectTree = ((Label)lstComponent.get(i).get(INT_LABEL)).getValue();
+                    tableColumnConnectTree = ((Label) lstComponent.get(i).get(INT_LABEL)).getValue();
                     break;
                 }
             }
@@ -4932,43 +5119,40 @@ public class BaseAction {
             List lstItemId = new ArrayList();
             for (Object itemId : itemIds) {
                 String groupId = "";
-                if(columnConnectTree.equals(idColumnName)) {
+                if (columnConnectTree.equals(idColumnName)) {
                     groupId = itemId.toString();
                 } else {
                     Item data = table.getItem(itemId);
                     ComboboxItem cboItem = (ComboboxItem) data.getItemProperty(
-                                tableColumnConnectTree).getValue();
-                    if(cboItem != null)
+                            tableColumnConnectTree).getValue();
+                    if (cboItem != null) {
                         groupId = cboItem.getValue().toString();
-                    else
+                    } else {
                         groupId = "";
+                    }
                 }
                 if (isRecursiveTreeSearch()) {
                     if (!checkAncestor(groupId, treeSelectedId)) {
                         lstItemId.add(itemId);
                     }
-                } else {
-                    if(columnConnectTree.equals(idColumnName)) {
-                        if (!treeSearch.getParent(groupId).equals(treeSelectedId)) {
-                            lstItemId.add(itemId);
-                        }
-                    } else {
-                        if (!groupId.equals(treeSelectedId)) {
-                            lstItemId.add(itemId);
-                        }
+                } else if (columnConnectTree.equals(idColumnName)) {
+                    if (!treeSearch.getParent(groupId).equals(treeSelectedId)) {
+                        lstItemId.add(itemId);
                     }
+                } else if (!groupId.equals(treeSelectedId)) {
+                    lstItemId.add(itemId);
                 }
             }
             for (int i = 0; i < lstItemId.size(); i++) {
                 table.removeItem(lstItemId.get(i));
             }
         }
-        if(tableType == INT_PAGED_TABLE) {
-            ((PagedTable)table).updateControl();
-            ((PagedTable)table).setCurrentPage(1);
+        if (tableType == INT_PAGED_TABLE) {
+            ((PagedTable) table).updateControl();
+            ((PagedTable) table).setCurrentPage(1);
         }
     }
-    
+
     /**
      * Hàm kiểm tra tree xem itemId có tổ tiển là compareId hay không
      *
@@ -4976,19 +5160,23 @@ public class BaseAction {
      * @param itemId id con
      * @param compareId id tổ tiên
      * @return là tổ tiên hay không
-     */     
+     */
     private boolean checkAncestor(Object itemId, Object compareId) {
-        if(itemId.toString().equals(compareId)) return true;
-        if(!itemId.toString().equals(rootId)) {
-            if(treeSearch.getParent(itemId) != null) {
-                if(treeSearch.getParent(itemId).toString().equals(compareId.toString()))
+        if (itemId.toString().equals(compareId)) {
+            return true;
+        }
+        if (!itemId.toString().equals(rootId)) {
+            if (treeSearch.getParent(itemId) != null) {
+                if (treeSearch.getParent(itemId).toString().equals(compareId.toString())) {
                     return true;
-                else return checkAncestor(treeSearch.getParent(itemId), compareId);
+                } else {
+                    return checkAncestor(treeSearch.getParent(itemId), compareId);
+                }
             }
         }
         return false;
-    }   
-    
+    }
+
     /**
      * Hàm khởi tạo giao diện dữ liệu
      *
@@ -4998,7 +5186,7 @@ public class BaseAction {
     public VerticalLayout buildDataPanel() throws Exception {
         return buildNormalDataPanel();
     }
-    
+
     /**
      * Hàm khởi tạo giao diện vùng dữ liệu
      *
@@ -5007,9 +5195,11 @@ public class BaseAction {
      */
     public VerticalLayout buildNormalDataPanel() throws Exception {
         VerticalLayout dataPanel = new VerticalLayout();
-        updateData();        
+        updateData();
         dataPanel.addComponent(table);
-        if(tableType == INT_PAGED_TABLE) dataPanel.addComponent(((PagedTable)table).createControls());
+        if (tableType == INT_PAGED_TABLE) {
+            dataPanel.addComponent(((PagedTable) table).createControls());
+        }
         return dataPanel;
     }
 
@@ -5017,7 +5207,7 @@ public class BaseAction {
      * Hàm cập nhật lại dữ liệu table
      *
      * @since 15/10/2014 HienDM
-     */    
+     */
     private void updateData() throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Khởi tạo giao diện bảng và truy vấn dữ liệu">
         table.removeAllItems();
@@ -5065,8 +5255,9 @@ public class BaseAction {
 
         BaseDAO baseDao = new BaseDAO();
         List<Map> lstData = new ArrayList();
-        if(ResourceBundleUtils.getConfigureResource("alwaysRefreshData").equals("true"))
+        if (ResourceBundleUtils.getConfigureResource("alwaysRefreshData").equals("true")) {
             isChangeDefaultSearch = true;
+        }
         if (isChangeDefaultSearch) {
             isChangeDefaultSearch = false;
             if (tableQuery.isEmpty()) {
@@ -5076,21 +5267,19 @@ public class BaseAction {
                     Map row = new HashMap(lstData.get(i));
                     lstTableData.add(row);
                 }
+            } else if (tableQueryParameter.isEmpty()) {
+                lstData = C3p0Connector.queryData(tableQuery);
+                lstTableData.clear();
+                for (int i = 0; i < lstData.size(); i++) {
+                    Map row = new HashMap(lstData.get(i));
+                    lstTableData.add(row);
+                }
             } else {
-                if (tableQueryParameter.isEmpty()) {
-                    lstData = C3p0Connector.queryData(tableQuery);
-                    lstTableData.clear();
-                    for (int i = 0; i < lstData.size(); i++) {
-                        Map row = new HashMap(lstData.get(i));
-                        lstTableData.add(row);
-                    }
-                } else {
-                    lstData = C3p0Connector.queryData(tableQuery, tableQueryParameter);
-                    lstTableData.clear();
-                    for (int i = 0; i < lstData.size(); i++) {
-                        Map row = new HashMap(lstData.get(i));
-                        lstTableData.add(row);
-                    }
+                lstData = C3p0Connector.queryData(tableQuery, tableQueryParameter);
+                lstTableData.clear();
+                for (int i = 0; i < lstData.size(); i++) {
+                    Map row = new HashMap(lstData.get(i));
+                    lstTableData.add(row);
                 }
             }
         } else {
@@ -5102,18 +5291,18 @@ public class BaseAction {
         // </editor-fold>
 
         buildTable(lstData);
-        if(tableType == INT_PAGED_TABLE) {
-            ((PagedTable)table).updateControl();
-            ((PagedTable)table).setCurrentPage(1);
+        if (tableType == INT_PAGED_TABLE) {
+            ((PagedTable) table).updateControl();
+            ((PagedTable) table).setCurrentPage(1);
         }
     }
-    
+
     /**
      * Hàm cập nhật lại dữ liệu table có truy xuất dữ liệu database
      *
      * @since 15/10/2014 HienDM
-     */ 
-    public void updateDataRefreshData() throws Exception{
+     */
+    public void updateDataRefreshData() throws Exception {
         refreshAlready = true;
         // Đẩy dữ liệu vào form để tìm kiếm theo điều kiện cũ
         for (int i = 0; i < lstComponent.size(); i++) {
@@ -5121,10 +5310,10 @@ public class BaseAction {
                 if (lstComponent.get(i).get(INT_SEARCH_MANDATORY) != null) {
                     if (lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(
                             lstMandatorySearchValue.get(j).get(0))) {
-                        if (!(lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField || 
-                                lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField)) {
-                            ((AbstractField)lstComponent.get(i).get(INT_COMPONENT)).setValue(
-                                    ((List)lstMandatorySearchValue.get(j).get(1)).get(0));
+                        if (!(lstComponent.get(i).get(INT_COMPONENT) instanceof UploadField
+                                || lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField)) {
+                            ((AbstractField) lstComponent.get(i).get(INT_COMPONENT)).setValue(
+                                    ((List) lstMandatorySearchValue.get(j).get(1)).get(0));
                         }
                     }
                 }
@@ -5135,6 +5324,7 @@ public class BaseAction {
         //Xóa dữ liệu sau khi cập nhật table
         clearForm();
     }
+
     /**
      * Hàm đẩy dữ liệu vào table
      *
@@ -5154,13 +5344,13 @@ public class BaseAction {
         if (includeOrder) {
             firstColumn = 1;
         }
-        
+
         for (int j = 0; j < lstRows.size(); j++) {
             Map lstData = new HashMap();
-            if (sort) {            
-                lstData = (Map)(((List<List>)lstRows).get(j).get(1));
+            if (sort) {
+                lstData = (Map) (((List<List>) lstRows).get(j).get(1));
             } else {
-                lstData = ((List<Map>)lstRows).get(j);
+                lstData = ((List<Map>) lstRows).get(j);
             }
             count++;
             // Cập nhật cha con
@@ -5178,36 +5368,47 @@ public class BaseAction {
                 if (lstWithoutID.get(i).get(INT_DATA_TYPE).equals("boolean")) {
                     if (lstWithoutID.get(i).get(INT_COMPONENT) instanceof ComboBox) {
                         Object celldata = lstData.get(lstWithoutID.get(i).get(INT_DB_FIELD_NAME));
-                        String cellCaption = "";                        
+                        String cellCaption = "";
                         if ((lstWithoutID.get(i).size() > BaseAction.INT_POPUP_BUTTON)
                                 && (lstWithoutID.get(i).get(BaseAction.INT_POPUP_BUTTON) instanceof Button)) {
                             String aliasTableName = lstWithoutID.get(i).get(BaseAction.INT_COMBOBOX_TABLENAME).toString();
                             String aliasDbFieldName = lstWithoutID.get(i).get(BaseAction.INT_DB_FIELD_NAME).toString();
-                            if (aliasTableName.length() > 10) aliasTableName = aliasTableName.substring(0, 10);
-                            if (aliasDbFieldName.length() > 10) aliasDbFieldName = aliasDbFieldName.substring(0, 10);
+                            if (aliasTableName.length() > 10) {
+                                aliasTableName = aliasTableName.substring(0, 10);
+                            }
+                            if (aliasDbFieldName.length() > 10) {
+                                aliasDbFieldName = aliasDbFieldName.substring(0, 10);
+                            }
                             Object captionValue = lstData.get(aliasTableName + aliasDbFieldName);
-                            if(captionValue != null) cellCaption = captionValue.toString();
-                        } else {
-                            if(celldata != null) {
-                                if(lstWithoutID.get(i).size() > INT_COMBOBOX_DATA) {
-                                    List<Map> lstComboData = (List)lstWithoutID.get(i).get(INT_COMBOBOX_DATA);
-                                    if(lstComboData != null && !lstComboData.isEmpty()) {
-                                        for(int z = 0; z < lstComboData.size(); z++) {
-                                            if(lstComboData.get(z).get(((List)lstWithoutID.get(i)).get(INT_COMBOBOX_IDCOLUMN)) != null) {
-                                                if(lstComboData.get(z).get(((List)lstWithoutID.get(i)).get(INT_COMBOBOX_IDCOLUMN)).toString().equals(celldata.toString())) {
-                                                    if(lstComboData.get(z).get(((List)lstWithoutID.get(i)).get(INT_COMBOBOX_NAMECOLUMN)) != null)
-                                                        cellCaption = lstComboData.get(z).get(((List)lstWithoutID.get(i)).get(INT_COMBOBOX_NAMECOLUMN)).toString();
-                                                    else cellCaption = "";
+                            if (captionValue != null) {
+                                cellCaption = captionValue.toString();
+                            }
+                        } else if (celldata != null) {
+                            if (lstWithoutID.get(i).size() > INT_COMBOBOX_DATA) {
+                                List<Map> lstComboData = (List) lstWithoutID.get(i).get(INT_COMBOBOX_DATA);
+                                if (lstComboData != null && !lstComboData.isEmpty()) {
+                                    for (int z = 0; z < lstComboData.size(); z++) {
+                                        if (lstComboData.get(z).get(((List) lstWithoutID.get(i)).get(INT_COMBOBOX_IDCOLUMN)) != null) {
+                                            if (lstComboData.get(z).get(((List) lstWithoutID.get(i)).get(INT_COMBOBOX_IDCOLUMN)).toString().equals(celldata.toString())) {
+                                                if (lstComboData.get(z).get(((List) lstWithoutID.get(i)).get(INT_COMBOBOX_NAMECOLUMN)) != null) {
+                                                    cellCaption = lstComboData.get(z).get(((List) lstWithoutID.get(i)).get(INT_COMBOBOX_NAMECOLUMN)).toString();
+                                                } else {
+                                                    cellCaption = "";
                                                 }
                                             }
                                         }
                                     }
-                                } else {
-                                    ComboBox cbo = (ComboBox) lstWithoutID.get(i).get(INT_COMPONENT);
-                                    if(celldata != null) cellCaption = cbo.getItemCaption(celldata.toString());
-                                    else cellCaption = "";
                                 }
-                            } else cellCaption = "";
+                            } else {
+                                ComboBox cbo = (ComboBox) lstWithoutID.get(i).get(INT_COMPONENT);
+                                if (celldata != null) {
+                                    cellCaption = cbo.getItemCaption(celldata.toString());
+                                } else {
+                                    cellCaption = "";
+                                }
+                            }
+                        } else {
+                            cellCaption = "";
                         }
                         ComboboxItem cboItem = new ComboboxItem(celldata.toString(), cellCaption);
                         if (celldata != null) {
@@ -5246,31 +5447,42 @@ public class BaseAction {
                                 && (lstWithoutID.get(i).get(BaseAction.INT_POPUP_BUTTON) instanceof Button)) {
                             String aliasTableName = lstWithoutID.get(i).get(BaseAction.INT_COMBOBOX_TABLENAME).toString();
                             String aliasDbFieldName = lstWithoutID.get(i).get(BaseAction.INT_DB_FIELD_NAME).toString();
-                            if (aliasTableName.length() > 10) aliasTableName = aliasTableName.substring(0, 10);
-                            if (aliasDbFieldName.length() > 10) aliasDbFieldName = aliasDbFieldName.substring(0, 10);
+                            if (aliasTableName.length() > 10) {
+                                aliasTableName = aliasTableName.substring(0, 10);
+                            }
+                            if (aliasDbFieldName.length() > 10) {
+                                aliasDbFieldName = aliasDbFieldName.substring(0, 10);
+                            }
                             Object captionValue = lstData.get(aliasTableName + aliasDbFieldName);
-                            if(captionValue != null) cellCaption = captionValue.toString();
-                        } else {
-                            if(celldata != null) {
-                                if(lstWithoutID.get(i).size() > INT_COMBOBOX_DATA) {
-                                    List<Map> lstComboData = (List)lstWithoutID.get(i).get(INT_COMBOBOX_DATA);
-                                    if(lstComboData != null && !lstComboData.isEmpty()) {
-                                        for(int z = 0; z < lstComboData.size(); z++) {
-                                            if(lstComboData.get(z).get(((List)lstWithoutID.get(i)).get(INT_COMBOBOX_IDCOLUMN)) != null) {
-                                                if(lstComboData.get(z).get(((List)lstWithoutID.get(i)).get(INT_COMBOBOX_IDCOLUMN)).toString().equals(celldata.toString())) {
-                                                    if(lstComboData.get(z).get(((List)lstWithoutID.get(i)).get(INT_COMBOBOX_NAMECOLUMN)) != null)
-                                                        cellCaption = lstComboData.get(z).get(((List)lstWithoutID.get(i)).get(INT_COMBOBOX_NAMECOLUMN)).toString();
-                                                    else cellCaption = "";
+                            if (captionValue != null) {
+                                cellCaption = captionValue.toString();
+                            }
+                        } else if (celldata != null) {
+                            if (lstWithoutID.get(i).size() > INT_COMBOBOX_DATA) {
+                                List<Map> lstComboData = (List) lstWithoutID.get(i).get(INT_COMBOBOX_DATA);
+                                if (lstComboData != null && !lstComboData.isEmpty()) {
+                                    for (int z = 0; z < lstComboData.size(); z++) {
+                                        if (lstComboData.get(z).get(((List) lstWithoutID.get(i)).get(INT_COMBOBOX_IDCOLUMN)) != null) {
+                                            if (lstComboData.get(z).get(((List) lstWithoutID.get(i)).get(INT_COMBOBOX_IDCOLUMN)).toString().equals(celldata.toString())) {
+                                                if (lstComboData.get(z).get(((List) lstWithoutID.get(i)).get(INT_COMBOBOX_NAMECOLUMN)) != null) {
+                                                    cellCaption = lstComboData.get(z).get(((List) lstWithoutID.get(i)).get(INT_COMBOBOX_NAMECOLUMN)).toString();
+                                                } else {
+                                                    cellCaption = "";
                                                 }
                                             }
                                         }
                                     }
-                                } else {
-                                    ComboBox cbo = (ComboBox) lstWithoutID.get(i).get(INT_COMPONENT);
-                                    if(celldata != null) cellCaption = cbo.getItemCaption(celldata.toString());
-                                    else cellCaption = "";                                        
                                 }
-                            } else cellCaption = "";
+                            } else {
+                                ComboBox cbo = (ComboBox) lstWithoutID.get(i).get(INT_COMPONENT);
+                                if (celldata != null) {
+                                    cellCaption = cbo.getItemCaption(celldata.toString());
+                                } else {
+                                    cellCaption = "";
+                                }
+                            }
+                        } else {
+                            cellCaption = "";
                         }
                         if (celldata != null) {
                             ComboboxItem cboItem = new ComboboxItem(celldata.toString(), cellCaption);
@@ -5295,31 +5507,42 @@ public class BaseAction {
                                 && (lstWithoutID.get(i).get(BaseAction.INT_POPUP_BUTTON) instanceof Button)) {
                             String aliasTableName = lstWithoutID.get(i).get(BaseAction.INT_COMBOBOX_TABLENAME).toString();
                             String aliasDbFieldName = lstWithoutID.get(i).get(BaseAction.INT_DB_FIELD_NAME).toString();
-                            if (aliasTableName.length() > 10) aliasTableName = aliasTableName.substring(0, 10);
-                            if (aliasDbFieldName.length() > 10) aliasDbFieldName = aliasDbFieldName.substring(0, 10);
+                            if (aliasTableName.length() > 10) {
+                                aliasTableName = aliasTableName.substring(0, 10);
+                            }
+                            if (aliasDbFieldName.length() > 10) {
+                                aliasDbFieldName = aliasDbFieldName.substring(0, 10);
+                            }
                             Object captionValue = lstData.get(aliasTableName + aliasDbFieldName);
-                            if(captionValue != null) cellCaption = captionValue.toString();
-                        } else {
-                            if(celldata != null) {
-                                if(lstWithoutID.get(i).size() > INT_COMBOBOX_DATA) {
-                                    List<Map> lstComboData = (List)lstWithoutID.get(i).get(INT_COMBOBOX_DATA);
-                                    if(lstComboData != null && !lstComboData.isEmpty()) {
-                                        for(int z = 0; z < lstComboData.size(); z++) {
-                                            if(lstComboData.get(z).get(((List)lstWithoutID.get(i)).get(INT_COMBOBOX_IDCOLUMN)) != null) {
-                                                if(lstComboData.get(z).get(((List)lstWithoutID.get(i)).get(INT_COMBOBOX_IDCOLUMN)).toString().equals(celldata.toString())) {
-                                                    if(lstComboData.get(z).get(((List)lstWithoutID.get(i)).get(INT_COMBOBOX_NAMECOLUMN)) != null)
-                                                        cellCaption = lstComboData.get(z).get(((List)lstWithoutID.get(i)).get(INT_COMBOBOX_NAMECOLUMN)).toString();
-                                                    else cellCaption = "";
+                            if (captionValue != null) {
+                                cellCaption = captionValue.toString();
+                            }
+                        } else if (celldata != null) {
+                            if (lstWithoutID.get(i).size() > INT_COMBOBOX_DATA) {
+                                List<Map> lstComboData = (List) lstWithoutID.get(i).get(INT_COMBOBOX_DATA);
+                                if (lstComboData != null && !lstComboData.isEmpty()) {
+                                    for (int z = 0; z < lstComboData.size(); z++) {
+                                        if (lstComboData.get(z).get(((List) lstWithoutID.get(i)).get(INT_COMBOBOX_IDCOLUMN)) != null) {
+                                            if (lstComboData.get(z).get(((List) lstWithoutID.get(i)).get(INT_COMBOBOX_IDCOLUMN)).toString().equals(celldata.toString())) {
+                                                if (lstComboData.get(z).get(((List) lstWithoutID.get(i)).get(INT_COMBOBOX_NAMECOLUMN)) != null) {
+                                                    cellCaption = lstComboData.get(z).get(((List) lstWithoutID.get(i)).get(INT_COMBOBOX_NAMECOLUMN)).toString();
+                                                } else {
+                                                    cellCaption = "";
                                                 }
                                             }
                                         }
                                     }
-                                } else {
-                                    ComboBox cbo = (ComboBox) lstWithoutID.get(i).get(INT_COMPONENT);
-                                    if(celldata != null) cellCaption = cbo.getItemCaption(celldata.toString());
-                                    else cellCaption = "";                                        
                                 }
-                            } else cellCaption = "";
+                            } else {
+                                ComboBox cbo = (ComboBox) lstWithoutID.get(i).get(INT_COMPONENT);
+                                if (celldata != null) {
+                                    cellCaption = cbo.getItemCaption(celldata.toString());
+                                } else {
+                                    cellCaption = "";
+                                }
+                            }
+                        } else {
+                            cellCaption = "";
                         }
                         ComboboxItem cboItem = new ComboboxItem(celldata.toString(), cellCaption);
                         if (celldata != null) {
@@ -5363,26 +5586,28 @@ public class BaseAction {
                     }
                 }
                 if (lstWithoutID.get(i).get(INT_DATA_TYPE).equals("file")) {
-                    if (lstData.get(lstWithoutID.get(i).get(INT_DB_FIELD_NAME)) != null && 
-                            !lstData.get(lstWithoutID.get(i).get(INT_DB_FIELD_NAME)).toString().trim().isEmpty() ) {
+                    if (lstData.get(lstWithoutID.get(i).get(INT_DB_FIELD_NAME)) != null
+                            && !lstData.get(lstWithoutID.get(i).get(INT_DB_FIELD_NAME)).toString().trim().isEmpty()) {
                         DownloadLink downloadLink = new DownloadLink();
                         String fileName = lstData.get(lstWithoutID.get(i).get(INT_DB_FIELD_NAME)).toString();
                         String pattern = Pattern.quote(System.getProperty("file.separator"));
                         String[] splittedFileName = fileName.split(pattern);
-                        if(splittedFileName.length > 1)
+                        if (splittedFileName.length > 1) {
                             fileName = splittedFileName[splittedFileName.length - 1];
-                        else {
+                        } else {
                             splittedFileName = fileName.split("/");
                             fileName = splittedFileName[splittedFileName.length - 1];
                         }
                         fileName = (new String(Base64Utils.decode(FileUtils.extractFileNameNotExt(fileName)))).split("_")[1]
                                 + FileUtils.extractFileExt(fileName);
-                        if(fileName.length() > 30) fileName = fileName.substring(0,25) + "---" + FileUtils.extractFileExt(fileName);
+                        if (fileName.length() > 30) {
+                            fileName = fileName.substring(0, 25) + "---" + FileUtils.extractFileExt(fileName);
+                        }
                         downloadLink.setCaption(fileName);
                         downloadLink.setFilePath(lstData.get(lstWithoutID.get(i).get(INT_DB_FIELD_NAME)).toString());
                         if (downloadLink.getFilePath() != null) {
                             File downloadFile = new File(ResourceBundleUtils.getConfigureResource("FileBaseDirectory")
-                                        + downloadLink.getFilePath());
+                                    + downloadLink.getFilePath());
                             if (!downloadFile.exists()) {
                                 downloadLink.setComponentError(new UserError(ResourceBundleUtils.getLanguageResource("Common.FileNotExist")));
                             }
@@ -5431,7 +5656,7 @@ public class BaseAction {
                 boolean checkAscending = false;
                 lstSortData.add(new ArrayList());
                 for (int i = lstSortData.size() - 2; i >= 0; i--) {
-                    if(lstSortData.get(i).get(0) != null && dataValue != null) {
+                    if (lstSortData.get(i).get(0) != null && dataValue != null) {
                         if (sortAscending) {
                             if (sortColumnType.equals("int")) {
                                 if (Integer.parseInt(dataValue.toString())
@@ -5454,10 +5679,10 @@ public class BaseAction {
                                 } else if (lstSortData.get(i).get(0) instanceof java.util.Date) {
                                     sortDate = (Date) lstSortData.get(i).get(0);
                                 }
-                                if (((Date)dataValue).after(sortDate) || ((Date)dataValue).equals(sortDate)) {
+                                if (((Date) dataValue).after(sortDate) || ((Date) dataValue).equals(sortDate)) {
                                     checkAscending = true;
                                 }
-                            }                        
+                            }
                         } else {
                             if (sortColumnType.equals("int")) {
                                 if (Integer.parseInt(dataValue.toString())
@@ -5473,17 +5698,17 @@ public class BaseAction {
                             }
                             if (sortColumnType.equals("date")) {
                                 Date sortDate = null;
-                                if(lstSortData.get(i).get(0) instanceof java.sql.Timestamp) {
-                                    sortDate = new Date(((java.sql.Timestamp)lstSortData.get(i).get(0)).getTime());
-                                } else if(lstSortData.get(i).get(0) instanceof java.sql.Date) {
-                                    sortDate = new Date(((java.sql.Date)lstSortData.get(i).get(0)).getTime());
-                                } else if(lstSortData.get(i).get(0) instanceof java.util.Date) {
-                                    sortDate = (Date)lstSortData.get(i).get(0);
+                                if (lstSortData.get(i).get(0) instanceof java.sql.Timestamp) {
+                                    sortDate = new Date(((java.sql.Timestamp) lstSortData.get(i).get(0)).getTime());
+                                } else if (lstSortData.get(i).get(0) instanceof java.sql.Date) {
+                                    sortDate = new Date(((java.sql.Date) lstSortData.get(i).get(0)).getTime());
+                                } else if (lstSortData.get(i).get(0) instanceof java.util.Date) {
+                                    sortDate = (Date) lstSortData.get(i).get(0);
                                 }
-                                if (((Date)dataValue).before(sortDate)) {
+                                if (((Date) dataValue).before(sortDate)) {
                                     checkAscending = true;
-                                }                                    
-                            }                        
+                                }
+                            }
                         }
                     }
                     if (checkAscending) {
@@ -5507,7 +5732,7 @@ public class BaseAction {
         }
         return lstSortData;
     }
-    
+
     /**
      * Hàm đẩy dữ liệu vào đối tượng Table
      *
@@ -5516,32 +5741,31 @@ public class BaseAction {
      */
     private void buildTable(List<Map> lstRows) throws Exception {
         List<List> lstParentChild = new ArrayList();
-        if(sortColumnName.isEmpty()) {
+        if (sortColumnName.isEmpty()) {
             // Đẩy dữ liệu vào bảng
             lstParentChild = insertRowToTable(lstRows, false);
-        }
-        else {
+        } else {
             // Sắp xếp dữ liệu
             List lstSortData = sortData(lstRows);
             // Đẩy dữ liệu sau khi sắp xếp vào bảng
             lstParentChild = insertRowToTable(lstSortData, true);
-        }   
-        
+        }
+
         // Tạo tree
         if (tableType == INT_TREE_TABLE) {
-            for(int i = 0; i < lstParentChild.size(); i++) {
-                if(lstParentChild.get(i) != null && lstParentChild.get(i).get(1) != null 
+            for (int i = 0; i < lstParentChild.size(); i++) {
+                if (lstParentChild.get(i) != null && lstParentChild.get(i).get(1) != null
                         && !lstParentChild.get(i).get(1).equals(rootId)) {
-                    ((TreeTable) table).setParent(lstParentChild.get(i).get(0).toString(), 
+                    ((TreeTable) table).setParent(lstParentChild.get(i).get(0).toString(),
                             lstParentChild.get(i).get(1).toString());
                 }
             }
-            for(int i = 0; i < lstParentChild.size(); i++) {
+            for (int i = 0; i < lstParentChild.size(); i++) {
                 ((TreeTable) table).setCollapsed(lstParentChild.get(i).get(0).toString(), false);
             }
         }
     }
-    
+
     /**
      * Hàm thêm tree tìm kiếm vào giao diện nhập
      *
@@ -5550,24 +5774,30 @@ public class BaseAction {
      * @param lstParameter danh sách tham số
      * @param idColumn trường id trong database
      * @param nameColumn trường name trong database
-     * @param idParent trường id của nút cha trong database (Nếu = null thì là cây 1 cấp)
+     * @param idParent trường id của nút cha trong database (Nếu = null thì là
+     * cây 1 cấp)
      * @param rootId trường id của nút gốc
      * @param recursive đệ quy
      * @param columnConnectTree trường dữ liệu kết nối với tree
      * @since 18/11/2014 HienDM
      */
     public void buildTreeSearch(String label, String query, List lstParameter,
-            String idColumn, String nameColumn, String idParent, String rootId, 
+            String idColumn, String nameColumn, String idParent, String rootId,
             boolean recursive, String columnConnectTree
     ) throws Exception {
-        if(idColumn != null) idColumn = idColumn.toLowerCase().trim();
-        if(nameColumn != null) nameColumn = nameColumn.toLowerCase().trim();
-        if(columnConnectTree != null) columnConnectTree = columnConnectTree.toLowerCase().trim();
-        if(idParent != null) {
+        if (idColumn != null) {
+            idColumn = idColumn.toLowerCase().trim();
+        }
+        if (nameColumn != null) {
+            nameColumn = nameColumn.toLowerCase().trim();
+        }
+        if (columnConnectTree != null) {
+            columnConnectTree = columnConnectTree.toLowerCase().trim();
+        }
+        if (idParent != null) {
             idParent = idParent.toLowerCase().trim();
             setRecursiveTreeSearch(recursive);
-        }
-        else {
+        } else {
             setRecursiveTreeSearch(false);
         }
         setHasTreeSearch(true);
@@ -5582,7 +5812,7 @@ public class BaseAction {
         this.rootId = rootId;
         treeSearch.addItem(rootId);
         treeSearch.setItemCaption(rootId, ResourceBundleUtils.getLanguageResource(label));
-        
+
         for (int i = 0; i < lstData.size(); i++) {
             Map rows = lstData.get(i);
             Object celldata = new Object();
@@ -5596,28 +5826,28 @@ public class BaseAction {
 
             String cellCaption = "";
             cellCaption = rows.get(nameColumn.toLowerCase()).toString();
-            
+
             if (cellCaption != null) {
                 treeSearch.setItemCaption(celldata.toString(), cellCaption);
             }
         }
         // build tree panel
-        if(idParent != null) {
-            for(int i=0; i < lstData.size(); i++) {
-                treeSearch.setParent(lstData.get(i).get(idColumn).toString(), 
+        if (idParent != null) {
+            for (int i = 0; i < lstData.size(); i++) {
+                treeSearch.setParent(lstData.get(i).get(idColumn).toString(),
                         lstData.get(i).get(idParent).toString());
             }
         } else {
             for (int i = 0; i < lstData.size(); i++) {
                 treeSearch.setParent(lstData.get(i).get(idColumn).toString(),
                         rootId);
-            }            
+            }
         }
-        
+
         treeSearch.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             public void itemClick(ItemClickEvent event) {
                 try {
-                    if (event.getButton() == ItemClickEvent.BUTTON_LEFT){
+                    if (event.getButton() == ItemClickEvent.BUTTON_LEFT) {
                         setTreeSelectedId(event.getItemId().toString());
                         updateData();
                         searchByTree();
@@ -5628,11 +5858,11 @@ public class BaseAction {
                 }
             }
         });
-        
+
         treeLayout.addComponent(treeSearch);
         treeSearch.expandItem(rootId);
     }
-    
+
     /**
      * Hàm thêm tree tìm kiếm vào giao diện nhập
      *
@@ -5641,23 +5871,29 @@ public class BaseAction {
      * @param lstParameter danh sách tham số
      * @param idColumn trường id trong database
      * @param nameColumn trường name trong database
-     * @param idParent trường id của nút cha trong database (Nếu = null thì là cây 1 cấp)
+     * @param idParent trường id của nút cha trong database (Nếu = null thì là
+     * cây 1 cấp)
      * @param rootId trường id của nút gốc
      * @param whereChildQuery query dữ liệu bảng tham chiếu từ tree
      * @since 29/05/2016 HienDM
      */
     public void buildTreeSearch(String label, String query, List lstParameter,
-            String idColumn, String nameColumn, String idParent, String rootId, 
+            String idColumn, String nameColumn, String idParent, String rootId,
             String whereChildQuery
     ) throws Exception {
-        if(idColumn != null) idColumn = idColumn.toLowerCase().trim();
-        if(nameColumn != null) nameColumn = nameColumn.toLowerCase().trim();
-        if(columnConnectTree != null) columnConnectTree = columnConnectTree.toLowerCase().trim();
-        if(idParent != null) {
+        if (idColumn != null) {
+            idColumn = idColumn.toLowerCase().trim();
+        }
+        if (nameColumn != null) {
+            nameColumn = nameColumn.toLowerCase().trim();
+        }
+        if (columnConnectTree != null) {
+            columnConnectTree = columnConnectTree.toLowerCase().trim();
+        }
+        if (idParent != null) {
             idParent = idParent.toLowerCase().trim();
             setRecursiveTreeSearch(false);
-        }
-        else {
+        } else {
             setRecursiveTreeSearch(false);
         }
         setHasTreeSearch(true);
@@ -5672,7 +5908,7 @@ public class BaseAction {
         this.rootId = rootId;
         treeSearch.addItem(rootId);
         treeSearch.setItemCaption(rootId, ResourceBundleUtils.getLanguageResource(label));
-        
+
         for (int i = 0; i < lstData.size(); i++) {
             Map rows = lstData.get(i);
             Object celldata = new Object();
@@ -5686,28 +5922,28 @@ public class BaseAction {
 
             String cellCaption = "";
             cellCaption = rows.get(nameColumn.toLowerCase()).toString();
-            
+
             if (cellCaption != null) {
                 treeSearch.setItemCaption(celldata.toString(), cellCaption);
             }
         }
         // build tree panel
-        if(idParent != null) {
-            for(int i=0; i < lstData.size(); i++) {
-                treeSearch.setParent(lstData.get(i).get(idColumn).toString(), 
+        if (idParent != null) {
+            for (int i = 0; i < lstData.size(); i++) {
+                treeSearch.setParent(lstData.get(i).get(idColumn).toString(),
                         lstData.get(i).get(idParent).toString());
             }
         } else {
             for (int i = 0; i < lstData.size(); i++) {
                 treeSearch.setParent(lstData.get(i).get(idColumn).toString(),
                         rootId);
-            }            
+            }
         }
-        
+
         treeSearch.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             public void itemClick(ItemClickEvent event) {
                 try {
-                    if (event.getButton() == ItemClickEvent.BUTTON_LEFT){
+                    if (event.getButton() == ItemClickEvent.BUTTON_LEFT) {
                         setTreeSelectedId(event.getItemId().toString());
                         queryWhereCondition = whereChildQuery;
                         queryWhereParameter = new ArrayList();
@@ -5721,50 +5957,56 @@ public class BaseAction {
                 }
             }
         });
-        
+
         treeLayout.addComponent(treeSearch);
         treeSearch.expandItem(rootId);
-    }    
-    
+    }
+
     public AbstractField getComponent(String databaseField) {
         databaseField = databaseField.toLowerCase();
-        for(int i = 0; i < lstComponent.size(); i++) {
-            if(lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(databaseField)) 
-                if(lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField)
+        for (int i = 0; i < lstComponent.size(); i++) {
+            if (lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(databaseField)) {
+                if (lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
                     return (AbstractField) lstComponent.get(i).get(INT_COMPONENT);
+                }
+            }
         }
         return null;
     }
-    
+
     public Label getComponentLabel(String databaseField) {
         databaseField = databaseField.toLowerCase();
-        for(int i = 0; i < lstComponent.size(); i++) {
-            if(lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(databaseField)) 
-                if(lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField)
+        for (int i = 0; i < lstComponent.size(); i++) {
+            if (lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(databaseField)) {
+                if (lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
                     return (Label) lstComponent.get(i).get(INT_LABEL);
+                }
+            }
         }
         return null;
     }
-    
+
     public Table getMultiComponent(String tableName) {
         tableName = tableName.toLowerCase();
-        for(int i = 0; i < lstComponentMulti.size(); i++) {
-            if(lstComponentMulti.get(i).get(INT_MULTI_TABLENAME).equals(tableName)) 
+        for (int i = 0; i < lstComponentMulti.size(); i++) {
+            if (lstComponentMulti.get(i).get(INT_MULTI_TABLENAME).equals(tableName)) {
                 return (Table) lstComponentMulti.get(i).get(INT_MULTI_TABLE);
+            }
         }
         return null;
     }
-    
+
     public Button getMultiComponentButton(String tableName) {
         tableName = tableName.toLowerCase();
-        for(int i = 0; i < lstComponentMulti.size(); i++) {
-            if(lstComponentMulti.get(i).get(INT_MULTI_TABLENAME).equals(tableName)) 
-                return (Button)((VerticalLayout)((Table)lstComponentMulti.get(i).get(INT_MULTI_TABLE)).
+        for (int i = 0; i < lstComponentMulti.size(); i++) {
+            if (lstComponentMulti.get(i).get(INT_MULTI_TABLENAME).equals(tableName)) {
+                return (Button) ((VerticalLayout) ((Table) lstComponentMulti.get(i).get(INT_MULTI_TABLE)).
                         getParent()).getComponent(0);
+            }
         }
         return null;
-    }    
-    
+    }
+
     public Label getMultiComponentLabel(String tableName) {
         tableName = tableName.toLowerCase();
         for (int i = 0; i < lstComponentMulti.size(); i++) {
@@ -5774,15 +6016,75 @@ public class BaseAction {
         }
         return null;
     }
-    
+
     public Object[] getMultiOldId(String tableName) {
         tableName = tableName.toLowerCase();
-        for(int i = 0; i < lstComponentMulti.size(); i++) {
-            if(lstComponentMulti.get(i).get(INT_MULTI_TABLENAME).equals(tableName)) 
-                return (Object[])lstComponentMulti.get(i).get(BaseAction.INT_MULTI_OLDIDS);
+        for (int i = 0; i < lstComponentMulti.size(); i++) {
+            if (lstComponentMulti.get(i).get(INT_MULTI_TABLENAME).equals(tableName)) {
+                return (Object[]) lstComponentMulti.get(i).get(BaseAction.INT_MULTI_OLDIDS);
+            }
         }
         return null;
     }
-    
-}
 
+    /**
+     * Hàm thực hiện nút xóa
+     *
+     * @since 04/06/2016 Thuyettv1
+     */
+    public void buttonPrintContractClick() throws Exception {
+        Object[] printArray = ((java.util.Collection) table.getValue()).toArray();
+        if (printArray != null && printArray.length == 1) {
+            if (checkPermission(printArray)) {
+                ConfirmationDialog.Callback ccbl = new ConfirmationDialog.Callback() {
+                    @Override
+                    public void onDialogResult(String buttonName) {
+                        try {
+                            if (buttonName.equals(ResourceBundleUtils.getLanguageResource("Common.Yes"))) {
+                                BaseDAO baseDao = new BaseDAO();
+                                List<Map> listmap = baseDao.getContractInfo(Integer.valueOf((String) printArray[0]));
+                                if (listmap != null && listmap.size() == 1) {
+                                    Map currMAp = listmap.get(0);
+
+                                    Docx docx = new Docx(ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + "\\"
+                                            + "H4UContractAction\\ContactTemplate.docx");
+                                    docx.setVariablePattern(new VariablePattern("#{", "}"));
+
+// preparing variables
+                                    Variables variables = new Variables();
+                                    for (Object key : currMAp.keySet()) {
+                                        variables.addTextVariable(new TextVariable("#{" + key + "}", currMAp.get(key)+""));
+                                    }
+
+// fill template
+                                    docx.fillTemplate(variables);
+
+// save filled .docx file
+                                    docx.save(ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + "\\"
+                                            + "H4UContractAction\\ContactTemplate1.docx");
+
+                                    Notification.show("Print OK",
+                                            null, Notification.Type.WARNING_MESSAGE);
+                                }
+
+                            }
+                        } catch (Exception ex) {
+
+                            VaadinUtils.handleException(ex);
+                            MainUI.mainLogger.debug("Install error: ", ex);
+                        } finally {
+
+                        }
+                    }
+                };
+                mainUI.addWindow(new ConfirmationDialog(
+                        ResourceBundleUtils.getLanguageResource("Common.Confirm"),
+                        ResourceBundleUtils.getLanguageResource("Common.ConfirmExecute"), ccbl));
+            }
+        } else {
+            Notification.show("Bạn phai chon 1 hợp đồng",
+                    null, Notification.Type.ERROR_MESSAGE);
+        }
+    }
+
+}
