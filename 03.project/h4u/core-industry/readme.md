@@ -13,7 +13,7 @@ Note for Scala fanatics: You can rewrite any part of the application with Scala 
 mvn package jetty:run
 
 ### SBT
-
+aa
 Running Jetty
 
     sbt container:start ~aux-compile
