@@ -5587,3 +5587,421 @@ java.sql.SQLSyntaxErrorException: ORA-00942: table or view does not exist
 2016-05-30 22:14:28 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
 2016-05-30 22:14:28 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
 2016-05-30 22:14:28 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-04 15:19:47 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-04 15:19:47 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-04 15:19:47 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-04 15:19:47 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-04 15:19:47 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-04 15:19:47 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-04 15:19:47 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-04 15:19:47 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-04 15:19:47 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-04 15:19:47 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-04 15:19:47 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-04 15:19:47 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-04 15:19:48 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-04 15:19:48 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h7co16penrrns|1f70a24,name=1hge9fi9h7co16penrrns|1f70a24 registered.
+2016-06-04 15:19:49 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h7co16penrrns|1f70a24,name=1hge9fi9h7co16penrrns|1f70a24 unregistered, in order to be reregistered after update.
+2016-06-04 15:19:49 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h7co16penrrns|1f70a24,name=1hge9fi9h7co16penrrns|1f70a24 registered.
+2016-06-04 15:19:49 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge9fi9h7co16penrrns|1f70a24, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge9fi9h7co16penrrns|1f70a24, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-04 15:19:49 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-04 15:19:49 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-04 15:19:49 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-04 15:19:49 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-04 15:19:49 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-04 15:19:49 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@1029c35 config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-04 15:19:49 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-04 15:19:49 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-04 15:19:49 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-04 15:23:21 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-04 15:23:21 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-04 15:23:21 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-04 15:23:21 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-04 15:23:21 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-04 15:23:21 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-04 15:23:21 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-04 15:23:22 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-04 15:23:22 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-04 15:23:22 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-04 15:23:22 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-04 15:23:22 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-04 15:23:22 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-04 15:23:22 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h7csmgv2ek7x8|1b2615f,name=1hge9fi9h7csmgv2ek7x8|1b2615f registered.
+2016-06-04 15:23:22 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h7csmgv2ek7x8|1b2615f,name=1hge9fi9h7csmgv2ek7x8|1b2615f unregistered, in order to be reregistered after update.
+2016-06-04 15:23:22 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h7csmgv2ek7x8|1b2615f,name=1hge9fi9h7csmgv2ek7x8|1b2615f registered.
+2016-06-04 15:23:22 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge9fi9h7csmgv2ek7x8|1b2615f, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge9fi9h7csmgv2ek7x8|1b2615f, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-04 15:23:22 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-04 15:23:22 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-04 15:23:22 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-04 15:23:22 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-04 15:23:22 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-04 15:23:22 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@1aa5dac config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-04 15:23:22 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-04 15:23:22 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-04 15:23:22 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-04 15:33:26 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-04 15:33:26 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-04 15:33:26 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-04 15:33:26 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-04 15:33:26 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-04 15:33:26 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-04 15:33:26 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-04 15:33:26 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-04 15:33:26 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-04 15:33:26 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-04 15:33:26 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-04 15:33:26 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-04 15:33:27 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-04 15:33:27 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h7d5l0k5ckwp6|1376be1,name=1hge9fi9h7d5l0k5ckwp6|1376be1 registered.
+2016-06-04 15:33:27 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h7d5l0k5ckwp6|1376be1,name=1hge9fi9h7d5l0k5ckwp6|1376be1 unregistered, in order to be reregistered after update.
+2016-06-04 15:33:27 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h7d5l0k5ckwp6|1376be1,name=1hge9fi9h7d5l0k5ckwp6|1376be1 registered.
+2016-06-04 15:33:27 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge9fi9h7d5l0k5ckwp6|1376be1, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge9fi9h7d5l0k5ckwp6|1376be1, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-04 15:33:27 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-04 15:33:27 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-04 15:33:27 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-04 15:33:27 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-04 15:33:27 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-04 15:33:27 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@eb6b6b config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-04 15:33:27 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-04 15:33:27 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-04 15:33:27 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-04 15:54:34 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-04 15:54:34 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-04 15:54:34 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-04 15:54:34 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-04 15:54:34 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-04 15:54:34 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-04 15:54:34 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-04 15:54:34 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-04 15:54:34 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-04 15:54:34 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-04 15:54:34 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-04 15:54:34 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-04 15:54:36 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-04 15:54:36 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h7dwsb11jyc45a|1c48172,name=1hge9fi9h7dwsb11jyc45a|1c48172 registered.
+2016-06-04 15:54:36 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h7dwsb11jyc45a|1c48172,name=1hge9fi9h7dwsb11jyc45a|1c48172 unregistered, in order to be reregistered after update.
+2016-06-04 15:54:36 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h7dwsb11jyc45a|1c48172,name=1hge9fi9h7dwsb11jyc45a|1c48172 registered.
+2016-06-04 15:54:36 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge9fi9h7dwsb11jyc45a|1c48172, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge9fi9h7dwsb11jyc45a|1c48172, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-04 15:54:36 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-04 15:54:36 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-04 15:54:36 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-04 15:54:36 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-04 15:54:36 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-04 15:54:36 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@19e6492 config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-04 15:54:36 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-04 15:54:36 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-04 15:54:36 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-05 16:13:58 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-05 16:13:58 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-05 16:13:58 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-05 16:13:58 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-05 16:13:58 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-05 16:13:58 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-05 16:13:58 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-05 16:13:58 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-05 16:13:58 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-05 16:13:58 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-05 16:13:58 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-05 16:13:58 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-05 16:13:58 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-05 16:13:59 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h8u1k1rb2kqjn|18417ec,name=1hge9fi9h8u1k1rb2kqjn|18417ec registered.
+2016-06-05 16:13:59 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h8u1k1rb2kqjn|18417ec,name=1hge9fi9h8u1k1rb2kqjn|18417ec unregistered, in order to be reregistered after update.
+2016-06-05 16:13:59 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9h8u1k1rb2kqjn|18417ec,name=1hge9fi9h8u1k1rb2kqjn|18417ec registered.
+2016-06-05 16:13:59 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge9fi9h8u1k1rb2kqjn|18417ec, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge9fi9h8u1k1rb2kqjn|18417ec, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-05 16:13:59 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-05 16:13:59 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-05 16:13:59 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-05 16:13:59 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-05 16:13:59 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-05 16:13:59 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@13a6328 config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-05 16:13:59 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-05 16:13:59 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-05 16:13:59 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-09 21:55:53 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-09 21:55:53 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 21:55:54 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 21:55:54 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 21:55:54 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 21:55:54 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 21:55:54 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-09 21:55:54 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 21:55:54 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 21:55:54 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 21:55:54 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 21:55:54 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 21:55:54 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-09 21:55:55 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hew0ovv40ci36|137fac0,name=1hge0yy9hew0ovv40ci36|137fac0 registered.
+2016-06-09 21:55:55 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hew0ovv40ci36|137fac0,name=1hge0yy9hew0ovv40ci36|137fac0 unregistered, in order to be reregistered after update.
+2016-06-09 21:55:55 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hew0ovv40ci36|137fac0,name=1hge0yy9hew0ovv40ci36|137fac0 registered.
+2016-06-09 21:55:55 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge0yy9hew0ovv40ci36|137fac0, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge0yy9hew0ovv40ci36|137fac0, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-09 21:55:55 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 21:55:55 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 21:55:55 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 21:55:55 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 21:55:55 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 21:55:55 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@aa783a config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-09 21:55:55 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-09 21:55:55 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-09 21:55:55 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-09 22:42:35 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-09 22:42:35 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-09 22:42:35 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 22:42:35 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 22:42:35 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 22:42:35 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 22:42:35 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 22:42:35 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 22:42:35 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 22:42:35 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 22:42:35 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 22:42:35 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 22:42:35 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-09 22:42:35 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hexoq4c1gxvo8t|7cd377,name=1hge0yy9hexoq4c1gxvo8t|7cd377 registered.
+2016-06-09 22:42:35 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hexoq4c1gxvo8t|7cd377,name=1hge0yy9hexoq4c1gxvo8t|7cd377 unregistered, in order to be reregistered after update.
+2016-06-09 22:42:35 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hexoq4c1gxvo8t|7cd377,name=1hge0yy9hexoq4c1gxvo8t|7cd377 registered.
+2016-06-09 22:42:35 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge0yy9hexoq4c1gxvo8t|7cd377, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge0yy9hexoq4c1gxvo8t|7cd377, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-09 22:42:36 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 22:42:36 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 22:42:36 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 22:42:36 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 22:42:36 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 22:42:36 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@14245b6 config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-09 22:42:36 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-09 22:42:36 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-09 22:42:36 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-09 23:20:56 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 23:20:56 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 23:20:56 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 23:20:56 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 23:20:56 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 23:20:56 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-09 23:20:56 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-09 23:20:56 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 23:20:56 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 23:20:56 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 23:20:56 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 23:20:56 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 23:20:57 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-09 23:20:57 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hez21qp1o57fnz|1d690e,name=1hge0yy9hez21qp1o57fnz|1d690e registered.
+2016-06-09 23:20:57 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hez21qp1o57fnz|1d690e,name=1hge0yy9hez21qp1o57fnz|1d690e unregistered, in order to be reregistered after update.
+2016-06-09 23:20:57 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hez21qp1o57fnz|1d690e,name=1hge0yy9hez21qp1o57fnz|1d690e registered.
+2016-06-09 23:20:57 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge0yy9hez21qp1o57fnz|1d690e, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge0yy9hez21qp1o57fnz|1d690e, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-09 23:20:57 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 23:20:57 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 23:20:57 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 23:20:57 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 23:20:57 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 23:20:57 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@8edbe4 config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-09 23:20:57 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-09 23:20:57 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-09 23:20:57 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-09 23:25:16 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-09 23:25:16 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-09 23:25:16 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 23:25:16 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 23:25:16 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 23:25:16 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 23:25:16 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 23:25:16 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 23:25:16 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 23:25:16 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 23:25:16 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 23:25:16 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 23:25:16 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-09 23:25:16 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hez7mjn18sy54e|173b29c,name=1hge0yy9hez7mjn18sy54e|173b29c registered.
+2016-06-09 23:25:16 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hez7mjn18sy54e|173b29c,name=1hge0yy9hez7mjn18sy54e|173b29c unregistered, in order to be reregistered after update.
+2016-06-09 23:25:16 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hez7mjn18sy54e|173b29c,name=1hge0yy9hez7mjn18sy54e|173b29c registered.
+2016-06-09 23:25:17 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge0yy9hez7mjn18sy54e|173b29c, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge0yy9hez7mjn18sy54e|173b29c, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-09 23:25:17 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 23:25:17 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 23:25:17 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 23:25:17 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 23:25:17 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 23:25:17 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@188ef57 config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-09 23:25:17 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-09 23:25:17 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-09 23:25:17 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-09 23:35:44 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-09 23:35:45 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-09 23:35:45 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 23:35:45 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 23:35:45 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 23:35:45 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 23:35:45 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 23:35:45 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 23:35:45 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 23:35:45 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 23:35:45 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 23:35:45 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 23:35:46 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-09 23:35:46 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hezl3cytqckmb|1428f70,name=1hge0yy9hezl3cytqckmb|1428f70 registered.
+2016-06-09 23:35:46 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hezl3cytqckmb|1428f70,name=1hge0yy9hezl3cytqckmb|1428f70 unregistered, in order to be reregistered after update.
+2016-06-09 23:35:46 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge0yy9hezl3cytqckmb|1428f70,name=1hge0yy9hezl3cytqckmb|1428f70 registered.
+2016-06-09 23:35:46 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge0yy9hezl3cytqckmb|1428f70, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge0yy9hezl3cytqckmb|1428f70, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-09 23:35:46 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-09 23:35:46 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-09 23:35:46 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-09 23:35:46 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-09 23:35:47 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-09 23:35:47 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@1e968cb config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-09 23:35:47 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-09 23:35:47 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-09 23:35:47 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-13 22:31:01 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-13 22:31:01 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-13 22:31:02 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-13 22:31:02 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-13 22:31:02 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-13 22:31:02 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-13 22:31:02 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-13 22:31:02 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-13 22:31:02 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-13 22:31:02 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-13 22:31:02 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-13 22:31:02 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-13 22:31:03 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-13 22:31:03 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hkn1a5u2nq89e|bc3644,name=1hge9fi9hkn1a5u2nq89e|bc3644 registered.
+2016-06-13 22:31:03 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hkn1a5u2nq89e|bc3644,name=1hge9fi9hkn1a5u2nq89e|bc3644 unregistered, in order to be reregistered after update.
+2016-06-13 22:31:03 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hkn1a5u2nq89e|bc3644,name=1hge9fi9hkn1a5u2nq89e|bc3644 registered.
+2016-06-13 22:31:03 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge9fi9hkn1a5u2nq89e|bc3644, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge9fi9hkn1a5u2nq89e|bc3644, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-13 22:31:03 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-13 22:31:03 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-13 22:31:03 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-13 22:31:03 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-13 22:31:03 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-13 22:31:03 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@1e4877d config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-13 22:31:03 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-13 22:31:03 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-13 22:31:03 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-14 22:52:27 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-14 22:52:27 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-14 22:52:27 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-14 22:52:27 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-14 22:52:27 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-14 22:52:27 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-14 22:52:27 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-14 22:52:27 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-14 22:52:27 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-14 22:52:27 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-14 22:52:27 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-14 22:52:27 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-14 22:52:28 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-14 22:52:28 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hm38ot55uqywv|bedf92,name=1hge9fi9hm38ot55uqywv|bedf92 registered.
+2016-06-14 22:52:28 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hm38ot55uqywv|bedf92,name=1hge9fi9hm38ot55uqywv|bedf92 unregistered, in order to be reregistered after update.
+2016-06-14 22:52:28 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hm38ot55uqywv|bedf92,name=1hge9fi9hm38ot55uqywv|bedf92 registered.
+2016-06-14 22:52:28 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge9fi9hm38ot55uqywv|bedf92, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge9fi9hm38ot55uqywv|bedf92, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-14 22:52:28 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-14 22:52:28 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-14 22:52:28 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-14 22:52:28 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-14 22:52:28 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-14 22:52:28 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@1bb3950 config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-14 22:52:28 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-14 22:52:28 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-14 22:52:28 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-15 00:09:33 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-15 00:09:34 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-15 00:09:34 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-15 00:09:34 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-15 00:09:34 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-15 00:09:34 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-15 00:09:34 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-15 00:09:34 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-15 00:09:34 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-15 00:09:34 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-15 00:09:34 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-15 00:09:34 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-15 00:09:35 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-15 00:09:35 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hm5zuhjc658sr|f8cc76,name=1hge9fi9hm5zuhjc658sr|f8cc76 registered.
+2016-06-15 00:09:35 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hm5zuhjc658sr|f8cc76,name=1hge9fi9hm5zuhjc658sr|f8cc76 unregistered, in order to be reregistered after update.
+2016-06-15 00:09:35 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hm5zuhjc658sr|f8cc76,name=1hge9fi9hm5zuhjc658sr|f8cc76 registered.
+2016-06-15 00:09:35 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge9fi9hm5zuhjc658sr|f8cc76, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge9fi9hm5zuhjc658sr|f8cc76, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-15 00:09:35 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-15 00:09:35 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-15 00:09:35 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-15 00:09:35 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-15 00:09:35 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-15 00:09:35 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@1c06dab config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-15 00:09:35 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-15 00:09:35 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-15 00:09:35 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-15 00:19:20 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-15 00:19:20 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-15 00:19:20 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-15 00:19:20 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-15 00:19:20 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-15 00:19:20 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-15 00:19:20 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-15 00:19:20 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-15 00:19:20 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-15 00:19:20 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-15 00:19:20 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-15 00:19:20 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-15 00:19:20 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-15 00:19:20 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hm6cejj13rbh62|1ba8b51,name=1hge9fi9hm6cejj13rbh62|1ba8b51 registered.
+2016-06-15 00:19:20 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hm6cejj13rbh62|1ba8b51,name=1hge9fi9hm6cejj13rbh62|1ba8b51 unregistered, in order to be reregistered after update.
+2016-06-15 00:19:20 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hm6cejj13rbh62|1ba8b51,name=1hge9fi9hm6cejj13rbh62|1ba8b51 registered.
+2016-06-15 00:19:20 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge9fi9hm6cejj13rbh62|1ba8b51, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge9fi9hm6cejj13rbh62|1ba8b51, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-15 00:19:20 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-15 00:19:20 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-15 00:19:20 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-15 00:19:20 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-15 00:19:20 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-15 00:19:20 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@1526121 config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-15 00:19:20 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-15 00:19:20 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-15 00:19:20 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-15 06:48:46 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-15 06:48:47 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-15 06:48:47 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-15 06:48:47 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-15 06:48:47 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-15 06:48:46 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-15 06:48:47 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-15 06:48:47 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-15 06:48:47 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-15 06:48:47 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-15 06:48:47 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-15 06:48:47 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-15 06:48:47 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-15 06:48:48 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hmk98kn1hc0p2u|47ad39,name=1hge9fi9hmk98kn1hc0p2u|47ad39 registered.
+2016-06-15 06:48:48 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hmk98kn1hc0p2u|47ad39,name=1hge9fi9hmk98kn1hc0p2u|47ad39 unregistered, in order to be reregistered after update.
+2016-06-15 06:48:48 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hmk98kn1hc0p2u|47ad39,name=1hge9fi9hmk98kn1hc0p2u|47ad39 registered.
+2016-06-15 06:48:48 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge9fi9hmk98kn1hc0p2u|47ad39, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge9fi9hmk98kn1hc0p2u|47ad39, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-15 06:48:48 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-15 06:48:48 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-15 06:48:48 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-15 06:48:48 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-15 06:48:48 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-15 06:48:48 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@3ec593 config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-15 06:48:48 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-15 06:48:48 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-15 06:48:48 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-15 21:22:38 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-15 21:22:38 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-15 21:22:38 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-15 21:22:38 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-15 21:22:38 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-15 21:22:38 INFO  MLog:203 - MLog clients using slf4j logging.
+2016-06-15 21:22:38 DEBUG MLog:198 - Reading VM config for path list /com/mchange/v2/log/default-mchange-log.properties, /mchange-commons.properties, /c3p0.properties, hocon:/reference,/application,/c3p0,/, /mchange-log.properties, /
+2016-06-15 21:22:38 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-15 21:22:38 DEBUG MLog:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-15 21:22:38 DEBUG MLog:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-15 21:22:38 DEBUG MLog:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-15 21:22:38 DEBUG MLog:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-15 21:22:40 INFO  C3P0Registry:203 - Initializing c3p0-0.9.5-pre10 [built 06-November-2014 02:02:55 -0800; debug? true; trace: 10]
+2016-06-15 21:22:40 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hnfh1cj13gn4pj|d73757,name=1hge9fi9hnfh1cj13gn4pj|d73757 registered.
+2016-06-15 21:22:40 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hnfh1cj13gn4pj|d73757,name=1hge9fi9hnfh1cj13gn4pj|d73757 unregistered, in order to be reregistered after update.
+2016-06-15 21:22:40 DEBUG DynamicPooledDataSourceManagerMBean:195 - MBean: com.mchange.v2.c3p0:type=PooledDataSource,identityToken=1hge9fi9hnfh1cj13gn4pj|d73757,name=1hge9fi9hnfh1cj13gn4pj|d73757 registered.
+2016-06-15 21:22:40 INFO  AbstractPoolBackedDataSource:203 - Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 10, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 1hge9fi9hnfh1cj13gn4pj|d73757, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> oracle.jdbc.driver.OracleDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceUseNamedDriverClass -> false, identityToken -> 1hge9fi9hnfh1cj13gn4pj|d73757, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:oracle:thin:@//127.0.0.1:1521/xe, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 10, maxStatements -> 18, maxStatementsPerConnection -> 0, minPoolSize -> 2, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+2016-06-15 21:22:40 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'application'.
+2016-06-15 21:22:40 DEBUG MConfig:198 - Missing or empty HOCON configuration for resource path 'c3p0'.
+2016-06-15 21:22:40 DEBUG MConfig:198 - Value at path 'akka.actor.deployment.default.routees.paths' could not be converted to a String. Skipping.
+2016-06-15 21:22:40 DEBUG MConfig:198 - Value at path 'akka.loggers' could not be converted to a String. Skipping.
+2016-06-15 21:22:40 DEBUG MConfig:198 - Value at path 'akka.extensions' could not be converted to a String. Skipping.
+2016-06-15 21:22:40 DEBUG BasicResourcePool:195 - com.mchange.v2.resourcepool.BasicResourcePool@a00bce config: [start -> 3; min -> 2; max -> 10; inc -> 10; num_acq_attempts -> 30; acq_attempt_delay -> 1000; check_idle_resources_delay -> 0; mox_resource_age -> 0; max_idle_time -> 0; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 0; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+2016-06-15 21:22:40 DEBUG C3P0PooledConnectionPoolManager:195 - Created new pool for auth, username (masked): 'h4******'.
+2016-06-15 21:22:40 DEBUG BasicResourcePool:195 - acquire test -- pool size: 0; target_pool_size: 3; desired target? 1
+2016-06-15 21:22:40 DEBUG BasicResourcePool:195 - awaitAvailable(): [unknown]
+2016-06-15 21:41:31 DEBUG BasicResourcePool:195 - acquire test -- pool size: 3; target_pool_size: 3; desired target? 4
+2016-06-15 21:41:31 DEBUG BasicResourcePool:195 - awaitAvailable(): com.mchange.v2.c3p0.impl.NewPooledConnection@10d0d2d
