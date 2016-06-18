@@ -18,7 +18,8 @@ import com.vaadin.ui.themes.Reindeer;
  * @author HienDM
  */
 public class ConfirmationDialog extends Window implements ClickListener {
-
+    public Button yesButton;
+    
     public static interface Callback {
         /**
          * Gọi sự kiện khi click nút bấm
@@ -33,7 +34,7 @@ public class ConfirmationDialog extends Window implements ClickListener {
     public static final String NO = "Common.No";
     public static final String CANCEL = "Common.Cancel";
 
-    private final Callback m_callback;
+    public Callback m_callback;
 
     /**
      * Hàm khởi tạo dialog yes/no
@@ -66,9 +67,9 @@ public class ConfirmationDialog extends Window implements ClickListener {
         if (buttonNames == null || buttonNames.length <= 1) {
             throw new IllegalArgumentException("Need at least one button name!");
         }
-        if (callback == null) {
+        /*if (callback == null) {
             throw new IllegalArgumentException("Need a callback!");
-        }
+        }*/
 
         m_callback = callback;
 
@@ -119,6 +120,9 @@ public class ConfirmationDialog extends Window implements ClickListener {
         for (String buttonName : buttonNames) {
             Button button = new Button(buttonName, this);
             button.setData(buttonName);
+            
+            if(buttonName.equals(ResourceBundleUtils.getLanguageResource(YES))) yesButton = button;
+            
             if (defaultButton != null && defaultButton.equals(buttonName)) {
                 button.setStyleName(Reindeer.BUTTON_DEFAULT);
                 button.setClickShortcut(KeyCode.ENTER);
