@@ -116,7 +116,8 @@ public class MainUI extends UI {
                 VaadinUtils.setSessionAttribute("G_RoleCode", lstData.get(0).get("role_code").toString());
             if(lstData.get(0).get("role_name") != null)
                 VaadinUtils.setSessionAttribute("G_RoleName", lstData.get(0).get("role_name").toString());
-            VaadinUtils.setSessionAttribute("G_GroupId", lstData.get(0).get("group_id").toString());
+            //VaadinUtils.setSessionAttribute("G_GroupId", lstData.get(0).get("group_id").toString());
+            VaadinUtils.setSessionAttribute("G_GroupId","");
             if(lstData.get(0).get("group_name") != null)
                 VaadinUtils.setSessionAttribute("G_GroupName", lstData.get(0).get("group_name").toString());
         }

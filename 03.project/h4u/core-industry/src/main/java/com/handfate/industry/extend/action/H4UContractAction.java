@@ -5,35 +5,25 @@
  */
 package com.handfate.industry.extend.action;
 
-import com.family.common.util.CSVTransformer;
 import com.handfate.industry.core.MainUI;
 import com.handfate.industry.core.action.BaseAction;
-import static com.handfate.industry.core.action.BaseAction.INT_LABEL;
 import com.handfate.industry.core.action.PopupSingleUserAction;
-import com.handfate.industry.core.action.UserAction;
-import com.handfate.industry.core.action.component.ComboboxItem;
 import com.handfate.industry.core.action.component.ConfirmationDialog;
 import com.handfate.industry.core.action.component.MultiUploadField;
 import com.handfate.industry.core.dao.BaseDAO;
 import com.handfate.industry.core.util.AdvancedFileDownloader;
-import com.handfate.industry.core.util.EncryptDecryptUtils;
-import com.handfate.industry.core.util.FileUtils;
 import com.handfate.industry.core.util.ResourceBundleUtils;
 import com.handfate.industry.core.util.VaadinUtils;
-import com.vaadin.data.Item;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import java.io.File;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;

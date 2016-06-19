@@ -5,16 +5,7 @@
  */
 package com.handfate.industry.extend.action;
 
-import static com.handfate.industry.core.MainUI.mainLogger;
 import com.handfate.industry.core.action.BaseAction;
-import static com.handfate.industry.core.action.BaseAction.INT_VIEWGROUP_ALL;
-import com.handfate.industry.core.action.PopupSingleUserAction;
-import com.handfate.industry.core.util.ResourceBundleUtils;
-import com.handfate.industry.core.util.VaadinUtils;
-import com.vaadin.data.Property;
-import com.vaadin.event.FieldEvents.BlurEvent;
-import com.vaadin.event.FieldEvents.BlurListener;
-import com.vaadin.server.UserError;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
@@ -22,9 +13,6 @@ import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @since 14/11/2014

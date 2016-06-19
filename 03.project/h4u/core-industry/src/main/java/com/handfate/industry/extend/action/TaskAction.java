@@ -8,11 +8,13 @@ package com.handfate.industry.extend.action;
 import com.handfate.industry.core.action.BaseAction;
 import com.handfate.industry.core.action.PopupSingleUserAction;
 import com.handfate.industry.core.action.UserAction;
+import com.handfate.industry.core.util.VaadinUtils;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
+import java.util.ArrayList;
 
 /**
  * @since 14/11/2014
@@ -37,6 +39,11 @@ public class TaskAction extends BaseAction {
         setSortColumnName("task_ID");
         setSortAscending(false);
         setSequenceName("h4u_task_seq");
+        setQueryWhereCondition("and assign_user_id =? or check_user_id=? or monitor_user_id=?");
+        queryWhereParameter.add(Long.parseLong(VaadinUtils.getSessionAttribute("G_UserId").toString()));
+        queryWhereParameter.add(Long.parseLong(VaadinUtils.getSessionAttribute("G_UserId").toString()));
+        queryWhereParameter.add(Long.parseLong(VaadinUtils.getSessionAttribute("G_UserId").toString()));
+        setQueryWhereParameter(queryWhereParameter);
 
         addTextFieldToForm("TASKID", new TextField(), "TASK_ID", "int", true, 50, null, null, false, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Tên nhiệm vụ", new TextField(), "task_title", "string", true, 200, null, null, true, false, null, false, null, true, true, true, true, null);

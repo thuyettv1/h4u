@@ -144,7 +144,7 @@ public class HomeAction {
                         "        borderWidth: 0\n" +
                         "    },\n" +
                         "    series: [{\n" +
-                        "            name: 'VTICT',\n" +
+                        "            name: 'H4U',\n" +
                         "            data: [" + currentCostMinus2 + "," + currentCostMinus1 + "," + currentCost + "]\n" +
                         "        }]\n" +
                         "}; ";
@@ -214,7 +214,7 @@ public class HomeAction {
             }
             else {
                 strDiagram2 += "        {\n"
-                        + "            name: 'VT-ICT',\n"
+                        + "            name: 'H4U',\n"
                         + "            data: [0]\n"
                         + "\n"
                         + "        }";                
@@ -293,7 +293,7 @@ public class HomeAction {
             if(check3) {
                 strDiagram3 = strDiagram3.substring(0, strDiagram3.length() - 1);
             } else {
-                strDiagram3 += "                ['VT-ICT',100]";                
+                strDiagram3 += "                ['H4U',100]";                
             }
             strDiagram3 +=  "            ]\n" +
                             "        }]  \n" +
@@ -364,7 +364,7 @@ public class HomeAction {
                 strDiagram4 = strDiagram4.substring(0,strDiagram4.length() - 1);
             } else {
                 strDiagram4 += "        {\n"
-                        + "            name: 'VT-ICT',\n"
+                        + "            name: 'h4U',\n"
                         + "            data: [0]\n"
                         + "\n"
                         + "        }";
