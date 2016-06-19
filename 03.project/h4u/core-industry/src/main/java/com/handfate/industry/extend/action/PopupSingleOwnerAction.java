@@ -34,17 +34,12 @@ public class PopupSingleOwnerAction extends PopupSingleAction {
         setSortColumnName("group_id");
         setSortAscending(true);
         setSequenceName("sm_users_seq");
-        setRootId(VaadinUtils.getSessionAttribute("G_GroupId").toString());        
         List lstParameter = new ArrayList();
         lstParameter.add("%/101/%");
         
         addQueryWhereCondition(" and group_id in (select group_id from v_group where is_enable = 1 and path like ?) ");
         addQueryWhereParameter(lstParameter);
         
-        buildTreeSearch("User.GroupId", 
-                "select group_id, group_name, parent_id from v_group where is_enable = 1 and path like ?", lstParameter, 
-                "group_id", "group_name", "parent_id", VaadinUtils.getSessionAttribute("G_GroupId").toString(), true, "group_id");
-
         //Thêm các thành phần
         addTextFieldToForm("UserID", new TextField(), "user_id", "int", true, 50, null, null, false, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("User.UserName", new TextField(), "user_name", "string", true, 100, null, null, true, false, null, false, null, true, true, true, true, null);

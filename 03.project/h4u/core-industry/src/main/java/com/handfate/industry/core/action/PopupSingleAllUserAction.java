@@ -33,7 +33,8 @@ public class PopupSingleAllUserAction extends PopupSingleAction {
         setSortColumnName("group_id");
         setSortAscending(true);
         setSequenceName("sm_users_seq");
-        setRootId(VaadinUtils.getSessionAttribute("G_GroupId").toString());
+        //setRootId(VaadinUtils.getSessionAttribute("G_GroupId").toString());
+        setRootId("0");
         
         buildTreeSearch("User.GroupId", 
                 "select group_id, group_name, parent_id from v_group where is_enable = 1", null, 
