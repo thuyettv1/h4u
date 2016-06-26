@@ -130,10 +130,10 @@ public class H4UContractAction extends BaseAction {
                     Connection con = C3p0Connector.getInstance().getConnection();
                     String sqlInsert = "Insert into H4U_INVOICE (INVOICE_ID,CONTRACT_ID,INVOICE_TYPE,"
                             + "STATE,ELECTRIC_START_INDEX,ELECTRIC_END_INDEX,"
-                            + "PRICE,CLEAN_PRICE,WATER_PRICE,INTERNET_PRICE,"
+                            + "PRICE,CLEANING_PRICE,WATER_PRICE,INTERNET_PRICE,"
                             + "TELEVISION_PRICE,WASHING_PRICE,CREATE_USER_ID,RECEIVE_USER_ID,"
-                            + "CREATE_DATE,RESOLVE_DATE,DESCRIPTION,TOTAL_PRICE,ACTUAL_PRICE,"
-                            + "START_DATE,END_DATE,ELECTRIC_PRICE,NOTE)"
+                            + "CREATE_DATE,RESOLVE_DATE,DESCRIPTION,ELECTRIC_PRICE,ACTUAL_PRICE,"
+                            + "START_DATE,END_DATE,TOTAL_PRICE,NOTE)"
                             + " values (h4u_invoice_seq.nextval,?,1,"
                             + "0,0,0,"
                             + "?,?,?,?,"
@@ -149,7 +149,7 @@ public class H4UContractAction extends BaseAction {
                     isrtConHisPara.add(((BigDecimal)currMAp.get("television_price")).doubleValue());
                     isrtConHisPara.add(((BigDecimal)currMAp.get("washing_price")).doubleValue());
                     isrtConHisPara.add(Long.parseLong(VaadinUtils.getSessionAttribute("G_UserId").toString()));
-                    
+                    isrtConHisPara.add(((BigDecimal)currMAp.get("party_b_id")).doubleValue());
                     isrtConHisPara.add(((BigDecimal)currMAp.get("electric_price")).doubleValue());
                     double totalPrice = ((BigDecimal)currMAp.get("price")).doubleValue()
                             +((BigDecimal)currMAp.get("cleaning_price")).doubleValue()
@@ -158,7 +158,6 @@ public class H4UContractAction extends BaseAction {
                             +((BigDecimal)currMAp.get("television_price")).doubleValue()
                             +((BigDecimal)currMAp.get("washing_price")).doubleValue();
                     isrtConHisPara.add(totalPrice);
-                    isrtConHisPara.add(((BigDecimal)currMAp.get("party_b_id")).doubleValue());
                     C3p0Connector.excuteData(sqlInsert, isrtConHisPara, con);
                     con.commit();
                     con.close();
@@ -169,6 +168,7 @@ public class H4UContractAction extends BaseAction {
                     null, Notification.Type.ERROR_MESSAGE);
         }
     }
+
 
     private void buttonExportClick(Button buttonExport) throws Exception {
         Object[] printArray = ((java.util.Collection) table.getValue()).toArray();
