@@ -61,13 +61,13 @@ public class H4UInvoiceAction extends BaseAction {
         addComboBoxToForm("Invoice.Status", new ComboBox(), "state", "int",
                 true, 50, null, null, true, false, null, false, null, false, false, true, true, invoiceStatus, "1", "Invoice.Unpaid");
         addTextFieldToForm("Giá nhà", new TextField(), "price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Giá vệ sinh", new TextField(), "price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Giá điện", new TextField(), "price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Giá nước", new TextField(), "price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Giá internet", new TextField(), "price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Giá TH cáp", new TextField(), "price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Tổng cộng", new TextField(), "total_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Thực thu", new TextField(), "actual_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
+        addTextFieldToForm("Giá vệ sinh", new TextField(), "clean_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
+        addTextFieldToForm("Giá điện", new TextField(), "electric_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
+        addTextFieldToForm("Giá nước", new TextField(), "water_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
+        addTextFieldToForm("Giá internet", new TextField(), "internet_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
+        addTextFieldToForm("Giá TH cáp", new TextField(), "television_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
+        addTextFieldToForm("Tổng cộng", new TextField(), "total_price", "float", false, 18, null, null, false, false, null, false, null, true, false, false, false, null);
+        addTextFieldToForm("Thực thu", new TextField(), "actual_price", "float", false, 18, null, null, false, false, null, false, null, true, true, true, true, null);
         
 
         // Set tham số tìm kiếm mặc định

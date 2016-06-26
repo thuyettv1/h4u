@@ -23,6 +23,7 @@ import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import java.io.File;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,12 +65,13 @@ public class H4UContractAction extends BaseAction {
                 null, "", "user_id", "user_name", "sm_user", null, null);
         addSinglePopupToForm("Thuộc phòng", "room_id", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleRoomAction(localMainUI), 2,
                 null, "", "room_id", "name", "h4u_room", null, null);
-        addTextFieldToForm("Giá phòng", new TextField(), "price", "int", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-        addTextFieldToForm("Giá điện", new TextField(), "ELECTRIC_PRICE", "int", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-        addTextFieldToForm("Giá nước", new TextField(), "WATER_PRICE", "int", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-        addTextFieldToForm("Giá internet", new TextField(), "INTERNET_PRICE", "int", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-        addTextFieldToForm("Giá truyền hình", new TextField(), "TELEVISION_PRICE", "int", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-        addTextFieldToForm("Giá vệ sinh", new TextField(), "CLEANING_PRICE", "int", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
+        addTextFieldToForm("Giá phòng", new TextField(), "price", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
+        addTextFieldToForm("Giá điện", new TextField(), "ELECTRIC_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
+        addTextFieldToForm("Giá nước", new TextField(), "WATER_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
+        addTextFieldToForm("Giá internet", new TextField(), "INTERNET_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
+        addTextFieldToForm("Giá truyền hình", new TextField(), "TELEVISION_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
+        addTextFieldToForm("Giá máy giặt", new TextField(), "WASHING_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
+        addTextFieldToForm("Giá vệ sinh", new TextField(), "CLEANING_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
         addTextFieldToForm("Số người", new TextField(), "NUMBER_PERSON", "int", true, 2, null, null, true, false, null, false, null, true, true, true, false, null);
         addTextFieldToForm("Ngày ký hơp đồng", new PopupDateField(), "CREATE_DATE", "date", false, null, null, null, false, false, null, false, null, false, false, true, true, null);
         addTextFieldToForm("Ngày tính tiền", new PopupDateField(), "START_DATE", "date", false, null, null, null, false, false, null, false, null, false, false, true, true, null);
@@ -130,20 +132,28 @@ public class H4UContractAction extends BaseAction {
                             + " values (h4u_invoice_seq.nextval,?,1,"
                             + "0,0,0,"
                             + "?,?,?,?,"
-                            + "?,?,50000,?,"
-                            + "sysdate,sysdate,'',0,0,"
+                            + "?,?,?,?,"
+                            + "sysdate,sysdate,'',?,0,"
                             + "sysdate,sysdate,?,'')";
                     List isrtConHisPara = new ArrayList();
-                    isrtConHisPara.add(currMAp.get("contract_id"));
-                    isrtConHisPara.add(currMAp.get("price"));
-                    isrtConHisPara.add(currMAp.get("cleaning_price"));
-                    isrtConHisPara.add(currMAp.get("water_price"));
-                    isrtConHisPara.add(currMAp.get("internet_price"));
-                    isrtConHisPara.add(currMAp.get("television_price"));
-                    //isrtConHisPara.add(currMAp.get("washing_price"));
+                    isrtConHisPara.add(((BigDecimal)currMAp.get("contract_id")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal)currMAp.get("price")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal)currMAp.get("cleaning_price")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal)currMAp.get("water_price")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal)currMAp.get("internet_price")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal)currMAp.get("television_price")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal)currMAp.get("washing_price")).doubleValue());
                     isrtConHisPara.add(Long.parseLong(VaadinUtils.getSessionAttribute("G_UserId").toString()));
-                    isrtConHisPara.add(currMAp.get("party_b_id"));
-                    isrtConHisPara.add(currMAp.get("electric_price"));
+                    
+                    isrtConHisPara.add(((BigDecimal)currMAp.get("electric_price")).doubleValue());
+                    double totalPrice = ((BigDecimal)currMAp.get("price")).doubleValue()
+                            +((BigDecimal)currMAp.get("cleaning_price")).doubleValue()
+                            +((BigDecimal)currMAp.get("water_price")).doubleValue()
+                            +((BigDecimal)currMAp.get("internet_price")).doubleValue()
+                            +((BigDecimal)currMAp.get("television_price")).doubleValue()
+                            +((BigDecimal)currMAp.get("washing_price")).doubleValue();
+                    isrtConHisPara.add(totalPrice);
+                    isrtConHisPara.add(((BigDecimal)currMAp.get("party_b_id")).doubleValue());
                     C3p0Connector.excuteData(sqlInsert, isrtConHisPara, con);
                     con.commit();
                     con.close();
