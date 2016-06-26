@@ -129,8 +129,8 @@ public class ConfirmationDialog extends Window implements ClickListener {
                 button.setData(buttonName);
             }
             
-            if(buttonName.equals(ResourceBundleUtils.getLanguageResource(YES))) {
-                yesButton .setStyleName(Reindeer.BUTTON_DEFAULT);
+            if(defaultButton != null && buttonName.equals(ResourceBundleUtils.getLanguageResource(YES))) {
+                yesButton.setStyleName(Reindeer.BUTTON_DEFAULT);
                 yesButton.setClickShortcut(KeyCode.ENTER);
                 yesButton.focus();                
             } else {
