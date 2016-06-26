@@ -4302,6 +4302,10 @@ public class BaseAction {
     public void addButton(Button button) {
         lstButton.add(button);
     }
+    
+    public void removeButton(Button button) {
+        lstButton.remove(button);
+    }    
 
     /**
      * Hàm kiểm tra dữ liệu đầu vào có hợp lệ hay không
