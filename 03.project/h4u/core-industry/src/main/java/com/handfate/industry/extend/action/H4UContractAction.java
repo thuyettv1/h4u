@@ -84,18 +84,60 @@ public class H4UContractAction extends BaseAction {
         MultiUploadField fileAttach = new MultiUploadField();
         addMultiUploadFieldToForm("File đính kèm", fileAttach, "H4U_CONTRACT_ATTACH", "file", false, null, null, null, false, ContractAction.class.toString(), 5, "contract_id", "ATTACH_FILE", "id", "h4u_contract_attach_seq");
 
-        Button buttonPrint = new Button("In hợp đồng");
-        buttonPrint.addClickListener(new Button.ClickListener() {
+        ConfirmationDialog.Callback ccbl = new ConfirmationDialog.Callback() {
             @Override
-            public void buttonClick(Button.ClickEvent event) {
+            public void onDialogResult(String buttonName) {
                 try {
-                    buttonPrintClick();
+                    if (buttonName.equals(ResourceBundleUtils.getLanguageResource("Common.Yes"))) {
+                        // in hop dong
+                    }
+                } catch (Exception ex) {
+                    MainUI.mainLogger.debug("Install error: ", ex);
+                }
+            }
+        };
+        final ConfirmationDialog confirmDialog = new ConfirmationDialog(
+                ResourceBundleUtils.getLanguageResource("Common.Confirm"),
+                ResourceBundleUtils.getLanguageResource("Common.ConfirmExecute"), ccbl);
+
+        AdvancedFileDownloader downloaderForLink = new AdvancedFileDownloader();
+        downloaderForLink.addAdvancedDownloaderListener(new AdvancedFileDownloader.AdvancedDownloaderListener() {
+            @Override
+            public void beforeDownload(AdvancedFileDownloader.DownloaderEvent downloadEvent) {
+                try {
+                    // download file
+                    String strDirectory = ResourceBundleUtils.getConfigureResource("FileBaseDirectory")
+                            + "Temp";
+
+                    File downloadFile = new File(strDirectory + File.separator + "ContractTemplate.docx");
+                    if (!downloadFile.exists()) {
+                        Notification.show(ResourceBundleUtils.getLanguageResource("Common.FileNotExist"),
+                                null, Notification.Type.ERROR_MESSAGE);
+                    }
+                    downloaderForLink.setFilePath(strDirectory + File.separator + "ContractTemplate.docx");
                 } catch (Exception ex) {
                     VaadinUtils.handleException(ex);
                     MainUI.mainLogger.debug("Install error: ", ex);
                 }
             }
         });
+        downloaderForLink.extend(confirmDialog.yesButton);
+
+        Button buttonPrint = new Button("In hợp đồng");
+        buttonPrint.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                try {
+                    buttonPrintClick(confirmDialog);
+                } catch (Exception ex) {
+                    VaadinUtils.handleException(ex);
+                    MainUI.mainLogger.debug("Install error: ", ex);
+                }
+            }
+        });
+        addButton(buttonPrint);
+        panelButton.addComponent(buttonPrint);
+
         Button buttonMakeInvoice = new Button("Tạo hóa đơn");
         buttonMakeInvoice.addClickListener(new Button.ClickListener() {
             @Override
@@ -165,35 +207,7 @@ public class H4UContractAction extends BaseAction {
         }
     }
 
-    private void buttonPrintClick() throws Exception {
-        final AdvancedFileDownloader downloaderForLink = new AdvancedFileDownloader();
-        downloaderForLink.addAdvancedDownloaderListener(new AdvancedFileDownloader.AdvancedDownloaderListener() {
-            @Override
-            public void beforeDownload(AdvancedFileDownloader.DownloaderEvent downloadEvent) {
-                try {
-                    // download file
-                    String strDirectory = ResourceBundleUtils.getConfigureResource("FileBaseDirectory")
-                            + "Temp";
-
-                    File downloadFile = new File(strDirectory + File.separator + "ContractTemplate.docx");
-                    if (!downloadFile.exists()) {
-                        Notification.show(ResourceBundleUtils.getLanguageResource("Common.FileNotExist"),
-                                null, Notification.Type.ERROR_MESSAGE);
-                    }
-                    downloaderForLink.setFilePath(strDirectory + File.separator + "ContractTemplate.docx");
-                } catch (Exception ex) {
-                    VaadinUtils.handleException(ex);
-                    MainUI.mainLogger.debug("Install error: ", ex);
-                }
-            }
-        });
-
-        ConfirmationDialog confirmDialog = new ConfirmationDialog(
-                ResourceBundleUtils.getLanguageResource("Common.Confirm"),
-                ResourceBundleUtils.getLanguageResource("Common.ConfirmExecute"), null);
-
-        downloaderForLink.extend(confirmDialog.yesButton);
-
+    private void buttonPrintClick(ConfirmationDialog confirmDialog) throws Exception {
         Object[] printArray = ((java.util.Collection) table.getValue()).toArray();
         if (printArray != null && printArray.length == 1) {
             if (checkPermission(printArray)) {
@@ -218,22 +232,7 @@ public class H4UContractAction extends BaseAction {
                     docx.save(ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
                             + "Temp" + File.separator + "ContractTemplate.docx");
                 }
-
-                confirmDialog.m_callback = new ConfirmationDialog.Callback() {
-                    @Override
-                    public void onDialogResult(String buttonName) {
-                        try {
-                            if (buttonName.equals(ResourceBundleUtils.getLanguageResource("Common.Yes"))) {
-
-                            }
-                        } catch (Exception ex) {
-                            VaadinUtils.handleException(ex);
-                            MainUI.mainLogger.debug("Install error: ", ex);
-                        }
-                    }
-                };
                 mainUI.addWindow(confirmDialog);
-
             }
         } else {
             Notification.show("Bạn phai chon 1 hợp đồng",
