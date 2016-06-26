@@ -95,7 +95,8 @@ public class ConfirmationDialog extends Window implements ClickListener {
         }
 
         AbstractComponent comp = (AbstractComponent) event.getComponent();
-        m_callback.onDialogResult((String) comp.getData());
+        if(m_callback != null)
+            m_callback.onDialogResult((String) comp.getData());
     }
 
     /**
@@ -118,17 +119,31 @@ public class ConfirmationDialog extends Window implements ClickListener {
         gl.setColumnExpandRatio(0, 1.0f);
 
         for (String buttonName : buttonNames) {
-            Button button = new Button(buttonName, this);
-            button.setData(buttonName);
-            
-            if(buttonName.equals(ResourceBundleUtils.getLanguageResource(YES))) yesButton = button;
-            
-            if (defaultButton != null && defaultButton.equals(buttonName)) {
-                button.setStyleName(Reindeer.BUTTON_DEFAULT);
-                button.setClickShortcut(KeyCode.ENTER);
-                button.focus();
+            Button button = null;
+            if(buttonName.equals(ResourceBundleUtils.getLanguageResource(YES))) {
+                yesButton = new Button(buttonName, this);
+                yesButton.setData(buttonName); 
             }
-            gl.addComponent(button);
+            else {
+                button = new Button(buttonName, this);
+                button.setData(buttonName);
+            }
+            
+            if(buttonName.equals(ResourceBundleUtils.getLanguageResource(YES))) {
+                yesButton .setStyleName(Reindeer.BUTTON_DEFAULT);
+                yesButton.setClickShortcut(KeyCode.ENTER);
+                yesButton.focus();                
+            } else {
+                if (defaultButton != null && defaultButton.equals(buttonName)) {
+                    button.setStyleName(Reindeer.BUTTON_DEFAULT);
+                    button.setClickShortcut(KeyCode.ENTER);
+                    button.focus();
+                }
+            }
+            
+            if(buttonName.equals(ResourceBundleUtils.getLanguageResource(YES)))
+                gl.addComponent(yesButton);
+            else gl.addComponent(button);
         }
 
         ((VerticalLayout)this.getContent()).addComponent(gl);
