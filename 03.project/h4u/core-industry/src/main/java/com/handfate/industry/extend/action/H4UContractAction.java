@@ -6,15 +6,16 @@
 package com.handfate.industry.extend.action;
 
 import com.handfate.industry.core.MainUI;
+import static com.handfate.industry.core.MainUI.mainLogger;
 import com.handfate.industry.core.action.BaseAction;
 import com.handfate.industry.core.action.PopupSingleUserAction;
-import com.handfate.industry.core.action.component.ConfirmationDialog;
 import com.handfate.industry.core.action.component.MultiUploadField;
 import com.handfate.industry.core.dao.BaseDAO;
 import com.handfate.industry.core.oracle.C3p0Connector;
 import com.handfate.industry.core.util.AdvancedFileDownloader;
 import com.handfate.industry.core.util.ResourceBundleUtils;
 import com.handfate.industry.core.util.VaadinUtils;
+import com.vaadin.data.Property;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
@@ -25,10 +26,13 @@ import com.vaadin.ui.UI;
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -39,6 +43,7 @@ import pl.jsolve.templ4docx.variable.Variables;
  * @author HienDM1
  */
 public class H4UContractAction extends BaseAction {
+
     /**
      * HÃ m khá»Ÿi táº¡o giao diá»‡n
      *
@@ -58,7 +63,7 @@ public class H4UContractAction extends BaseAction {
         setSequenceName("h4u_contract_seq");
 
         addTextFieldToForm("ContractID", new TextField(), "CONTRACT_ID", "int", true, 50, null, null, false, false, null, false, null, true, true, true, true, null);
-        addTextFieldToForm("Mã hợp đồng", new TextField(), "contract_code", "string", true, 50, null, null, true, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Mã hợp đồng", new TextField(), "contract_code", "string", true, 50, null, null, true, false, null, false, null, true, true, true, false, null);
         addSinglePopupToForm("Bên A", "PARTY_A_ID", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleUserAction(localMainUI), 2,
                 null, "", "user_id", "user_name", "sm_user", null, null);
         addSinglePopupToForm("Bên B", "PARTY_B_ID", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleUserAction(localMainUI), 2,
@@ -98,17 +103,17 @@ public class H4UContractAction extends BaseAction {
         });
         addButton(buttonMakeInvoice);
         panelButton.addComponent(buttonMakeInvoice);
-        
+
         Button buttonDownload = new Button("Tải về");
-        Button buttonExport = new Button("Xuất hợp đồng");      
-        
+        Button buttonExport = new Button("Xuất hợp đồng");
+
         buttonExport.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 try {
                     buttonExportClick();
                     buttonExport.setEnabled(false);
-                    buttonDownload.setEnabled(true);                    
+                    buttonDownload.setEnabled(true);
                 } catch (Exception ex) {
                     VaadinUtils.handleException(ex);
                     MainUI.mainLogger.debug("Install error: ", ex);
@@ -117,7 +122,7 @@ public class H4UContractAction extends BaseAction {
         });
         addButton(buttonExport);
         panelButton.addComponent(buttonExport);
-        
+
         buttonDownload.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -132,8 +137,8 @@ public class H4UContractAction extends BaseAction {
         });
         addButton(buttonDownload);
         panelButton.addComponent(buttonDownload);
-        buttonDownload.setEnabled(false);        
-        
+        buttonDownload.setEnabled(false);
+
         AdvancedFileDownloader downloaderForLink = new AdvancedFileDownloader();
         downloaderForLink.addAdvancedDownloaderListener(new AdvancedFileDownloader.AdvancedDownloaderListener() {
             @Override
@@ -154,8 +159,31 @@ public class H4UContractAction extends BaseAction {
                 }
             }
         });
-        downloaderForLink.extend(buttonDownload);        
-        
+        downloaderForLink.extend(buttonDownload);
+
+        Property.ValueChangeListener lsRoomCombo = new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                try {
+                    if (getCurrentForm() == BaseAction.INT_ADD_FORM) {
+                        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+                        Date date = new Date();
+                        ComboBox cbo = (ComboBox) getComponent("room_id");
+                        String getRoomName = "select name from h4u_room where room_id = ?";
+                        List serPara = new ArrayList();
+                        serPara.add(cbo.getValue());
+                        List<Map> lGrCode = C3p0Connector.queryData(getRoomName, serPara);
+                        getComponent("contract_code").setValue(lGrCode.get(0).get("name") + "-" + dateFormat.format(date));
+                    }
+                } catch (Exception ex) {
+                    VaadinUtils.handleException(ex);
+                    mainLogger.debug("Industry error: ", ex);
+                }
+            }
+        };
+        ComboBox cboRoom = (ComboBox) getComponent("room_id");
+        cboRoom.addValueChangeListener(lsRoomCombo);
+        //cboRoom.addValueChangeListener(lsPolicyCombo);
         return initPanel(2);
     }
 
@@ -182,22 +210,22 @@ public class H4UContractAction extends BaseAction {
                             + "sysdate,sysdate,'',?,0,"
                             + "sysdate,sysdate,?,'')";
                     List isrtConHisPara = new ArrayList();
-                    isrtConHisPara.add(((BigDecimal)currMAp.get("contract_id")).doubleValue());
-                    isrtConHisPara.add(((BigDecimal)currMAp.get("price")).doubleValue());
-                    isrtConHisPara.add(((BigDecimal)currMAp.get("cleaning_price")).doubleValue());
-                    isrtConHisPara.add(((BigDecimal)currMAp.get("water_price")).doubleValue());
-                    isrtConHisPara.add(((BigDecimal)currMAp.get("internet_price")).doubleValue());
-                    isrtConHisPara.add(((BigDecimal)currMAp.get("television_price")).doubleValue());
-                    isrtConHisPara.add(((BigDecimal)currMAp.get("washing_price")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal) currMAp.get("contract_id")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal) currMAp.get("price")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal) currMAp.get("cleaning_price")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal) currMAp.get("water_price")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal) currMAp.get("internet_price")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal) currMAp.get("television_price")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal) currMAp.get("washing_price")).doubleValue());
                     isrtConHisPara.add(Long.parseLong(VaadinUtils.getSessionAttribute("G_UserId").toString()));
-                    isrtConHisPara.add(((BigDecimal)currMAp.get("party_b_id")).doubleValue());
-                    isrtConHisPara.add(((BigDecimal)currMAp.get("electric_price")).doubleValue());
-                    double totalPrice = ((BigDecimal)currMAp.get("price")).doubleValue()
-                            +((BigDecimal)currMAp.get("cleaning_price")).doubleValue()
-                            +((BigDecimal)currMAp.get("water_price")).doubleValue()
-                            +((BigDecimal)currMAp.get("internet_price")).doubleValue()
-                            +((BigDecimal)currMAp.get("television_price")).doubleValue()
-                            +((BigDecimal)currMAp.get("washing_price")).doubleValue();
+                    isrtConHisPara.add(((BigDecimal) currMAp.get("party_b_id")).doubleValue());
+                    isrtConHisPara.add(((BigDecimal) currMAp.get("electric_price")).doubleValue());
+                    double totalPrice = ((BigDecimal) currMAp.get("price")).doubleValue()
+                            + ((BigDecimal) currMAp.get("cleaning_price")).doubleValue()
+                            + ((BigDecimal) currMAp.get("water_price")).doubleValue()
+                            + ((BigDecimal) currMAp.get("internet_price")).doubleValue()
+                            + ((BigDecimal) currMAp.get("television_price")).doubleValue()
+                            + ((BigDecimal) currMAp.get("washing_price")).doubleValue();
                     isrtConHisPara.add(totalPrice);
                     C3p0Connector.excuteData(sqlInsert, isrtConHisPara, con);
                     con.commit();
@@ -210,13 +238,12 @@ public class H4UContractAction extends BaseAction {
         }
     }
 
-
     private void buttonExportClick() throws Exception {
         Object[] printArray = ((java.util.Collection) table.getValue()).toArray();
         if (printArray != null && printArray.length == 1) {
             if (checkPermission(printArray)) {
                 String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
-                            + "Temp" + File.separator + "ContractTemplate.docx";
+                        + "Temp" + File.separator + "ContractTemplate.docx";
                 // Tao file truoc khi download
                 BaseDAO baseDao = new BaseDAO();
                 List<Map> listmap = baseDao.getContractInfo(Integer.valueOf((String) printArray[0]));
@@ -230,6 +257,14 @@ public class H4UContractAction extends BaseAction {
                     Variables variables = new Variables();
                     for (Object key : currMAp.keySet()) {
                         variables.addTextVariable(new TextVariable("#{" + key + "}", currMAp.get(key) + ""));
+                        if (((String) key).equalsIgnoreCase("room_id")) {
+                            double room_id = ((BigDecimal) currMAp.get(key)).doubleValue();
+                            Map<String, String> mapEq = getEquipmentInfo(room_id);
+                            for (String key1 : mapEq.keySet()) {
+                                variables.addTextVariable(new TextVariable("#{" + key1 + "}", mapEq.get(key1) + ""));
+                            }
+                        }
+
                     }
                     // fill template
                     docx.fillTemplate(variables);
@@ -243,4 +278,43 @@ public class H4UContractAction extends BaseAction {
                     null, Notification.Type.ERROR_MESSAGE);
         }
     }
+
+    public Map<String, String> getEquipmentInfo(double room_id) throws Exception {
+        String cql = "select count(*) nb,'eq_'||equipment_type_id eq  from h4u_equipment where room_id=? group by equipment_type_id";
+        List lstParameter = new ArrayList();
+        lstParameter.add(room_id);
+        Map<String, String> mapEquipment = new HashMap<>();
+        mapEquipment.put("eq_20", "0");
+        mapEquipment.put("eq_21", "0");
+        mapEquipment.put("eq_22", "0");
+        mapEquipment.put("eq_23", "0");
+        mapEquipment.put("eq_24", "0");
+        mapEquipment.put("eq_25", "0");
+        mapEquipment.put("eq_26", "0");
+        mapEquipment.put("eq_27", "0");
+        mapEquipment.put("eq_28", "0");
+        mapEquipment.put("eq_29", "0");
+        mapEquipment.put("eq_30", "0");
+        mapEquipment.put("eq_31", "0");
+        mapEquipment.put("eq_32", "0");
+        mapEquipment.put("eq_33", "0");
+        mapEquipment.put("eq_34", "0");
+        List<Map> lstMap = C3p0Connector.queryData(cql, lstParameter);
+        if (lstMap != null && !lstMap.isEmpty()) {
+            for (Map currMap : lstMap) {
+                String nb = "";
+                String eq = "";
+                for (Object key : currMap.keySet()) {
+                    if (((String) key).equalsIgnoreCase("nb")) {
+                        nb = currMap.get(key) + "";
+                    } else {
+                        eq = "" + currMap.get(key);
+                    }
+                }
+                mapEquipment.put(eq, nb);
+            }
+        }
+        return mapEquipment;
+    }
+
 }
