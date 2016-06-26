@@ -61,7 +61,7 @@ public class H4UInvoiceAction extends BaseAction {
         addComboBoxToForm("Invoice.Status", new ComboBox(), "state", "int",
                 true, 50, null, null, true, false, null, false, null, false, false, true, true, invoiceStatus, "1", "Invoice.Unpaid");
         addTextFieldToForm("Giá nhà", new TextField(), "price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Giá vệ sinh", new TextField(), "clean_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
+        addTextFieldToForm("Giá vệ sinh", new TextField(), "cleaning_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
         addTextFieldToForm("Giá điện", new TextField(), "electric_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
         addTextFieldToForm("Giá nước", new TextField(), "water_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
         addTextFieldToForm("Giá internet", new TextField(), "internet_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
