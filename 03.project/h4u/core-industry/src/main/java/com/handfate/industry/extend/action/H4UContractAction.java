@@ -11,6 +11,7 @@ import com.handfate.industry.core.action.PopupSingleUserAction;
 import com.handfate.industry.core.action.component.ConfirmationDialog;
 import com.handfate.industry.core.action.component.MultiUploadField;
 import com.handfate.industry.core.dao.BaseDAO;
+import com.handfate.industry.core.oracle.C3p0Connector;
 import com.handfate.industry.core.util.AdvancedFileDownloader;
 import com.handfate.industry.core.util.ResourceBundleUtils;
 import com.handfate.industry.core.util.VaadinUtils;
@@ -22,6 +23,8 @@ import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import java.io.File;
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import pl.jsolve.templ4docx.core.Docx;
@@ -77,8 +80,8 @@ public class H4UContractAction extends BaseAction {
         addTextFieldToForm("Tiền đặt cọc", new TextField(), "DEPOSIT", "int", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
         addTextFieldToForm("Tiền phạt", new TextField(), "FORFEIT", "int", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
         MultiUploadField fileAttach = new MultiUploadField();
-        addMultiUploadFieldToForm("File đính kèm", fileAttach, "H4U_CONTRACT_ATTACH", "file", false, null, null, null, false, ContractAction.class.toString(), 5, "contract_id", "ATTACH_FILE", "id", "h4u_contract_attach_seq");        
-        
+        addMultiUploadFieldToForm("File đính kèm", fileAttach, "H4U_CONTRACT_ATTACH", "file", false, null, null, null, false, ContractAction.class.toString(), 5, "contract_id", "ATTACH_FILE", "id", "h4u_contract_attach_seq");
+
         Button buttonPrint = new Button("In hợp đồng");
         buttonPrint.addClickListener(new Button.ClickListener() {
             @Override
@@ -90,15 +93,69 @@ public class H4UContractAction extends BaseAction {
                     MainUI.mainLogger.debug("Install error: ", ex);
                 }
             }
-        });        
-        addButton(buttonPrint);
-        if (isAllowExport()) {
-            panelButton.addComponent(buttonPrint);
-        }        
+        });
+        Button buttonMakeInvoice = new Button("Tạo hóa đơn");
+        buttonMakeInvoice.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                try {
+                    buttonMakeInvoiceClick();
+                } catch (Exception ex) {
+                    VaadinUtils.handleException(ex);
+                    MainUI.mainLogger.debug("Install error: ", ex);
+                }
+            }
+        });
+        addButton(buttonMakeInvoice);
+        panelButton.addComponent(buttonMakeInvoice);
         return initPanel(2);
     }
-    
-    private void buttonPrintClick() throws Exception {        
+
+    private void buttonMakeInvoiceClick() throws Exception {
+        Object[] invoiceArray = ((java.util.Collection) table.getValue()).toArray();
+        if (invoiceArray != null && invoiceArray.length == 1) {
+            if (checkPermission(invoiceArray)) {
+                // Tao file truoc khi download
+                BaseDAO baseDao = new BaseDAO();
+                List<Map> listmap = baseDao.getContractInfo(Integer.valueOf((String) invoiceArray[0]));
+                if (listmap != null && !listmap.isEmpty()) {
+                    Map currMAp = listmap.get(0);
+                    Connection con = C3p0Connector.getInstance().getConnection();
+                    String sqlInsert = "Insert into H4U_INVOICE (INVOICE_ID,CONTRACT_ID,INVOICE_TYPE,"
+                            + "STATE,ELECTRIC_START_INDEX,ELECTRIC_END_INDEX,"
+                            + "PRICE,CLEAN_PRICE,WATER_PRICE,INTERNET_PRICE,"
+                            + "TELEVISION_PRICE,WASHING_PRICE,CREATE_USER_ID,RECEIVE_USER_ID,"
+                            + "CREATE_DATE,RESOLVE_DATE,DESCRIPTION,TOTAL_PRICE,ACTUAL_PRICE,"
+                            + "START_DATE,END_DATE,ELECTRIC_PRICE,NOTE)"
+                            + " values (h4u_invoice_seq.nextval,?,1,"
+                            + "0,0,0,"
+                            + "?,?,?,?,"
+                            + "?,?,50000,?,"
+                            + "sysdate,sysdate,'',0,0,"
+                            + "sysdate,sysdate,?,'')";
+                    List isrtConHisPara = new ArrayList();
+                    isrtConHisPara.add(currMAp.get("contract_id"));
+                    isrtConHisPara.add(currMAp.get("price"));
+                    isrtConHisPara.add(currMAp.get("cleaning_price"));
+                    isrtConHisPara.add(currMAp.get("water_price"));
+                    isrtConHisPara.add(currMAp.get("internet_price"));
+                    isrtConHisPara.add(currMAp.get("television_price"));
+                    //isrtConHisPara.add(currMAp.get("washing_price"));
+                    isrtConHisPara.add(Long.parseLong(VaadinUtils.getSessionAttribute("G_UserId").toString()));
+                    isrtConHisPara.add(currMAp.get("party_b_id"));
+                    isrtConHisPara.add(currMAp.get("electric_price"));
+                    C3p0Connector.excuteData(sqlInsert, isrtConHisPara, con);
+                    con.commit();
+                    con.close();
+                }
+            }
+        } else {
+            Notification.show("Bạn phải chon ít nhất 1 hợp đồng",
+                    null, Notification.Type.ERROR_MESSAGE);
+        }
+    }
+
+    private void buttonPrintClick() throws Exception {
         final AdvancedFileDownloader downloaderForLink = new AdvancedFileDownloader();
         downloaderForLink.addAdvancedDownloaderListener(new AdvancedFileDownloader.AdvancedDownloaderListener() {
             @Override
@@ -120,15 +177,15 @@ public class H4UContractAction extends BaseAction {
                 }
             }
         });
-        
-        ConfirmationDialog confirmDialog = new ConfirmationDialog(
-                        ResourceBundleUtils.getLanguageResource("Common.Confirm"),
-                        ResourceBundleUtils.getLanguageResource("Common.ConfirmExecute"), null);
 
-        downloaderForLink.extend(confirmDialog.yesButton);               
-        
+        ConfirmationDialog confirmDialog = new ConfirmationDialog(
+                ResourceBundleUtils.getLanguageResource("Common.Confirm"),
+                ResourceBundleUtils.getLanguageResource("Common.ConfirmExecute"), null);
+
+        downloaderForLink.extend(confirmDialog.yesButton);
+
         Object[] printArray = ((java.util.Collection) table.getValue()).toArray();
-        if (printArray != null && printArray.length == 1) {            
+        if (printArray != null && printArray.length == 1) {
             if (checkPermission(printArray)) {
                 // Tao file truoc khi download
                 BaseDAO baseDao = new BaseDAO();
@@ -150,8 +207,8 @@ public class H4UContractAction extends BaseAction {
                     // save filled .docx file
                     docx.save(ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
                             + "Temp" + File.separator + "ContractTemplate.docx");
-                }   
-                
+                }
+
                 confirmDialog.m_callback = new ConfirmationDialog.Callback() {
                     @Override
                     public void onDialogResult(String buttonName) {
@@ -164,15 +221,14 @@ public class H4UContractAction extends BaseAction {
                             MainUI.mainLogger.debug("Install error: ", ex);
                         }
                     }
-                };                                
+                };
                 mainUI.addWindow(confirmDialog);
-                
-                
+
             }
         } else {
             Notification.show("Bạn phai chon 1 hợp đồng",
                     null, Notification.Type.ERROR_MESSAGE);
         }
-    }    
-       
+    }
+
 }

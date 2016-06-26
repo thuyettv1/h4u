@@ -51,10 +51,10 @@ public class H4UInvoiceAction extends BaseAction {
         //ThÃªm cÃ¡c thÃ nh pháº§n
         addTextFieldToForm("InvoiceID", new TextField(), "invoice_id", "int", true, 50, null, null, false, false, null, false, null, true, true, true, true, null);
 
-        setComponentAsLoginUser("User.CreateUser", "user_id", false, null, false, null, false, true, new PopupSingleUserAction(localMainUI), null, null, INT_VIEWGROUP_ALL);
+        //setComponentAsLoginUser("User.CreateUser", "create_user_id", false, null, false, null, false, true, new PopupSingleUserAction(localMainUI), null, null, INT_VIEWGROUP_ALL);
         // Them customer ID theo hop dong 
         addSinglePopupToForm("Khách hàng", "RECEIVE_USER_ID", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleCustomerAction(localMainUI), 2,
-                null, "", "user_id", "username", "sm_users", null, null);
+                null, "", "user_id", "user_name", "sm_users", null, null);
         
 
         Object[][] invoiceStatus = {{2, "Invoice.Paid"}, {3, "Invoice.Cancel"}, {4, "Invoice.NoPay"}};
@@ -404,13 +404,13 @@ public class H4UInvoiceAction extends BaseAction {
 //            txtTotalCost.setValue(getComponent("cost").getValue().toString());
             Object[] selectedArray = ((java.util.Collection) table.getValue()).toArray();
             int id = Integer.parseInt(selectedArray[0].toString());
-            if (isUsed(id)) {
+            if (false) {
                 Notification.show(ResourceBundleUtils.getLanguageResource("Invoice.Error.StatusInvalid"),
                         null, Notification.Type.ERROR_MESSAGE);
                 return false;
             }
             // Neu hoa don da dong ==> khong duoc sua bang ghi "chua thanh toan"
-            if (isClosed(id)) {
+            if (false) {
                 Notification.show(ResourceBundleUtils.getLanguageResource("Invoice.Error.Closed"),
                         null, Notification.Type.ERROR_MESSAGE);
                 return false;

@@ -745,6 +745,12 @@ public class BaseDAO {
         lstParameter.add(contract_id);
         return C3p0Connector.queryData(cql, lstParameter);
     }
+    public boolean makeInvoiceFromContract(Map m) throws Exception {
+        String cql = "Insert into H4U_INVOICE (INVOICE_ID,CONTRACT_ID,INVOICE_TYPE,STATE,ELECTRIC_START_INDEX,ELECTRIC_END_INDEX,PRICE,CLEAN_PRICE,WATER_PRICE,INTERNET_PRICE,TELEVISION_PRICE,WASHING_PRICE,CREATE_USER_ID,RECEIVE_USER_ID,CREATE_DATE,RESOLVE_DATE,DESCRIPTION,TOTAL_PRICE,ACTUAL_PRICE,START_DATE,END_DATE,ELECTRIC_PRICE,NOTE) "
+                + "values ('h4u_invoice_seq.nextval()','1234','123','1','188','999','111','0','90','88','88','88','88','8',to_date('24-06-2016','DD-MM-RRRR'),to_date('24-06-2016','DD-MM-RRRR'),'12','123','1234',to_date('01-06-2016','DD-MM-RRRR'),to_date('30-06-2016','DD-MM-RRRR'),'1500','1');";
+         C3p0Connector.queryData(cql);
+         return true;
+    }
 
     public static void main(String[] args) throws Exception {
         BaseDAO newBD = new BaseDAO();
