@@ -28,6 +28,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -84,60 +85,6 @@ public class H4UContractAction extends BaseAction {
         MultiUploadField fileAttach = new MultiUploadField();
         addMultiUploadFieldToForm("File đính kèm", fileAttach, "H4U_CONTRACT_ATTACH", "file", false, null, null, null, false, ContractAction.class.toString(), 5, "contract_id", "ATTACH_FILE", "id", "h4u_contract_attach_seq");
 
-        ConfirmationDialog.Callback ccbl = new ConfirmationDialog.Callback() {
-            @Override
-            public void onDialogResult(String buttonName) {
-                try {
-                    if (buttonName.equals(ResourceBundleUtils.getLanguageResource("Common.Yes"))) {
-                        // in hop dong
-                    }
-                } catch (Exception ex) {
-                    MainUI.mainLogger.debug("Install error: ", ex);
-                }
-            }
-        };
-        final ConfirmationDialog confirmDialog = new ConfirmationDialog(
-                ResourceBundleUtils.getLanguageResource("Common.Confirm"),
-                ResourceBundleUtils.getLanguageResource("Common.ConfirmExecute"), ccbl);
-
-        AdvancedFileDownloader downloaderForLink = new AdvancedFileDownloader();
-        downloaderForLink.addAdvancedDownloaderListener(new AdvancedFileDownloader.AdvancedDownloaderListener() {
-            @Override
-            public void beforeDownload(AdvancedFileDownloader.DownloaderEvent downloadEvent) {
-                try {
-                    // download file
-                    String strDirectory = ResourceBundleUtils.getConfigureResource("FileBaseDirectory")
-                            + "Temp";
-
-                    File downloadFile = new File(strDirectory + File.separator + "ContractTemplate.docx");
-                    if (!downloadFile.exists()) {
-                        Notification.show(ResourceBundleUtils.getLanguageResource("Common.FileNotExist"),
-                                null, Notification.Type.ERROR_MESSAGE);
-                    }
-                    downloaderForLink.setFilePath(strDirectory + File.separator + "ContractTemplate.docx");
-                } catch (Exception ex) {
-                    VaadinUtils.handleException(ex);
-                    MainUI.mainLogger.debug("Install error: ", ex);
-                }
-            }
-        });
-        downloaderForLink.extend(confirmDialog.yesButton);
-
-        Button buttonPrint = new Button("In hợp đồng");
-        buttonPrint.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                try {
-                    buttonPrintClick(confirmDialog);
-                } catch (Exception ex) {
-                    VaadinUtils.handleException(ex);
-                    MainUI.mainLogger.debug("Install error: ", ex);
-                }
-            }
-        });
-        addButton(buttonPrint);
-        panelButton.addComponent(buttonPrint);
-
         Button buttonMakeInvoice = new Button("Tạo hóa đơn");
         buttonMakeInvoice.addClickListener(new Button.ClickListener() {
             @Override
@@ -152,6 +99,22 @@ public class H4UContractAction extends BaseAction {
         });
         addButton(buttonMakeInvoice);
         panelButton.addComponent(buttonMakeInvoice);
+        
+        Button buttonExport = new Button("Xuất hợp đồng");
+        buttonExport.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                try {
+                    buttonExportClick(buttonExport);
+                } catch (Exception ex) {
+                    VaadinUtils.handleException(ex);
+                    MainUI.mainLogger.debug("Install error: ", ex);
+                }
+            }
+        });
+        addButton(buttonExport);
+        panelButton.addComponent(buttonExport);
+        
         return initPanel(2);
     }
 
@@ -207,10 +170,13 @@ public class H4UContractAction extends BaseAction {
         }
     }
 
-    private void buttonPrintClick(ConfirmationDialog confirmDialog) throws Exception {
+    private void buttonExportClick(Button buttonExport) throws Exception {
         Object[] printArray = ((java.util.Collection) table.getValue()).toArray();
         if (printArray != null && printArray.length == 1) {
             if (checkPermission(printArray)) {
+                String strUUID = UUID.randomUUID().toString();
+                String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
+                            + "Temp" + File.separator + "ContractTemplate" + strUUID + ".docx";
                 // Tao file truoc khi download
                 BaseDAO baseDao = new BaseDAO();
                 List<Map> listmap = baseDao.getContractInfo(Integer.valueOf((String) printArray[0]));
@@ -229,15 +195,49 @@ public class H4UContractAction extends BaseAction {
                     docx.fillTemplate(variables);
 
                     // save filled .docx file
-                    docx.save(ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
-                            + "Temp" + File.separator + "ContractTemplate.docx");
+                    docx.save(filePath);
                 }
-                mainUI.addWindow(confirmDialog);
+                
+                Button buttonDownload = new Button("Tải về");
+                buttonDownload.addClickListener(new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent event) {
+                        try {
+                            buttonExport.setVisible(true);
+                            buttonDownload.setVisible(false);
+                        } catch (Exception ex) {
+                            VaadinUtils.handleException(ex);
+                            MainUI.mainLogger.debug("Install error: ", ex);
+                        }
+                    }
+                });
+                addButton(buttonDownload);
+                panelButton.addComponent(buttonDownload);
+
+                AdvancedFileDownloader downloaderForLink = new AdvancedFileDownloader();
+                downloaderForLink.addAdvancedDownloaderListener(new AdvancedFileDownloader.AdvancedDownloaderListener() {
+                    @Override
+                    public void beforeDownload(AdvancedFileDownloader.DownloaderEvent downloadEvent) {
+                        try {
+                            // download file
+                            File downloadFile = new File(filePath);
+                            if (!downloadFile.exists()) {
+                                Notification.show(ResourceBundleUtils.getLanguageResource("Common.FileNotExist"),
+                                        null, Notification.Type.ERROR_MESSAGE);
+                            }
+                            downloaderForLink.setFilePath(filePath);
+                        } catch (Exception ex) {
+                            VaadinUtils.handleException(ex);
+                            MainUI.mainLogger.debug("Install error: ", ex);
+                        }
+                    }
+                });
+                downloaderForLink.extend(buttonDownload);
+                buttonExport.setVisible(false);
             }
         } else {
             Notification.show("Bạn phai chon 1 hợp đồng",
                     null, Notification.Type.ERROR_MESSAGE);
         }
     }
-
 }
