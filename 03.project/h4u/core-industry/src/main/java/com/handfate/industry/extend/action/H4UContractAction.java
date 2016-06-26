@@ -8,6 +8,7 @@ package com.handfate.industry.extend.action;
 import com.handfate.industry.core.MainUI;
 import static com.handfate.industry.core.MainUI.mainLogger;
 import com.handfate.industry.core.action.BaseAction;
+import com.handfate.industry.core.action.PopupSingleAllUserAction;
 import com.handfate.industry.core.action.PopupSingleUserAction;
 import com.handfate.industry.core.action.component.MultiUploadField;
 import com.handfate.industry.core.dao.BaseDAO;
@@ -64,9 +65,9 @@ public class H4UContractAction extends BaseAction {
 
         addTextFieldToForm("ContractID", new TextField(), "CONTRACT_ID", "int", true, 50, null, null, false, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Mã hợp đồng", new TextField(), "contract_code", "string", true, 50, null, null, true, false, null, false, null, true, true, true, false, null);
-        addSinglePopupToForm("Bên A", "PARTY_A_ID", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleUserAction(localMainUI), 2,
+        addSinglePopupToForm("Bên A", "PARTY_A_ID", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleAllUserAction(localMainUI), 2,
                 null, "", "user_id", "user_name", "sm_user", null, null);
-        addSinglePopupToForm("Bên B", "PARTY_B_ID", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleUserAction(localMainUI), 2,
+        addSinglePopupToForm("Bên B", "PARTY_B_ID", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleAllUserAction(localMainUI), 2,
                 null, "", "user_id", "user_name", "sm_user", null, null);
         addSinglePopupToForm("Thuộc phòng", "room_id", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleRoomAction(localMainUI), 2,
                 null, "", "room_id", "name", "h4u_room", null, null);
