@@ -39,7 +39,6 @@ import pl.jsolve.templ4docx.variable.Variables;
  * @author HienDM1
  */
 public class H4UContractAction extends BaseAction {
-
     /**
      * HÃ m khá»Ÿi táº¡o giao diá»‡n
      *
@@ -100,12 +99,16 @@ public class H4UContractAction extends BaseAction {
         addButton(buttonMakeInvoice);
         panelButton.addComponent(buttonMakeInvoice);
         
-        Button buttonExport = new Button("Xuất hợp đồng");
+        Button buttonDownload = new Button("Tải về");
+        Button buttonExport = new Button("Xuất hợp đồng");      
+        
         buttonExport.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 try {
-                    buttonExportClick(buttonExport);
+                    buttonExportClick();
+                    buttonExport.setEnabled(false);
+                    buttonDownload.setEnabled(true);                    
                 } catch (Exception ex) {
                     VaadinUtils.handleException(ex);
                     MainUI.mainLogger.debug("Install error: ", ex);
@@ -114,6 +117,44 @@ public class H4UContractAction extends BaseAction {
         });
         addButton(buttonExport);
         panelButton.addComponent(buttonExport);
+        
+        buttonDownload.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                try {
+                    buttonExport.setEnabled(true);
+                    buttonDownload.setEnabled(false);
+                } catch (Exception ex) {
+                    VaadinUtils.handleException(ex);
+                    MainUI.mainLogger.debug("Install error: ", ex);
+                }
+            }
+        });
+        addButton(buttonDownload);
+        panelButton.addComponent(buttonDownload);
+        buttonDownload.setEnabled(false);        
+        
+        AdvancedFileDownloader downloaderForLink = new AdvancedFileDownloader();
+        downloaderForLink.addAdvancedDownloaderListener(new AdvancedFileDownloader.AdvancedDownloaderListener() {
+            @Override
+            public void beforeDownload(AdvancedFileDownloader.DownloaderEvent downloadEvent) {
+                try {
+                    // download file
+                    String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
+                            + "Temp" + File.separator + "ContractTemplate.docx";
+                    File downloadFile = new File(filePath);
+                    if (!downloadFile.exists()) {
+                        Notification.show(ResourceBundleUtils.getLanguageResource("Common.FileNotExist"),
+                                null, Notification.Type.ERROR_MESSAGE);
+                    }
+                    downloaderForLink.setFilePath(filePath);
+                } catch (Exception ex) {
+                    VaadinUtils.handleException(ex);
+                    MainUI.mainLogger.debug("Install error: ", ex);
+                }
+            }
+        });
+        downloaderForLink.extend(buttonDownload);        
         
         return initPanel(2);
     }
@@ -170,13 +211,12 @@ public class H4UContractAction extends BaseAction {
     }
 
 
-    private void buttonExportClick(Button buttonExport) throws Exception {
+    private void buttonExportClick() throws Exception {
         Object[] printArray = ((java.util.Collection) table.getValue()).toArray();
         if (printArray != null && printArray.length == 1) {
             if (checkPermission(printArray)) {
-                String strUUID = UUID.randomUUID().toString();
                 String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
-                            + "Temp" + File.separator + "ContractTemplate" + strUUID + ".docx";
+                            + "Temp" + File.separator + "ContractTemplate.docx";
                 // Tao file truoc khi download
                 BaseDAO baseDao = new BaseDAO();
                 List<Map> listmap = baseDao.getContractInfo(Integer.valueOf((String) printArray[0]));
@@ -197,43 +237,6 @@ public class H4UContractAction extends BaseAction {
                     // save filled .docx file
                     docx.save(filePath);
                 }
-                
-                Button buttonDownload = new Button("Tải về");
-                buttonDownload.addClickListener(new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        try {
-                            buttonExport.setVisible(true);
-                            buttonDownload.setVisible(false);
-                        } catch (Exception ex) {
-                            VaadinUtils.handleException(ex);
-                            MainUI.mainLogger.debug("Install error: ", ex);
-                        }
-                    }
-                });
-                addButton(buttonDownload);
-                panelButton.addComponent(buttonDownload);
-
-                AdvancedFileDownloader downloaderForLink = new AdvancedFileDownloader();
-                downloaderForLink.addAdvancedDownloaderListener(new AdvancedFileDownloader.AdvancedDownloaderListener() {
-                    @Override
-                    public void beforeDownload(AdvancedFileDownloader.DownloaderEvent downloadEvent) {
-                        try {
-                            // download file
-                            File downloadFile = new File(filePath);
-                            if (!downloadFile.exists()) {
-                                Notification.show(ResourceBundleUtils.getLanguageResource("Common.FileNotExist"),
-                                        null, Notification.Type.ERROR_MESSAGE);
-                            }
-                            downloaderForLink.setFilePath(filePath);
-                        } catch (Exception ex) {
-                            VaadinUtils.handleException(ex);
-                            MainUI.mainLogger.debug("Install error: ", ex);
-                        }
-                    }
-                });
-                downloaderForLink.extend(buttonDownload);
-                buttonExport.setVisible(false);
             }
         } else {
             Notification.show("Bạn phai chon 1 hợp đồng",

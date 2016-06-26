@@ -5,23 +5,15 @@
  */
 package com.handfate.industry.extend.action;
 
-import static com.handfate.industry.core.MainUI.mainLogger;
 import com.handfate.industry.core.action.BaseAction;
-import com.handfate.industry.core.action.PopupSingleUserAction;
-import com.handfate.industry.core.oracle.C3p0Connector;
-import com.handfate.industry.core.util.ResourceBundleUtils;
-import com.handfate.industry.core.util.VaadinUtils;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @since 14/11/2014
@@ -41,6 +33,7 @@ public class H4UInvoiceAction extends BaseAction {
     public HorizontalLayout init(UI localMainUI) throws Exception {
         //Khá»Ÿi táº¡o tham sá»‘
         setTableName("h4u_invoice");
+        setTableName("v_h4u_invoice");
         setIdColumnName("invoice_id");
         setPageLength(25);
         setTableType(INT_PAGED_TABLE);
