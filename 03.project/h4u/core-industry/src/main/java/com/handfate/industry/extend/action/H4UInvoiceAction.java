@@ -66,6 +66,7 @@ public class H4UInvoiceAction extends BaseAction {
         // Them customer ID theo hop dong 
         addSinglePopupToForm("Khách hàng", "RECEIVE_USER_ID", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleCustomerAction(localMainUI), 2,
                 null, "", "user_id", "user_name", "sm_users", null, null);
+        addComponentOnlyViewToForm("Số người ở", "number_person", null, false, null, false, null);
         Object[][] invoiceStatus = {{"0", "Invoice.Unpaid"}, {"1", "Invoice.Paid"}, {"2", "Invoice.Cancel"}, {"3", "Invoice.NoPay"}};
         addComboBoxToForm("Invoice.Status", new ComboBox(), "state", "int",
                 true, 50, null, null, true, false, null, false, null, false, false, true, true, invoiceStatus, "0", "Invoice.Unpaid");
@@ -90,6 +91,8 @@ public class H4UInvoiceAction extends BaseAction {
         lstParam.add(fromDate);
         lstParam.add(toDate);
         addTextFieldToForm("User.CreateDate", new PopupDateField(), "create_date", "date", true, 100, null, null, false, false, null, false, null, true, true, true, true, lstParam);
+        addTextFieldToForm("Số điện đầu", new TextField(), "electric_start_index", "int", false, 6, null, null, false, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Số điện cuối", new TextField(), "electric_end_index", "int", false, 6, null, null, false, false, null, false, null, true, true, true, true, null);
         
         Button buttonDownload = new Button("Tải về");
         Button buttonExport = new Button("Xuất hóa đơn");
@@ -221,7 +224,27 @@ public class H4UInvoiceAction extends BaseAction {
                 List lstRow9 = new ArrayList();
                 lstRow9.add("$internet_money");
                 lstRow9.add(internetMoney);
-                lstParameter.add(lstRow9);                  
+                lstParameter.add(lstRow9);  
+                
+                String numberPerson = data.getItemProperty("Số người ở").getValue().toString();
+                List lstRow10 = new ArrayList();
+                lstRow10.add("$person_num");
+                lstRow10.add(numberPerson);
+                lstParameter.add(lstRow10);
+                
+                String startIndex = data.getItemProperty("Số điện đầu").getValue().toString();
+                if(startIndex.isEmpty()) startIndex = "0";
+                List lstRow11 = new ArrayList();
+                lstRow11.add("$first_number");
+                lstRow11.add(startIndex);
+                lstParameter.add(lstRow11); 
+                
+                String endIndex = data.getItemProperty("Số điện cuối").getValue().toString();
+                if(endIndex.isEmpty()) endIndex = "0";
+                List lstRow12 = new ArrayList();
+                lstRow12.add("$last_number");
+                lstRow12.add(endIndex);
+                lstParameter.add(lstRow12);                 
                 
                 Object[][] exportData = {{"","","","","","","","","",""}};
                 FileUtils.exportExcelWithTemplate(exportData, strTemplate, filePath, 44, lstParameter);
