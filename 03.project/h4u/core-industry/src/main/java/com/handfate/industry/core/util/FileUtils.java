@@ -412,6 +412,7 @@ public class FileUtils {
             }
             count2++;
         }
+        workbook.getCreationHelper().createFormulaEvaluator().evaluateAll();
         //Ghi ra file
         FileOutputStream out = new FileOutputStream(new File(outputFile));
         try {
