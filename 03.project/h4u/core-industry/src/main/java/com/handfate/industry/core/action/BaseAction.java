@@ -3672,8 +3672,10 @@ public class BaseAction {
                                     // Xử lý sau khi xóa dữ liệu
                                     for (int i = 0; i < lstComponent.size(); i++) {
                                         if (lstComponent.get(i).get(INT_COMPONENT) instanceof MultiUploadField) {
-                                            long idConnector = Long.parseLong(deleteArray[i].toString());
-                                            baseDao.deleteMultiUploadData(lstComponent.get(i), idConnector, connection);
+                                            for (int j = 0; j < deleteArray.length; j++) {
+                                                long idConnector = Long.parseLong(deleteArray[j].toString());
+                                                baseDao.deleteMultiUploadData(lstComponent.get(i), idConnector, connection);
+                                            }
                                         }
                                     }
                                     afterDeleteData(connection, deleteArray);
