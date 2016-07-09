@@ -9,7 +9,6 @@ import com.handfate.industry.core.MainUI;
 import static com.handfate.industry.core.MainUI.mainLogger;
 import com.handfate.industry.core.action.BaseAction;
 import com.handfate.industry.core.action.PopupSingleAllUserAction;
-import com.handfate.industry.core.action.PopupSingleUserAction;
 import com.handfate.industry.core.action.component.MultiUploadField;
 import com.handfate.industry.core.dao.BaseDAO;
 import com.handfate.industry.core.oracle.C3p0Connector;
@@ -28,8 +27,10 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +64,7 @@ public class H4UContractAction extends BaseAction {
         setSortAscending(false);
         setSequenceName("h4u_contract_seq");
 
-        addTextFieldToForm("ContractID", new TextField(), "CONTRACT_ID", "int", true, 50, null, null, false, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("ContractID", new TextField(), "CONTRACT_ID", "int", true, 50, null, null, false, false, null, false, null, true, true, false, true, null);
         addTextFieldToForm("Mã hợp đồng", new TextField(), "contract_code", "string", true, 50, null, null, true, false, null, false, null, true, true, true, false, null);
         addSinglePopupToForm("Bên A", "PARTY_A_ID", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleAllUserAction(localMainUI), 2,
                 null, "", "user_id", "user_name", "sm_user", null, null);
@@ -80,11 +81,11 @@ public class H4UContractAction extends BaseAction {
         addTextFieldToForm("Giá vệ sinh", new TextField(), "CLEANING_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
         addTextFieldToForm("Số người", new TextField(), "NUMBER_PERSON", "int", true, 2, null, null, true, false, null, false, null, true, true, true, false, null);
         addTextFieldToForm("Ngày ký hơp đồng", new PopupDateField(), "CREATE_DATE", "date", false, null, null, null, false, false, null, false, null, false, false, true, true, null);
-        addTextFieldToForm("Ngày tính tiền", new PopupDateField(), "START_DATE", "date", false, null, null, null, false, false, null, false, null, false, false, true, true, null);
-        Object[][] state = {{2, "Đã ký"}, {3, "Đã thanh lý"}, {4, "Đã hủy"}};
+        addTextFieldToForm("Ngày tính tiền", new PopupDateField(), "START_DATE", "date", false, null, null, null, false, false, null, false, null, true, true, true, true, null);
+        Object[][] state = {{"1", "Chưa ký"}, {2, "Đã ký"}, {3, "Đã thanh lý"}, {4, "Đã hủy"}};
         addComboBoxToForm("Trạng thái", new ComboBox(), "state", "int",
                 true, 50, null, null, false, false, null, false, null, true, true, true, true, state, "1", "Chưa ký");
-        addTextFieldToForm("Ngày kết thúc", new PopupDateField(), "END_DATE", "date", false, null, null, null, false, false, null, false, null, false, false, true, true, null);
+        addTextFieldToForm("Ngày kết thúc", new PopupDateField(), "END_DATE", "date", false, null, null, null, false, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Tiền đặt cọc", new TextField(), "DEPOSIT", "int", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
         addTextFieldToForm("Tiền phạt", new TextField(), "FORFEIT", "int", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
         MultiUploadField fileAttach = new MultiUploadField();
@@ -170,11 +171,21 @@ public class H4UContractAction extends BaseAction {
                         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
                         Date date = new Date();
                         ComboBox cbo = (ComboBox) getComponent("room_id");
-                        String getRoomName = "select name from h4u_room where room_id = ?";
+                        String getRoomName = "select r.*,h.*, r.name as room_name  from h4u_room r join h4u_house h on h.HOUSE_ID = r.HOUSE_ID where room_id = ?";
                         List serPara = new ArrayList();
                         serPara.add(cbo.getValue());
+                        DecimalFormat decimalFormat = new DecimalFormat("#");
                         List<Map> lGrCode = C3p0Connector.queryData(getRoomName, serPara);
-                        getComponent("contract_code").setValue(lGrCode.get(0).get("name") + "-" + dateFormat.format(date));
+                        getComponent("contract_code").setValue(lGrCode.get(0).get("room_name") + "-" + dateFormat.format(date)+"");
+                        getComponent("price").setValue(decimalFormat.format(lGrCode.get(0).get("refer_price")));
+                        getComponent("electric_price").setValue(decimalFormat.format(lGrCode.get(0).get("electric_price")));
+                        getComponent("water_price").setValue(decimalFormat.format(lGrCode.get(0).get("water_price")));
+                        getComponent("internet_price").setValue(decimalFormat.format(lGrCode.get(0).get("internet_price")));
+                        getComponent("television_price").setValue(decimalFormat.format(lGrCode.get(0).get("television_price")));
+                        getComponent("washing_price").setValue(decimalFormat.format(lGrCode.get(0).get("washing_price")));
+                        getComponent("cleaning_price").setValue(decimalFormat.format(lGrCode.get(0).get("clean_price")));
+                        getComponent("DEPOSIT").setValue("3000000");
+                        getComponent("FORFEIT").setValue("2000000");
                     }
                 } catch (Exception ex) {
                     VaadinUtils.handleException(ex);
@@ -264,9 +275,25 @@ public class H4UContractAction extends BaseAction {
                             for (String key1 : mapEq.keySet()) {
                                 variables.addTextVariable(new TextVariable("#{" + key1 + "}", mapEq.get(key1) + ""));
                             }
+                        } else if (((String) key).equalsIgnoreCase("end_date")) {
+                            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            String endDate = currMAp.get(key) != null ? dateFormat.format(currMAp.get(key)) : "Vô hạn";
+                            variables.addTextVariable(new TextVariable("#{" + key + "}", endDate));
+                        } else if (((String) key).equalsIgnoreCase("supply_date")) {
+                            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            String endDate = currMAp.get(key) != null ? dateFormat.format(currMAp.get(key)) : "";
+                            variables.addTextVariable(new TextVariable("#{" + key + "}", endDate));
                         }
 
                     }
+                    Date startDate = (Date) currMAp.get("start_date");
+                    System.out.println("startdate : " + startDate.getDate());
+                    int numberOfDays = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH) - startDate.getDate() + 1;
+                    long first_paid = (long) ((long) (numberOfDays * 1000) / Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
+                            * ((BigDecimal) currMAp.get("price")).doubleValue()) / 1000;
+                    long total_first_paid = first_paid + ((BigDecimal) currMAp.get("deposit")).longValue();
+                    variables.addTextVariable(new TextVariable("#{first_paid}", first_paid + ""));
+                    variables.addTextVariable(new TextVariable("#{total_first_paid}", total_first_paid + ""));
                     // fill template
                     docx.fillTemplate(variables);
 

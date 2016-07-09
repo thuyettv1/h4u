@@ -733,7 +733,8 @@ public class BaseDAO {
      * @since 14/11/2014 HienDM
      */
     public List<Map> getContractInfo(int contract_id) throws Exception {
-        String cql = "select c.*,r.NAME room_name, r.STAGE ,h.ADDRESS house_address,\n"
+        String cql = "select c.*,r.NAME room_name,pc.mobile, pc.supply_date, pc.supply_address, pc.original_address,"
+                + " pc.people_id,r.STAGE ,h.ADDRESS house_address,\n"
                 + "pa.LAST_NAME || ' ' ||  pa.FIRST_NAME fullname_a,\n"
                 + "pc.LAST_NAME || ' ' ||  pc.FIRST_NAME fullname_b  from h4u_contract c \n"
                 + "JOIN SM_USERS pa on c.PARTY_A_ID = pa.USER_ID \n"

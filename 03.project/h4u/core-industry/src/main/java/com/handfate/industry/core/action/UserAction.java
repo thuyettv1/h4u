@@ -84,10 +84,10 @@ public class UserAction extends BaseAction  {
         addTextFieldToForm("Số CMT", new TextField(), "people_id", "string", true, 20, null, null, true, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Nơi cấp", new TextField(), "SUPPLY_ADDRESS", "string", true, 200, null, null, false, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Ngày cấp", new PopupDateField(), "SUPPLY_DATE", "date", false, 100, null, null, false, false, null, false, null, true, true, true, true, null);
-        addTextFieldToForm("Ngân hàng", new TextField(), "BANK_NAME", "string", true, 200, null, null, false, false, null, false, null, true, true, true, true, null);
-        addTextFieldToForm("Số tài khoản", new TextField(), "ACCOUNT_NUMBER", "string", true, 20, null, null, true, false, null, false, null, true, true, true, true, null);
-        addTextFieldToForm("Tên chủ khoản", new TextField(), "ACCOUNT_NAME", "string", true, 200, null, null, false, false, null, false, null, true, true, true, true, null);        
-        addTextFieldToForm("Chi nhánh", new TextField(), "BANK_BRANCH", "string", true, 200, null, null, false, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Ngân hàng", new TextField(), "BANK_NAME", "string", false, 200, null, null, false, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Số tài khoản", new TextField(), "ACCOUNT_NUMBER", "string", false, 20, null, null, true, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Tên chủ khoản", new TextField(), "ACCOUNT_NAME", "string", false, 200, null, null, false, false, null, false, null, true, true, true, true, null);        
+        addTextFieldToForm("Chi nhánh", new TextField(), "BANK_BRANCH", "string", false, 200, null, null, false, false, null, false, null, true, true, true, true, null);
         addUploadFieldToForm("Ảnh CMT trước", new UploadField(), "IMAGE_1", "file", false, null, null, null, false, UserAction.class.toString(), 10);
         addUploadFieldToForm("Ảnh CMT sau", new UploadField(), "IMAGE_2", "file", false, null, null, null, false, UserAction.class.toString(), 10);
         setComponentAsSysdate("User.CreateDate", "create_date", false, null, false, null);

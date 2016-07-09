@@ -72,8 +72,8 @@ public class VaadinUtils {
      */
     public static String getFirstName() throws Exception {
         // bo doan code nay de pass qua trang login
-        //return (String) getAssertion().getPrincipal().getAttributes().get("FIRST_NAME");        
-        return "Hiền";
+        return (String) getAssertion().getPrincipal().getAttributes().get("FIRST_NAME");        
+        //return "Hiền";
     }
     
     /**
@@ -83,8 +83,8 @@ public class VaadinUtils {
      */
     public static String getUserName() throws Exception {
         // bo doan code nay de pass qua trang login
-        //return (String) getAssertion().getPrincipal().getAttributes().get("USER_NAME");        
-        return "admin";
+        return (String) getAssertion().getPrincipal().getAttributes().get("USER_NAME");        
+        //return "admin";
     }
     
     /**

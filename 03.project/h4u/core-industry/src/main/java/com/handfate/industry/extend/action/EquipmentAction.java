@@ -48,9 +48,9 @@ public class EquipmentAction extends BaseAction  {
         addTextFieldToForm("Nhà sản xuất", new TextField(), "manufactor", "string", true, 100, null, null, true, false, null, false, null, true, true, true, true, null);        
         addTextFieldToForm("Năm sản xuất", new TextField(), "year_product", "int", true, 4, null, null, true, false, null, false, null, true, true, true, false, null);
         addTextFieldToForm("Ngày sử dụng", new PopupDateField(), "start_date", "date", false, 100, null, null, true, false, null, false, null, true, true, true, true, null);        
-        Object[][] status = {{2, "Đang sửa chữa"}, {3, "Hỏng"}};
+        Object[][] status = {{"1", "Bình thường"},{2, "Đang sửa chữa"}, {3, "Hỏng"}};
         addComboBoxToForm("Trạng thái", new ComboBox(), "state", "int",
-                true, 50, null, null, false, false, null, false, null, true, true, true, true, status, "1", "Đang sử dụng");
+                true, 50, null, null, false, false, null, false, null, true, true, true, true, status, "1", "Bình thường");
         addSinglePopupToForm("Thuộc phòng", "room_id", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleRoomAction(localMainUI), 2,
                 null, "", "room_id", "name", "h4u_room", null, null);
         addTextFieldToForm("Giá tham khảo", new TextField(), "refer_price", "int", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);

@@ -37,8 +37,8 @@ public class PopupSingleOwnerAction extends PopupSingleAction {
         List lstParameter = new ArrayList();
         lstParameter.add("%/101/%");
         
-        addQueryWhereCondition(" and group_id in (select group_id from v_group where is_enable = 1 and path like ?) ");
-        addQueryWhereParameter(lstParameter);
+        //addQueryWhereCondition(" and group_id in (select group_id from v_group where is_enable = 1 and path like ?) ");
+       // addQueryWhereParameter(lstParameter);
         
         //Thêm các thành phần
         addTextFieldToForm("UserID", new TextField(), "user_id", "int", true, 50, null, null, false, false, null, false, null, true, true, true, true, null);
