@@ -57,5 +57,12 @@ public class PopupSingleRoomAction extends PopupSingleAction {
         addCheckBoxToForm("Khép kín", new CheckBox(), "has_toilet", "boolean",
                 false, 10, null, null, false, false, null, false, null, true, true, true, true, "Khép kín", "Không khép kín");
         addTextFieldToForm("Giá tham khảo", new TextField(), "refer_price", "int", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-    }    
+    }
+    
+    @Override
+    public void beforeInitPanel() throws Exception {
+        setAllowAdd(true);
+        setAllowEdit(true);
+        setAllowDelete(true);
+    }     
 }
