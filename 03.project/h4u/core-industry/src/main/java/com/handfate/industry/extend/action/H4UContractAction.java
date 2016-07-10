@@ -72,14 +72,14 @@ public class H4UContractAction extends BaseAction {
                 null, "", "user_id", "user_name", "sm_user", null, null);
         addSinglePopupToForm("Thuộc phòng", "room_id", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleRoomAction(localMainUI), 2,
                 null, "", "room_id", "name", "h4u_room", null, null);
-        addTextFieldToForm("Giá phòng", new TextField(), "price", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-        addTextFieldToForm("Giá điện", new TextField(), "ELECTRIC_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-        addTextFieldToForm("Giá nước", new TextField(), "WATER_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-        addTextFieldToForm("Giá internet", new TextField(), "INTERNET_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-        addTextFieldToForm("Giá truyền hình", new TextField(), "TELEVISION_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-        addTextFieldToForm("Giá máy giặt", new TextField(), "WASHING_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-        addTextFieldToForm("Giá vệ sinh", new TextField(), "CLEANING_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, false, null);
-        addTextFieldToForm("Số người", new TextField(), "NUMBER_PERSON", "int", true, 2, null, null, true, false, null, false, null, true, true, true, false, null);
+        addTextFieldToForm("Giá phòng", new TextField(), "price", "long", true, 18, null, null, true, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Giá điện", new TextField(), "ELECTRIC_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Giá nước", new TextField(), "WATER_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Giá internet", new TextField(), "INTERNET_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Giá truyền hình", new TextField(), "TELEVISION_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Giá máy giặt", new TextField(), "WASHING_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Giá vệ sinh", new TextField(), "CLEANING_PRICE", "long", true, 18, null, null, true, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Số người", new TextField(), "NUMBER_PERSON", "int", true, 2, null, null, true, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Ngày ký hơp đồng", new PopupDateField(), "CREATE_DATE", "date", false, null, null, null, false, false, null, false, null, false, false, true, true, null);
         addTextFieldToForm("Ngày tính tiền", new PopupDateField(), "START_DATE", "date", false, null, null, null, false, false, null, false, null, true, true, true, true, null);
         Object[][] state = {{"1", "Chưa ký"}, {2, "Đã ký"}, {3, "Đã thanh lý"}, {4, "Đã hủy"}};
