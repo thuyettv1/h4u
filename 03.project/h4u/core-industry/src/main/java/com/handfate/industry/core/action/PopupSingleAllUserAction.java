@@ -69,7 +69,7 @@ public class PopupSingleAllUserAction extends PopupSingleAction {
         Object[][] genderData = {{"1","Common.Man"},{"2","Common.Woman"}};
         addComboBoxToForm("User.Gender", new ComboBox(), "gender", "int",
                 true, 50, null, null, false, false, null, false, null, true, true, true, true, genderData, "1", "Common.Man");
-        addTextFieldToForm("User.FirstName", new TextField(), "first_name", "string", true, 100, null, null, false, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("User.FirstName", new TextField(), "first_name", "string", true, 100, null, null, false, false, null, false, null, true, true, true, true, null);        
         addTextFieldToForm("User.LastName", new TextField(), "last_name", "string", true, 100, null, null, false, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("User.Email", new TextField(), "email", "string", true, 100, "email", null, true, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("User.Mobile", new TextField(), "mobile", "string", true, 100, null, null, true, false, null, false, null, true, true, true, true, null);
