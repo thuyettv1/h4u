@@ -53,7 +53,8 @@ public class UserAction extends BaseAction  {
         
         buildTreeSearch("User.GroupId", 
                 "select group_id, group_name, parent_id from v_group where is_enable = 1 and path like ?", lstParameter1, 
-                "group_id", "group_name", "parent_id", VaadinUtils.getSessionAttribute("G_GroupId").toString(), " and user_id in (select user_id from sm_group_user where group_id = ?) ");
+                "group_id", "group_name", "parent_id", VaadinUtils.getSessionAttribute("G_GroupId").toString(), " and user_id in (select user_id from sm_group_user where group_id = ?) ",
+                true);
 
         //Thêm các thành phần
         addTextFieldToForm("UserID", new TextField(), "user_id", "int", true, 50, null, null, false, false, null, false, null, true, true, true, true, null);
