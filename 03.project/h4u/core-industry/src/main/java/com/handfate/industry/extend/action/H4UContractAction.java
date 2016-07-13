@@ -66,7 +66,8 @@ public class H4UContractAction extends BaseAction {
         
         buildTreeSearch("Nhà cho thuê",
                 "select house_id, name from h4u_house where 1=1 ", null,
-                "house_id", "name", null, "0", " and room_id in (select room_id from h4u_room where house_id = ?) ");        
+                "house_id", "name", null, "0", " and room_id in (select room_id from h4u_room where house_id = ?) ",
+                true);        
 
         addTextFieldToForm("ContractID", new TextField(), "CONTRACT_ID", "int", true, 50, null, null, false, false, null, false, null, true, true, false, true, null);
         addTextFieldToForm("Mã hợp đồng", new TextField(), "contract_code", "string", true, 50, null, null, true, false, null, false, null, true, true, true, false, null);
