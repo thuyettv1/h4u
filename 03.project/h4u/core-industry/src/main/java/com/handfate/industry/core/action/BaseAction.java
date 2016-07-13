@@ -5885,7 +5885,7 @@ public class BaseAction {
      */
     public void buildTreeSearch(String label, String query, List lstParameter,
             String idColumn, String nameColumn, String idParent, String rootId,
-            String whereChildQuery
+            String whereChildQuery, boolean recursive
     ) throws Exception {
         if (idColumn != null) {
             idColumn = idColumn.toLowerCase().trim();
@@ -5898,9 +5898,9 @@ public class BaseAction {
         }
         if (idParent != null) {
             idParent = idParent.toLowerCase().trim();
-            setRecursiveTreeSearch(false);
+            setRecursiveTreeSearch(recursive);
         } else {
-            setRecursiveTreeSearch(false);
+            setRecursiveTreeSearch(recursive);
         }
         setHasTreeSearch(true);
         this.columnConnectTree = columnConnectTree;
