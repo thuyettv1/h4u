@@ -59,6 +59,11 @@ public class H4UInvoiceAction extends BaseAction {
         setSortColumnName("room_name");
         setSortAscending(true);
         setSequenceName("h4u_invoice_seq");
+        
+        buildTreeSearch("Nhà cho thuê",
+                "select house_id, name from h4u_house where 1=1 ", null,
+                "house_id", "name", null, "0", " and contract_id in (select contract_id from h4u_contract where room_id in (select room_id from h4u_room where house_id = ?)) ");        
+        
         //ThÃªm cÃ¡c thÃ nh pháº§n
         addTextFieldToForm("InvoiceID", new TextField(), "invoice_id", "int", true, 50, null, null, false, false, null, false, null, true, true, true, true, null);
         addComponentOnlyViewToForm("Phòng", "room_name", null, false, null, false, null);
