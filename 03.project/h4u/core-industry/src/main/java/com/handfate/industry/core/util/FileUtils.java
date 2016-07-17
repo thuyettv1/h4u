@@ -16,7 +16,9 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -265,6 +267,7 @@ public class FileUtils {
      * @param templateFile đường dẫn template file
      * @param height vị trí hàng excel tương ứng với header
      * @param outputFile đường dẫn file
+     * @param lstExportParameter danh sách tham số
      */
     public static void exportExcelWithTemplate(Object[][] data, String templateFile, String outputFile, int height, List<List> lstExportParameter) throws Exception {
         POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(templateFile));
@@ -421,6 +424,204 @@ public class FileUtils {
             out.close();
         }
     }
+    
+    /**
+     * Hàm xuất dữ liệu ra file excel với template
+     *
+     * @param lstData dữ liệu
+     * @param templateFile đường dẫn template file
+     * @param height vị trí hàng excel tương ứng với header
+     * @param outputFile đường dẫn file
+     * @param lstParameter danh sách tham số
+     */
+    public static void exportExcelWithTemplateMultiSheet(List<Object[][]> lstData, String templateFile, String outputFile, int height, List<List> lstParameter) throws Exception {
+        POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(templateFile));
+        HSSFWorkbook workbook = new HSSFWorkbook(fs, true);
+        Set checkDuplicate = new HashSet();
+        for(int a = 0; a < lstData.size(); a++) {
+            Object[][] data = lstData.get(a);
+            String sheetName = (String)lstParameter.get(a).get(0);
+            if (checkDuplicate.contains(sheetName)) {
+                sheetName = sheetName + "&";
+                if (checkDuplicate.contains(sheetName)) {
+                    sheetName = sheetName + "&";
+                    if (checkDuplicate.contains(sheetName)) {
+                        sheetName = sheetName + "&";
+                        if (checkDuplicate.contains(sheetName)) {
+                            sheetName = sheetName + "&";
+                            if (checkDuplicate.contains(sheetName)) {
+                                sheetName = sheetName + "&";
+                            } else {
+                                checkDuplicate.add(sheetName);
+                            }
+                        } else {
+                            checkDuplicate.add(sheetName);
+                        }
+                    } else {
+                        checkDuplicate.add(sheetName);
+                    }
+                } else {
+                    checkDuplicate.add(sheetName);
+                }
+            } else {
+                checkDuplicate.add(sheetName);
+            }            
+            List<List> lstExportParameter = (List<List>)lstParameter.get(a).get(1);            
+            HSSFSheet sheet = workbook.cloneSheet(0); //Tạo sheet
+            workbook.setSheetName(a+1, sheetName);
+            // Tạo style
+            HSSFCellStyle style = workbook.createCellStyle();
+            style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+            style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+            style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+            style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+            style.setWrapText(true);
+            HSSFFont hSSFFont = workbook.createFont();
+            hSSFFont.setFontName("Times New Roman");
+            hSSFFont.setFontHeightInPoints((short) 13);
+            style.setFont(hSSFFont);
+
+            // Điền tham số phần header
+            for (int i = 1; i <= height; i++) {
+                Row row = sheet.getRow(i);
+                if(row != null) {
+                    for(int j = 0; j < data[0].length; j++) {
+                        Cell cell = row.getCell(j);
+                        if(cell != null) {
+                            switch (cell.getCellType()) {
+                                case Cell.CELL_TYPE_STRING:
+                                    if(cell.getStringCellValue().equals("$date")) {
+                                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                                        Date currentDate = new Date();
+                                        String strDate = formatter.format(currentDate);
+                                        cell.setCellValue(strDate);
+                                    }
+                                    for(int k = 0; k < lstExportParameter.size(); k++) {
+                                        if (cell.getStringCellValue().equals(lstExportParameter.get(k).get(0))) {
+                                            if(lstExportParameter.get(k).get(1) instanceof Double) {
+                                                cell.setCellValue((double)lstExportParameter.get(k).get(1));
+                                            } else {
+                                                cell.setCellValue(lstExportParameter.get(k).get(1).toString());
+                                            }
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Sao chép phần footer
+            List lstFooter = new ArrayList();
+            int count1 = height + 1;
+            for(int i = 0; i < 10; i++) {
+                Row row = sheet.getRow(count1);
+                List lstRow = new ArrayList();
+                if(row != null) {
+                    for(int j = 0; j < data[0].length; j++) {
+                        Cell cell = row.getCell(j);
+                        List lstCell = new ArrayList();
+                        if(cell != null) {
+                            lstCell.add(cell.getCellStyle());
+                            switch (cell.getCellType()) {
+                                case Cell.CELL_TYPE_NUMERIC:
+                                    lstCell.add("numeric");
+                                    lstCell.add(cell.getNumericCellValue());
+                                    break;
+                                case Cell.CELL_TYPE_STRING:
+                                    lstCell.add("string");
+                                    lstCell.add(cell.getStringCellValue());
+                                    break;
+                            }
+                        }
+                        lstRow.add(lstCell);
+                    }
+                }
+                lstFooter.add(lstRow);
+                count1++;
+            }
+            int count = height + 1;
+            for(int i = 0; i < lstFooter.size(); i++) {
+                Row rowCoppy = sheet.createRow(count + data.length);
+                List lstRow = (List)lstFooter.get(i);
+                if(!lstRow.isEmpty()){
+                    int countCell = 0;
+                    for(int j = 0; j < data[0].length; j++) {
+                        Cell cellCopy = rowCoppy.createCell(countCell);
+                        List lstCell = (List)lstRow.get(j);
+                        if(lstCell.size() == 3) {
+                            cellCopy.setCellStyle((CellStyle)lstCell.get(0));
+                            if(lstCell.get(1).equals("numeric")) {
+                                cellCopy.setCellValue((double)lstCell.get(2));
+                            } else {
+                                cellCopy.setCellValue(lstCell.get(2).toString());
+                            }
+                        }
+                        countCell++;
+                    }
+                }
+                count++;
+            }
+
+            // Ghi dữ liệu báo cáo
+            for (int i = 1; i < data.length; i++) {
+                Row row = sheet.createRow(i + height - 1);
+                Object[] objArr = data[i];
+                for (int j = 0; j < objArr.length; j++) {
+                    Cell cell = row.createCell(j);
+                    cell.setCellStyle(style);
+                    if (objArr[j] instanceof String) {
+                        cell.setCellValue((String) objArr[j]);
+                    } else if (objArr[j] instanceof Integer) {
+                        cell.setCellValue((Integer) objArr[j]);
+                    }
+                }
+            }
+
+            // Điền tham số phần footer
+            int count2 = height + 1;
+            for (int i = 1; i < lstFooter.size(); i++) {
+                Row row = sheet.getRow(count2 + data.length);
+                if(row != null) {
+                    for(int j = 0; j < data[0].length; j++) {
+                        Cell cell = row.getCell(j);
+                        if(cell != null) {
+                            switch (cell.getCellType()) {
+                                case Cell.CELL_TYPE_STRING:
+                                    if(cell.getStringCellValue().equals("$date")) {
+                                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                                        Date currentDate = new Date();
+                                        String strDate = formatter.format(currentDate);
+                                        cell.setCellValue(strDate);
+                                    }
+                                    for(int k = 0; k < lstExportParameter.size(); k++) {
+                                        if (cell.getStringCellValue().equals(lstExportParameter.get(k).get(0))) {
+                                            if(lstExportParameter.get(k).get(1) instanceof Double) {
+                                                cell.setCellValue((double)lstExportParameter.get(k).get(1));
+                                            } else {
+                                                cell.setCellValue(lstExportParameter.get(k).get(1).toString());
+                                            }
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+                count2++;
+            }
+        }
+        workbook.removeSheetAt(0);
+        workbook.getCreationHelper().createFormulaEvaluator().evaluateAll();
+        //Ghi ra file
+        FileOutputStream out = new FileOutputStream(new File(outputFile));
+        try {
+            workbook.write(out);
+        } finally {
+            out.close();
+        }
+    }    
     
     /**
      * Hàm xuất dữ liệu ra file excel với template

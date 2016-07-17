@@ -5979,6 +5979,18 @@ public class BaseAction {
         }
         return null;
     }
+    
+    public List getComponentList(String databaseField) {
+        databaseField = databaseField.toLowerCase();
+        for (int i = 0; i < lstComponent.size(); i++) {
+            if (lstComponent.get(i).get(INT_DB_FIELD_NAME).equals(databaseField)) {
+                if (lstComponent.get(i).get(INT_COMPONENT) instanceof AbstractField) {
+                    return lstComponent.get(i);
+                }
+            }
+        }
+        return null;
+    }    
 
     public Label getComponentLabel(String databaseField) {
         databaseField = databaseField.toLowerCase();
