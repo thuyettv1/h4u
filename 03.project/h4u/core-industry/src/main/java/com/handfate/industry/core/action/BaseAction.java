@@ -5559,9 +5559,9 @@ public class BaseAction {
                     } else if (lstWithoutID.get(i).get(INT_COMPONENT) instanceof PasswordField) {
                         // Không làm gì
                     } else {
-                        String celldata = lstData.get(lstWithoutID.get(i).get(INT_DB_FIELD_NAME)).toString();
+                        Object celldata = lstData.get(lstWithoutID.get(i).get(INT_DB_FIELD_NAME));
                         if (celldata != null) {
-                            data[i + firstColumn] = celldata;
+                            data[i + firstColumn] = celldata.toString();
                         } else {
                             data[i + firstColumn] = "";
                         }
