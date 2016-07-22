@@ -69,7 +69,7 @@ public class H4UCostAction extends BaseAction {
                 "house_id", "name", null, "0", " and house_id = ? ", true);        
 
         addTextFieldToForm("id", new TextField(), "ID", "int", true, 50, null, null, false, false, null, false, null, true, true, false, true, null);
-        Object[][] costs = {{"1", "Tiền điện"}, {2, "Tiền nước"}, {3, "Tiền internet"}, {4, "Chi phí quản lý"}, {5, "Chi phí vệ sinh"}, 
+        Object[][] costs = {{"0", "Tiền nhà"}, {"1", "Tiền điện"}, {2, "Tiền nước"}, {3, "Tiền internet"}, {4, "Chi phí quản lý"}, {5, "Chi phí vệ sinh"}, 
             {6, "Chi phí lọc nước"}, {7, "Chi phí bảo trì internet"}, {8, "Chi phí bảo trì Camera"}, {9, "Chi phí khác"}};
         addComboBoxToForm("Loại chi phí", new ComboBox(), "cost_type", "int",
                 true, 50, null, null, false, false, null, false, null, true, true, true, true, costs, null, null);
