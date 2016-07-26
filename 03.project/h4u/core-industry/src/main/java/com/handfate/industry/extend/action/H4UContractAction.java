@@ -53,6 +53,7 @@ public class H4UContractAction extends BaseAction {
      * @param localMainUI VÃ¹ng giao diá»‡n cá»§a chá»©c nÄƒng
      * @return Giao diá»‡n sau khi khá»Ÿi táº¡o
      */
+    private TextField txtMonth = new TextField();
     public HorizontalLayout init(UI localMainUI) throws Exception {
         //Khá»Ÿi táº¡o tham sá»‘
         setTableName("h4u_contract");
@@ -95,7 +96,7 @@ public class H4UContractAction extends BaseAction {
         addTextFieldToForm("Tiền phạt", new TextField(), "FORFEIT", "int", true, 18, null, null, true, false, null, false, null, true, true, true,true, null);
         MultiUploadField fileAttach = new MultiUploadField();
         addMultiUploadFieldToForm("File đính kèm", fileAttach, "H4U_CONTRACT_ATTACH", "file", false, null, null, null, false, ContractAction.class.toString(), 5, "contract_id", "ATTACH_FILE", "id", "h4u_contract_attach_seq");
-
+        addCustomizeToSearchForm("Tháng hoá đơn", txtMonth, "string", false, 100, "int>0", null, false, false, false, false, false, null);
         Button buttonMakeInvoice = new Button("Tạo hóa đơn");
         buttonMakeInvoice.addClickListener(new Button.ClickListener() {
             @Override
@@ -205,6 +206,11 @@ public class H4UContractAction extends BaseAction {
     }
 
     private void buttonMakeInvoiceClick() throws Exception {
+         if(txtMonth.getValue() ==null || txtMonth.getValue().toString().isEmpty()){
+            Notification.show("Bạn phải chon tháng tạo hóa đơn",
+                    null, Notification.Type.ERROR_MESSAGE);
+            return;
+        }
         Object[] invoiceArray = ((java.util.Collection) table.getValue()).toArray();
         if (invoiceArray != null && invoiceArray.length == 1) {
             if (checkPermission(invoiceArray)) {
@@ -214,6 +220,22 @@ public class H4UContractAction extends BaseAction {
                 if (listmap != null && !listmap.isEmpty()) {
                     Map currMAp = listmap.get(0);
                     Connection con = C3p0Connector.getInstance().getConnection();
+                    String sqlCheckExistInvoice = "Select count(*) from h4u_invoice where to_char(START_DATE,'mm') = "+"0"+txtMonth.getValue()+" and contract_id ="+
+                            ((BigDecimal) currMAp.get("contract_id")).doubleValue();
+                    System.out.println(sqlCheckExistInvoice);
+                    int numberOfInvoice = C3p0Connector.checkData(sqlCheckExistInvoice, con);
+                    if (numberOfInvoice > 0) {
+                        Notification.show("Đã tạo hóa đơn tháng cho hợp đồng này",
+                                null, Notification.Type.ERROR_MESSAGE);
+                        return;
+                    }
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.MONTH,Integer.valueOf(txtMonth.getValue().toString())-1);
+                    cal.set(Calendar.DAY_OF_MONTH, 1);
+                    Date startDate = cal.getTime();
+                    cal.set(Calendar.DATE, 31);
+                    Date endDate = cal.getTime();
+                    System.out.println("start"+startDate+ " and end : "+endDate);
                     String sqlInsert = "Insert into H4U_INVOICE (INVOICE_ID,CONTRACT_ID,INVOICE_TYPE,"
                             + "STATE,ELECTRIC_START_INDEX,ELECTRIC_END_INDEX,"
                             + "PRICE,CLEANING_PRICE,WATER_PRICE,INTERNET_PRICE,"
@@ -225,7 +247,7 @@ public class H4UContractAction extends BaseAction {
                             + "?,?,?,?,"
                             + "?,?,?,?,"
                             + "sysdate,sysdate,'',?,0,"
-                            + "sysdate,sysdate,?,'')";
+                            + "?,?,?,'')";
                     List isrtConHisPara = new ArrayList();
                     isrtConHisPara.add(((BigDecimal) currMAp.get("contract_id")).doubleValue());
                     isrtConHisPara.add(((BigDecimal) currMAp.get("price")).doubleValue());
@@ -237,6 +259,8 @@ public class H4UContractAction extends BaseAction {
                     isrtConHisPara.add(Long.parseLong(VaadinUtils.getSessionAttribute("G_UserId").toString()));
                     isrtConHisPara.add(((BigDecimal) currMAp.get("party_b_id")).doubleValue());
                     isrtConHisPara.add(((BigDecimal) currMAp.get("electric_price")).doubleValue());
+                    isrtConHisPara.add(startDate);
+                    isrtConHisPara.add(endDate);
                     double totalPrice = ((BigDecimal) currMAp.get("price")).doubleValue()
                             + ((BigDecimal) currMAp.get("cleaning_price")).doubleValue()
                             + ((BigDecimal) currMAp.get("water_price")).doubleValue()
@@ -247,6 +271,9 @@ public class H4UContractAction extends BaseAction {
                     C3p0Connector.excuteData(sqlInsert, isrtConHisPara, con);
                     con.commit();
                     con.close();
+                    System.out.println("Tạo thành công");
+                    Notification.show("Tạo hóa đơn thành công",
+                            null, Notification.Type.ERROR_MESSAGE);
                 }
             }
         } else {

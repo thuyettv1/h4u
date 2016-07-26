@@ -13,6 +13,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
+import java.sql.Connection;
 
 /**
  * @since 14/11/2014
@@ -56,6 +57,12 @@ public class H4UOwnershipAction extends BaseAction {
         return initPanel(2);
     }
 
+//    @Override
+//    public void beforeAddData(Connection connection) throws Exception {
+//        super.beforeAddData(connection); //To change body of generated methods, choose Tools | Templates.
+//    }
+//    
+    
     public static void main(String[] args) {
         System.out.println("========" + UserAction.class.toString());
     }

@@ -1,4 +1,4 @@
-package com.handfate.industry.core.action;
+  package com.handfate.industry.core.action;
 
 import com.handfate.industry.core.oracle.C3p0Connector;
 import com.vaadin.ui.CheckBox;

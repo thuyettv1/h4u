@@ -19,31 +19,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class C3p0Connector {
+
     public static String DATABASE_CONFIG_PATH;
     public static C3p0Connector datasource;
     public static ComboPooledDataSource cpds;
-    
+
     private C3p0Connector() throws Exception {
         DATABASE_CONFIG_PATH = C3p0Connector.class.getClassLoader().getResource("").getPath()
                 + File.separator + "com" + File.separator + "handfate"
                 + File.separator + "industry" + File.separator + "core"
-                + File.separator + "config" + File.separator; 
+                + File.separator + "config" + File.separator;
         String databaseConfigFile = "com.handfate.industry.core.config.Database";
-        String driverClass = ResourceBundleUtils.getOtherResource("driverClass",databaseConfigFile);
-        String jdbcURL = ResourceBundleUtils.getOtherResource("jdbcURL",databaseConfigFile);
-        String user = ResourceBundleUtils.getOtherResource("user",databaseConfigFile);
-        String password = ResourceBundleUtils.getOtherResource("password",databaseConfigFile);
-        String minPoolSize = ResourceBundleUtils.getOtherResource("minPoolSize",databaseConfigFile);
-        String acquireIncrement = ResourceBundleUtils.getOtherResource("acquireIncrement",databaseConfigFile);
-        String maxPoolSize = ResourceBundleUtils.getOtherResource("maxPoolSize",databaseConfigFile);
-        String maxStatements = ResourceBundleUtils.getOtherResource("maxStatements",databaseConfigFile);            
+        String driverClass = ResourceBundleUtils.getOtherResource("driverClass", databaseConfigFile);
+        String jdbcURL = ResourceBundleUtils.getOtherResource("jdbcURL", databaseConfigFile);
+        String user = ResourceBundleUtils.getOtherResource("user", databaseConfigFile);
+        String password = ResourceBundleUtils.getOtherResource("password", databaseConfigFile);
+        String minPoolSize = ResourceBundleUtils.getOtherResource("minPoolSize", databaseConfigFile);
+        String acquireIncrement = ResourceBundleUtils.getOtherResource("acquireIncrement", databaseConfigFile);
+        String maxPoolSize = ResourceBundleUtils.getOtherResource("maxPoolSize", databaseConfigFile);
+        String maxStatements = ResourceBundleUtils.getOtherResource("maxStatements", databaseConfigFile);
 
         String encrypt = ResourceBundleUtils.getConfigureResource("encryptDatabase");
-        if(encrypt != null && encrypt.equals("true")) {
+        if (encrypt != null && encrypt.equals("true")) {
             File cassandraConfigFile = new File(DATABASE_CONFIG_PATH + "Database.conf");
-            if(cassandraConfigFile.exists()) {
+            if (cassandraConfigFile.exists()) {
                 // Giai ma va doc thong tin tu file config
                 EncryptDecryptUtils edUtils = new EncryptDecryptUtils();
                 String decryptString = edUtils.decryptFile(DATABASE_CONFIG_PATH + "Database.conf");
@@ -51,14 +51,30 @@ public class C3p0Connector {
                 for (String property : properties) {
                     String[] arrInformation = property.split("=", 2);
                     if (arrInformation.length == 2) {
-                        if(arrInformation[0].equals("driverClass")) driverClass = arrInformation[1];
-                        if(arrInformation[0].equals("jdbcURL")) jdbcURL = arrInformation[1];
-                        if(arrInformation[0].equals("user")) user = arrInformation[1];
-                        if(arrInformation[0].equals("password")) password = arrInformation[1];
-                        if(arrInformation[0].equals("minPoolSize")) minPoolSize = arrInformation[1];
-                        if(arrInformation[0].equals("acquireIncrement")) acquireIncrement = arrInformation[1];
-                        if(arrInformation[0].equals("maxPoolSize")) maxPoolSize = arrInformation[1];
-                        if(arrInformation[0].equals("maxStatements")) maxStatements = arrInformation[1];
+                        if (arrInformation[0].equals("driverClass")) {
+                            driverClass = arrInformation[1];
+                        }
+                        if (arrInformation[0].equals("jdbcURL")) {
+                            jdbcURL = arrInformation[1];
+                        }
+                        if (arrInformation[0].equals("user")) {
+                            user = arrInformation[1];
+                        }
+                        if (arrInformation[0].equals("password")) {
+                            password = arrInformation[1];
+                        }
+                        if (arrInformation[0].equals("minPoolSize")) {
+                            minPoolSize = arrInformation[1];
+                        }
+                        if (arrInformation[0].equals("acquireIncrement")) {
+                            acquireIncrement = arrInformation[1];
+                        }
+                        if (arrInformation[0].equals("maxPoolSize")) {
+                            maxPoolSize = arrInformation[1];
+                        }
+                        if (arrInformation[0].equals("maxStatements")) {
+                            maxStatements = arrInformation[1];
+                        }
                     }
                 }
             }
@@ -73,11 +89,11 @@ public class C3p0Connector {
         cpds.setMinPoolSize(Integer.parseInt(minPoolSize));
         cpds.setAcquireIncrement(Integer.parseInt(acquireIncrement));
         cpds.setMaxPoolSize(Integer.parseInt(maxPoolSize));
-        cpds.setMaxStatements(Integer.parseInt(maxStatements));            
+        cpds.setMaxStatements(Integer.parseInt(maxStatements));
     }
 
     public static C3p0Connector getInstance() throws Exception {
-        
+
         if (datasource == null) {
             datasource = new C3p0Connector();
             return datasource;
@@ -91,11 +107,11 @@ public class C3p0Connector {
      *
      * @return kết nối tới cơ sở dữ liệu
      * @since 22/07/2014 HienDM
-     */    
+     */
     public Connection getConnection() throws SQLException {
         return this.cpds.getConnection();
-    }    
-    
+    }
+
     /**
      * Hàm tạo tìm kiếm dữ liệu
      *
@@ -113,7 +129,7 @@ public class C3p0Connector {
             ResultSetMetaData rsMetaData = rs.getMetaData();
             int columnCount = rsMetaData.getColumnCount();
             List lstResult = new ArrayList();
-            while(rs.next()) {
+            while (rs.next()) {
                 Map row = new HashMap();
                 for (int i = 1; i <= columnCount; ++i) {
                     Object obj = rs.getObject(i);
@@ -125,13 +141,13 @@ public class C3p0Connector {
         } finally {
             if (rs != null) {
                 rs.close();
-            }            
+            }
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
         }
     }
-    
+
     /**
      * Hàm tạo tìm kiếm dữ liệu
      *
@@ -141,7 +157,7 @@ public class C3p0Connector {
      */
     public static List<Map> queryData(String query) throws Exception {
         Connection connection = null;
-        try {             
+        try {
             connection = C3p0Connector.getInstance().getConnection();
             return queryData(query, connection);
         } finally {
@@ -152,9 +168,9 @@ public class C3p0Connector {
         }
     }
 
-    public static PreparedStatement setPreparedStatement (PreparedStatement preparedStatement, List lstParameter) 
+    public static PreparedStatement setPreparedStatement(PreparedStatement preparedStatement, List lstParameter)
             throws Exception {
-        if(lstParameter != null) {
+        if (lstParameter != null) {
             for (int i = 0; i < lstParameter.size(); i++) {
                 if (lstParameter.get(i) instanceof Integer) {
                     if (lstParameter.get(i) != null) {
@@ -224,15 +240,15 @@ public class C3p0Connector {
         Connection connection = null;
         try {
             connection = C3p0Connector.getInstance().getConnection();
-            return queryData(query, lstParameter, connection);            
+            return queryData(query, lstParameter, connection);
         } finally {
             if (connection != null) {
                 connection.close();
                 connection = null;
             }
-        }        
+        }
     }
-    
+
     /**
      * Hàm truy vấn dữ liệu theo tham số
      *
@@ -260,7 +276,7 @@ public class C3p0Connector {
                 }
                 lstResult.add(row);
             }
-            return lstResult;            
+            return lstResult;
         } finally {
             if (rs != null) {
                 rs.close();
@@ -268,7 +284,7 @@ public class C3p0Connector {
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
-        }        
+        }
     }
 
     /**
@@ -347,7 +363,7 @@ public class C3p0Connector {
             }
         }
     }
-    
+
     /**
      * Hàm truy vấn dữ liệu theo tham số
      *
@@ -380,6 +396,29 @@ public class C3p0Connector {
             if (rs != null) {
                 rs.close();
             }
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        }
+    }
+
+    /**
+     * Hàm check ton tai
+     *
+     * @since 13/03/2014 thuyettv
+     * @param query Câu lệnh cập nhật dữ liệu trong cassandra
+     * @param connection kết nối tới cơ sở dữ liệu
+     */
+    public static int checkData(String query, Connection connection) throws Exception {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            ResultSet rs = preparedStatement.executeQuery(query);
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
@@ -423,7 +462,7 @@ public class C3p0Connector {
             }
         }
     }
-    
+
     /**
      * Hàm cập nhật cơ sở dữ liệu
      *
@@ -464,7 +503,7 @@ public class C3p0Connector {
             }
         }
     }
-    
+
     /**
      * Hàm cập nhật cơ sở dữ liệu
      *
@@ -484,7 +523,7 @@ public class C3p0Connector {
             }
         }
     }
-    
+
     /**
      * Hàm cập nhật cơ sở dữ liệu
      *
@@ -509,7 +548,7 @@ public class C3p0Connector {
             }
         }
     }
-    
+
     /**
      * Hàm cập nhật cơ sở dữ liệu
      *
@@ -529,10 +568,10 @@ public class C3p0Connector {
             }
         }
     }
-    
-    public static PreparedStatement setPreparedStatementByType (PreparedStatement preparedStatement, List<List> lstParameter) 
+
+    public static PreparedStatement setPreparedStatementByType(PreparedStatement preparedStatement, List<List> lstParameter)
             throws Exception {
-        if(lstParameter != null) {
+        if (lstParameter != null) {
             for (int i = 0; i < lstParameter.size(); i++) {
                 if (lstParameter.get(i).get(1).equals("int")) {
                     if (lstParameter.get(i).get(0) != null && !lstParameter.get(i).get(0).toString().isEmpty()) {
@@ -588,7 +627,6 @@ public class C3p0Connector {
         return preparedStatement;
     }
 
-    
     /**
      * Hàm cập nhật cơ sở dữ liệu
      *
@@ -601,7 +639,7 @@ public class C3p0Connector {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement = setPreparedStatementByType(preparedStatement,lstParameter);
+            preparedStatement = setPreparedStatementByType(preparedStatement, lstParameter);
             preparedStatement.executeUpdate();
         } finally {
             if (preparedStatement != null) {
@@ -609,7 +647,7 @@ public class C3p0Connector {
             }
         }
     }
-    
+
     /**
      * Hàm cập nhật cơ sở dữ liệu theo lô
      *
@@ -644,7 +682,7 @@ public class C3p0Connector {
             preparedStatement = connection.prepareStatement(query);
             for (int k = 0; k < lstBatch.size(); k++) {
                 List<List> lstParameter = lstBatch.get(k);
-                preparedStatement = setPreparedStatementByType(preparedStatement,lstParameter);
+                preparedStatement = setPreparedStatementByType(preparedStatement, lstParameter);
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
@@ -672,7 +710,9 @@ public class C3p0Connector {
             connection = C3p0Connector.getInstance().getConnection();
             preparedStatement = connection.prepareStatement(sqlIdentifier);
             rs = preparedStatement.executeQuery();
-            if(rs.next()) myId = rs.getLong(1);
+            if (rs.next()) {
+                myId = rs.getLong(1);
+            }
             return myId;
         } finally {
             if (rs != null) {

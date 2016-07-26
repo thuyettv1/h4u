@@ -71,8 +71,8 @@ public class H4UInvoiceAction extends BaseAction {
         List lstParam = new ArrayList();
         lstParam.add(fromDate);
         lstParam.add(toDate);        
-        addQueryWhereCondition(" and create_date > ? and create_date < ? ");
-        addQueryWhereParameter(lstParam);
+        //addQueryWhereCondition(" and create_date > ? and create_date < ? ");
+        //addQueryWhereParameter(lstParam);
         
         //ThÃªm cÃ¡c thÃ nh pháº§n
         addTextFieldToForm("InvoiceID", new TextField(), "invoice_id", "int", true, 50, null, null, false, false, null, false, null, true, true, true, true, null);
@@ -81,27 +81,33 @@ public class H4UInvoiceAction extends BaseAction {
         // Them customer ID theo hop dong 
         addSinglePopupToForm("Khách hàng", "RECEIVE_USER_ID", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleCustomerAction(localMainUI), 2,
                 null, "", "user_id", "user_name", "sm_users", null, null);
-        addComponentOnlyViewToForm("Số người ở", "number_person", null, false, null, false, null);
+        addComponentOnlyViewToForm("Số người ở", "number_person", null, true, null, true, null);
         Object[][] invoiceStatus = {{"0", "Invoice.Unpaid"}, {"1", "Invoice.Paid"}, {"2", "Invoice.Cancel"}, {"3", "Invoice.NoPay"}};
         addComboBoxToForm("Invoice.Status", new ComboBox(), "state", "int",
                 true, 50, null, null, true, false, null, false, null, false, false, true, true, invoiceStatus, "0", "Invoice.Unpaid");
-        addTextFieldToForm("Giá nhà", new TextField(), "price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Giá vệ sinh", new TextField(), "cleaning_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Giá điện", new TextField(), "electric_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Giá nước", new TextField(), "water_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Giá internet", new TextField(), "internet_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Giá TH cáp", new TextField(), "television_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Giá máy giặt", new TextField(), "washing_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
-        addTextFieldToForm("Tổng cộng", new TextField(), "total_price", "float", false, 18, null, null, false, false, null, false, null, true, false, false, false, null);
+        addTextFieldToForm("Giá nhà", new TextField(), "price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, true, null);
+        addTextFieldToForm("Giá vệ sinh", new TextField(), "cleaning_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, true, null);
+        addTextFieldToForm("Giá điện", new TextField(), "electric_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, true, null);
+        addTextFieldToForm("Giá nước", new TextField(), "water_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, true, null);
+        addTextFieldToForm("Giá internet", new TextField(), "internet_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, true, null);
+        addTextFieldToForm("Giá TH cáp", new TextField(), "television_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, true, null);
+        addTextFieldToForm("Giá máy giặt", new TextField(), "washing_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, true, null);
+        addTextFieldToForm("Tổng cộng", new TextField(), "total_price", "float", false, 18, null, null, false, false, null, false, null, true, false, false, true, null);
         addTextFieldToForm("Thực thu", new TextField(), "actual_price", "float", false, 18, null, null, false, false, null, false, null, true, true, true, true, null);
         
         PopupDateField pd = new PopupDateField();
+        PopupDateField pd1 = new PopupDateField();
+        PopupDateField pd2 = new PopupDateField();
         pd.setResolution(Resolution.SECOND);
-        addTextFieldToForm("User.CreateDate", pd, "create_date", "date", true, 100, null, null, true, false, null, false, null, true, true, true, true, null);
+        pd1.setResolution(Resolution.SECOND);
+        pd2.setResolution(Resolution.SECOND);
+        addTextFieldToForm("User.CreateDate", pd, "create_date", "date", true, 100, null, null, true, false, null, false, null, false, false, false, false, null);
+        
         
         addTextFieldToForm("Số điện đầu", new TextField(), "electric_start_index", "int", false, 6, null, null, false, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Số điện cuối", new TextField(), "electric_end_index", "int", false, 6, null, null, false, false, null, false, null, true, true, true, true, null);
-        
+        addTextFieldToForm("Ngày bắt đầu", pd1, "start_date", "date", true, 100, null, null, true, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Ngày kết thúc", pd2, "end_date", "date", true, 100, null, null, true, false, null, false, null, true, true, true, true, null);
         Button buttonDownload = new Button("Tải về");
         Button buttonExport = new Button("Xuất hóa đơn");
 
