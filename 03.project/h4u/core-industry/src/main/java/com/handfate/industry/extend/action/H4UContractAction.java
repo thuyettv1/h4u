@@ -94,8 +94,10 @@ public class H4UContractAction extends BaseAction {
         addTextFieldToForm("Ngày kết thúc", new PopupDateField(), "END_DATE", "date", false, null, null, null, false, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Tiền đặt cọc", new TextField(), "DEPOSIT", "int", true, 18, null, null, true, false, null, false, null, true, true, true,true, null);
         addTextFieldToForm("Tiền phạt", new TextField(), "FORFEIT", "int", true, 18, null, null, true, false, null, false, null, true, true, true,true, null);
+        addTextFieldToForm("Tiền nợ", new TextField(), "debit", "int", true, 18, null, null, true, false, null, false, null, true, true, true,true, "0");
         MultiUploadField fileAttach = new MultiUploadField();
         addMultiUploadFieldToForm("File đính kèm", fileAttach, "H4U_CONTRACT_ATTACH", "file", false, null, null, null, false, ContractAction.class.toString(), 5, "contract_id", "ATTACH_FILE", "id", "h4u_contract_attach_seq");
+        addTextFieldToForm("Ghi chú", new TextField(), "note", "string", false, 200, null, null, false, false, null, false, null, true, true, true, true, null);
         addCustomizeToSearchForm("Tháng hoá đơn", txtMonth, "string", false, 100, "int>0", null, false, false, false, false, false, null);
         Button buttonMakeInvoice = new Button("Tạo hóa đơn");
         buttonMakeInvoice.addClickListener(new Button.ClickListener() {

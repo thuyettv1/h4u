@@ -7,6 +7,7 @@ package com.handfate.industry.extend.action;
 
 import com.handfate.industry.core.MainUI;
 import com.handfate.industry.core.action.BaseAction;
+import com.handfate.industry.core.oracle.C3p0Connector;
 import com.handfate.industry.core.util.AdvancedFileDownloader;
 import com.handfate.industry.core.util.FileUtils;
 import com.handfate.industry.core.util.ResourceBundleUtils;
@@ -21,6 +22,8 @@ import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import java.io.File;
+import java.math.BigDecimal;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -56,12 +59,12 @@ public class H4UInvoiceAction extends BaseAction {
         setSortColumnName("room_name");
         setSortAscending(true);
         setSequenceName("h4u_invoice_seq");
-        
+
         buildTreeSearch("Nhà cho thuê",
                 "select house_id, name from h4u_house where 1=1 ", null,
                 "house_id", "name", null, "0", " and contract_id in (select contract_id from h4u_contract where room_id in (select room_id from h4u_room where house_id = ?)) ",
-                true);        
-        
+                true);
+
         // Set tham số tìm kiếm mặc định
         Calendar c = Calendar.getInstance();   // this takes current date
         c.set(Calendar.DAY_OF_MONTH, 1);
@@ -70,10 +73,10 @@ public class H4UInvoiceAction extends BaseAction {
         toDate = c.getTime();
         List lstParam = new ArrayList();
         lstParam.add(fromDate);
-        lstParam.add(toDate);        
+        lstParam.add(toDate);
         //addQueryWhereCondition(" and create_date > ? and create_date < ? ");
         //addQueryWhereParameter(lstParam);
-        
+
         //ThÃªm cÃ¡c thÃ nh pháº§n
         addTextFieldToForm("InvoiceID", new TextField(), "invoice_id", "int", true, 50, null, null, false, false, null, false, null, true, true, true, true, null);
         addComponentOnlyViewToForm("Phòng", "room_name", null, false, null, false, null);
@@ -81,7 +84,8 @@ public class H4UInvoiceAction extends BaseAction {
         // Them customer ID theo hop dong 
         addSinglePopupToForm("Khách hàng", "RECEIVE_USER_ID", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleCustomerAction(localMainUI), 2,
                 null, "", "user_id", "user_name", "sm_users", null, null);
-        addComponentOnlyViewToForm("Số người ở", "number_person", null, true, null, true, null);
+        addComponentOnlyViewToForm("Số người ở", "number_person", null, false, null, true, null);
+        addComponentOnlyViewToForm("Tháng", "month_invoice", null, false, null, false, null);
         Object[][] invoiceStatus = {{"0", "Invoice.Unpaid"}, {"1", "Invoice.Paid"}, {"2", "Invoice.Cancel"}, {"3", "Invoice.NoPay"}};
         addComboBoxToForm("Invoice.Status", new ComboBox(), "state", "int",
                 true, 50, null, null, true, false, null, false, null, false, false, true, true, invoiceStatus, "0", "Invoice.Unpaid");
@@ -92,9 +96,7 @@ public class H4UInvoiceAction extends BaseAction {
         addTextFieldToForm("Giá internet", new TextField(), "internet_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, true, null);
         addTextFieldToForm("Giá TH cáp", new TextField(), "television_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, true, null);
         addTextFieldToForm("Giá máy giặt", new TextField(), "washing_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, true, null);
-        addTextFieldToForm("Tổng cộng", new TextField(), "total_price", "float", false, 18, null, null, false, false, null, false, null, true, false, false, true, null);
-        addTextFieldToForm("Thực thu", new TextField(), "actual_price", "float", false, 18, null, null, false, false, null, false, null, true, true, true, true, null);
-        
+
         PopupDateField pd = new PopupDateField();
         PopupDateField pd1 = new PopupDateField();
         PopupDateField pd2 = new PopupDateField();
@@ -102,12 +104,17 @@ public class H4UInvoiceAction extends BaseAction {
         pd1.setResolution(Resolution.SECOND);
         pd2.setResolution(Resolution.SECOND);
         addTextFieldToForm("User.CreateDate", pd, "create_date", "date", true, 100, null, null, true, false, null, false, null, false, false, false, false, null);
-        
-        
+
         addTextFieldToForm("Số điện đầu", new TextField(), "electric_start_index", "int", false, 6, null, null, false, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Số điện cuối", new TextField(), "electric_end_index", "int", false, 6, null, null, false, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Số điện đầu khác (Nếu có)", new TextField(), "E_START_INDEX", "int", false, 6, null, null, false, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Số điện cuối khác (Nếu có)", new TextField(), "e_end_index", "int", false, 6, null, null, false, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Tiền nợ tháng trước", new TextField(), "debit", "int", true, 18, null, null, true, false, null, false, null, true, true, true, true, "0");
+        addTextFieldToForm("Ghi chú", new TextField(), "note", "string", false, 200, null, null, false, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Ngày bắt đầu", pd1, "start_date", "date", true, 100, null, null, true, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Ngày kết thúc", pd2, "end_date", "date", true, 100, null, null, true, false, null, false, null, true, true, true, true, null);
+        addTextFieldToForm("Tổng cộng", new TextField(), "total_price", "float", false, 18, null, null, false, false, null, false, null, true, true, false, false, null);
+        addTextFieldToForm("Thực thu", new TextField(), "actual_price", "float", false, 18, null, null, false, false, null, false, null, true, true, true, true, null);
         Button buttonDownload = new Button("Tải về");
         Button buttonExport = new Button("Xuất hóa đơn");
 
@@ -150,7 +157,7 @@ public class H4UInvoiceAction extends BaseAction {
                 try {
                     // download file
                     String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
-                        + "Temp" + File.separator + "Invoice.xls";
+                            + "Temp" + File.separator + "Invoice.xls";
                     File downloadFile = new File(filePath);
                     if (!downloadFile.exists()) {
                         Notification.show(ResourceBundleUtils.getLanguageResource("Common.FileNotExist"),
@@ -163,18 +170,18 @@ public class H4UInvoiceAction extends BaseAction {
                 }
             }
         });
-        downloaderForLink.extend(buttonDownload);        
+        downloaderForLink.extend(buttonDownload);
 
         return initPanel(2);
     }
-    
+
     @Override
     public void afterInitPanel() throws Exception {
-        List lstCom = getComponentList("create_date");
-        ((PopupDateField) lstCom.get(INT_TO_DATE_COMPONENT)).setValue(toDate);
-        ((PopupDateField) lstCom.get(INT_COMPONENT)).setValue(fromDate);        
-    }    
-    
+//        List lstCom = getComponentList("create_date");
+//        ((PopupDateField) lstCom.get(INT_TO_DATE_COMPONENT)).setValue(toDate);
+//        ((PopupDateField) lstCom.get(INT_COMPONENT)).setValue(fromDate);        
+    }
+
     private void buttonExportClick() throws Exception {
         Object[] printArray = ((java.util.Collection) table.getValue()).toArray();
         if (printArray != null && printArray.length >= 1) {
@@ -186,8 +193,8 @@ public class H4UInvoiceAction extends BaseAction {
                 // Dien tham so
                 List<Object[][]> lstExportData = new ArrayList();
                 List<List> lstParams = new ArrayList();
-                
-                for(int i = 0; i < printArray.length; i++) {
+
+                for (int i = 0; i < printArray.length; i++) {
                     Item data = table.getItem(printArray[i]);
                     String month = data.getItemProperty(ResourceBundleUtils.getLanguageResource("User.CreateDate")).getValue().toString().substring(3);
                     List lstParameter = new ArrayList();
@@ -196,59 +203,59 @@ public class H4UInvoiceAction extends BaseAction {
                     lstRow.add(month);
                     lstParameter.add(lstRow);
 
-                    String roomName = data.getItemProperty("Phòng").getValue().toString();                
+                    String roomName = data.getItemProperty("Phòng").getValue().toString();
                     List lstRow1 = new ArrayList();
                     lstRow1.add("$room_name");
                     lstRow1.add(roomName);
                     lstParameter.add(lstRow1);
 
-                    String customer = data.getItemProperty("Khách hàng").getValue().toString();                
+                    String customer = data.getItemProperty("Khách hàng").getValue().toString();
                     List lstRow2 = new ArrayList();
                     lstRow2.add("$customer");
                     lstRow2.add(customer);
                     lstParameter.add(lstRow2);
 
-                    String houseMoney = data.getItemProperty("Giá nhà").getValue().toString();                
+                    String houseMoney = data.getItemProperty("Giá nhà").getValue().toString();
                     List lstRow3 = new ArrayList();
                     lstRow3.add("$house_money");
                     lstRow3.add(houseMoney);
-                    lstParameter.add(lstRow3);        
+                    lstParameter.add(lstRow3);
 
-                    String electricMoney = data.getItemProperty("Giá điện").getValue().toString();                
+                    String electricMoney = data.getItemProperty("Giá điện").getValue().toString();
                     List lstRow4 = new ArrayList();
                     lstRow4.add("$electric_money");
                     lstRow4.add(electricMoney);
-                    lstParameter.add(lstRow4);    
+                    lstParameter.add(lstRow4);
 
-                    String waterMoney = data.getItemProperty("Giá nước").getValue().toString();                
+                    String waterMoney = data.getItemProperty("Giá nước").getValue().toString();
                     List lstRow5 = new ArrayList();
                     lstRow5.add("$water_money");
                     lstRow5.add(waterMoney);
-                    lstParameter.add(lstRow5);   
+                    lstParameter.add(lstRow5);
 
-                    String cleanMoney = data.getItemProperty("Giá vệ sinh").getValue().toString();                
+                    String cleanMoney = data.getItemProperty("Giá vệ sinh").getValue().toString();
                     List lstRow6 = new ArrayList();
                     lstRow6.add("$clean_money");
                     lstRow6.add(cleanMoney);
                     lstParameter.add(lstRow6);
 
-                    String capMoney = data.getItemProperty("Giá TH cáp").getValue().toString();                
+                    String capMoney = data.getItemProperty("Giá TH cáp").getValue().toString();
                     List lstRow7 = new ArrayList();
                     lstRow7.add("$cap_money");
                     lstRow7.add(capMoney);
-                    lstParameter.add(lstRow7); 
+                    lstParameter.add(lstRow7);
 
-                    String washMoney = data.getItemProperty("Giá máy giặt").getValue().toString();                
+                    String washMoney = data.getItemProperty("Giá máy giặt").getValue().toString();
                     List lstRow8 = new ArrayList();
                     lstRow8.add("$wash_money");
                     lstRow8.add(washMoney);
                     lstParameter.add(lstRow8);
 
-                    String internetMoney = data.getItemProperty("Giá internet").getValue().toString();                
+                    String internetMoney = data.getItemProperty("Giá internet").getValue().toString();
                     List lstRow9 = new ArrayList();
                     lstRow9.add("$internet_money");
                     lstRow9.add(internetMoney);
-                    lstParameter.add(lstRow9);  
+                    lstParameter.add(lstRow9);
 
                     String numberPerson = data.getItemProperty("Số người ở").getValue().toString();
                     List lstRow10 = new ArrayList();
@@ -257,20 +264,50 @@ public class H4UInvoiceAction extends BaseAction {
                     lstParameter.add(lstRow10);
 
                     String startIndex = data.getItemProperty("Số điện đầu").getValue().toString();
-                    if(startIndex.isEmpty()) startIndex = "0";
+                    if (startIndex.isEmpty()) {
+                        startIndex = "0";
+                    }
                     List lstRow11 = new ArrayList();
                     lstRow11.add("$first_number");
                     lstRow11.add(startIndex);
-                    lstParameter.add(lstRow11); 
+                    lstParameter.add(lstRow11);
 
                     String endIndex = data.getItemProperty("Số điện cuối").getValue().toString();
-                    if(endIndex.isEmpty()) endIndex = "0";
+                    if (endIndex.isEmpty()) {
+                        endIndex = "0";
+                    }
                     List lstRow12 = new ArrayList();
                     lstRow12.add("$last_number");
                     lstRow12.add(endIndex);
-                    lstParameter.add(lstRow12);                 
+                    lstParameter.add(lstRow12);
 
-                    Object[][] exportData = {{"","","","","","","","","",""}};
+                    String startIndex1 = data.getItemProperty("Số điện đầu khác (Nếu có)").getValue().toString();
+                    if (startIndex1.isEmpty()) {
+                        startIndex1 = "0";
+                    }
+                    List lstRow13 = new ArrayList();
+                    lstRow13.add("$first_number1");
+                    lstRow13.add(startIndex1);
+                    lstParameter.add(lstRow13);
+
+                    String endIndex1 = data.getItemProperty("Số điện cuối khác (Nếu có)").getValue().toString();
+                    if (endIndex1.isEmpty()) {
+                        endIndex1 = "0";
+                    }
+                    List lstRow14 = new ArrayList();
+                    lstRow14.add("$last_number1");
+                    lstRow14.add(endIndex1);
+                    lstParameter.add(lstRow14);
+
+                    String debit = data.getItemProperty("Tiền nợ tháng trước").getValue().toString();
+                    if (debit.isEmpty()) {
+                        debit = "0";
+                    }
+                    List lstRow15 = new ArrayList();
+                    lstRow15.add("$debit");
+                    lstRow15.add(debit);
+                    lstParameter.add(lstRow15);
+                    Object[][] exportData = {{"", "", "", "", "", "", "", "", "", ""}};
                     lstExportData.add(exportData);
                     List lstTemp = new ArrayList();
                     lstTemp.add(roomName);
@@ -283,4 +320,48 @@ public class H4UInvoiceAction extends BaseAction {
             Notification.show("Bạn phai chon 1 hợp đồng", null, Notification.Type.ERROR_MESSAGE);
         }
     }
+
+    @Override
+    public void beforeEditData(Connection connection, long id) throws Exception {
+        System.out.println("before edit");
+        try {
+            double total = 0;
+            double price = Double.valueOf(((TextField) getComponent("price")).getValue());
+            double cleaning_price = Double.valueOf(((TextField) getComponent("cleaning_price")).getValue());
+            double water_price = Double.valueOf(((TextField) getComponent("water_price")).getValue());
+            double internet_price = Double.valueOf(((TextField) getComponent("internet_price")).getValue());
+            double television_price = Double.valueOf(((TextField) getComponent("television_price")).getValue());
+            double washing_price = Double.valueOf(((TextField) getComponent("washing_price")).getValue());
+            double electric_price = Double.valueOf(((TextField) getComponent("electric_price")).getValue());
+            double electric_start_index = Double.valueOf(((TextField) getComponent("electric_start_index")).getValue());
+            double electric_end_index = Double.valueOf(((TextField) getComponent("electric_end_index")).getValue());
+            double e_start_index = Double.valueOf(((TextField) getComponent("e_start_index")).getValue());
+            double e_end_index = Double.valueOf(((TextField) getComponent("e_end_index")).getValue());
+            double debit = Double.valueOf(((TextField) getComponent("debit")).getValue());
+            int num_person = 1;//Double.valueOf(((TextField) getComponent("num_person")).getValue());
+            String sqlGetNP = "Select number_person from v_h4u_invoice where invoice_id =" + id;
+            int num = C3p0Connector.checkData(sqlGetNP, connection);
+            if (num > 0) {
+                num_person = num;
+            }
+            total = price + num_person * (cleaning_price + water_price + washing_price)
+                    + internet_price + television_price
+                    + electric_price * (electric_end_index + e_end_index - e_start_index - electric_start_index) + debit;
+//        double totalPrice = ((BigDecimal) currMAp.get("price")).doubleValue()
+//                            + ((BigDecimal) currMAp.get("cleaning_price")).doubleValue()
+//                            + ((BigDecimal) currMAp.get("water_price")).doubleValue()
+//                            + ((BigDecimal) currMAp.get("internet_price")).doubleValue()
+//                            + ((BigDecimal) currMAp.get("television_price")).doubleValue()
+//                            + ((BigDecimal) currMAp.get("washing_price")).doubleValue();
+            System.out.println("======total=====" + total);
+            getComponent("total_price").setValue(total + "");
+            if (debit > 0) {
+                getComponent("note").setValue("Nợ tháng trước : " + debit);
+            }
+        } catch (Exception ex) {
+            System.out.println("Error");
+        }
+
+    }
+
 }
