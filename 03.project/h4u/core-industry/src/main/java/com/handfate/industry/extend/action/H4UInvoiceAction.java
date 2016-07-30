@@ -9,7 +9,9 @@ import com.handfate.industry.core.MainUI;
 import com.handfate.industry.core.action.BaseAction;
 import com.handfate.industry.core.oracle.C3p0Connector;
 import com.handfate.industry.core.util.AdvancedFileDownloader;
+import com.handfate.industry.core.util.Base64Utils;
 import com.handfate.industry.core.util.FileUtils;
+import com.handfate.industry.core.util.MailSender;
 import com.handfate.industry.core.util.ResourceBundleUtils;
 import com.handfate.industry.core.util.VaadinUtils;
 import com.vaadin.data.Item;
@@ -22,14 +24,14 @@ import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import java.io.File;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @since 14/11/2014
@@ -117,7 +119,21 @@ public class H4UInvoiceAction extends BaseAction {
         addTextFieldToForm("Thực thu", new TextField(), "actual_price", "float", false, 18, null, null, false, false, null, false, null, true, true, true, true, null);
         Button buttonDownload = new Button("Tải về");
         Button buttonExport = new Button("Xuất hóa đơn");
-
+        Button buttonSendMail = new Button("Gửi Email");
+        buttonSendMail.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                try {
+                    sendEmail();
+                } catch (Exception ex) {
+                    VaadinUtils.handleException(ex);
+                    MainUI.mainLogger.debug("Install error: ", ex);
+                }
+            }
+        });
+        addButton(buttonSendMail);
+        panelButton.addComponent(buttonSendMail);
+        
         buttonExport.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -148,7 +164,7 @@ public class H4UInvoiceAction extends BaseAction {
         });
         addButton(buttonDownload);
         panelButton.addComponent(buttonDownload);
-        buttonDownload.setEnabled(false);
+        buttonDownload.setEnabled(false);        
 
         AdvancedFileDownloader downloaderForLink = new AdvancedFileDownloader();
         downloaderForLink.addAdvancedDownloaderListener(new AdvancedFileDownloader.AdvancedDownloaderListener() {
@@ -171,10 +187,60 @@ public class H4UInvoiceAction extends BaseAction {
             }
         });
         downloaderForLink.extend(buttonDownload);
-
+        
         return initPanel(2);
     }
 
+    public void sendEmail() throws Exception {
+        Object[] sendArray = ((java.util.Collection) table.getValue()).toArray();
+        if (sendArray != null && sendArray.length >= 1) {
+            String inQuery = "(" + sendArray[0];
+            for (int i = 0; i < sendArray.length; i++) {
+                inQuery += "," + sendArray[i];
+            }
+            inQuery += ")";
+            
+            String SQL = " SELECT   c.invoice_id, a.email " +
+                        "   FROM   sm_users a, h4u_contract b, h4u_invoice c " +
+                        "  WHERE       a.user_id = b.party_b_id " +
+                        "          AND b.contract_id = c.contract_id " +
+                        "          AND c.invoice_id IN " + inQuery;
+
+            List<Map> lstEmail = C3p0Connector.queryData(SQL);
+            HashMap<String, String> mapEmail = new HashMap();
+            for(int i = 0; i < lstEmail.size(); i++) {
+                mapEmail.put(lstEmail.get(i).get("invoice_id").toString(), lstEmail.get(i).get("email").toString());
+            }
+            
+            for(int i = 0; i < sendArray.length; i++) {
+                Object[] exportArray = new Object[1];
+                exportArray[0] = sendArray[i];
+                Calendar cal = Calendar.getInstance();
+                String fileName = "" + cal.get(Calendar.YEAR)
+                        + (cal.get(Calendar.MONTH) + 1) + cal.get(Calendar.DATE)
+                        + cal.get(Calendar.HOUR) + cal.get(Calendar.MINUTE) + cal.get(Calendar.SECOND)
+                        + "_" + "revenue" + UUID.randomUUID();
+                String encodeFileName = Base64Utils.encodeBytes(fileName.getBytes())
+                        + ".xls";                
+                try {
+                    exportInvoiceFile(exportArray, encodeFileName);
+                    List lstFiles = new ArrayList();
+                    List file = new ArrayList();
+                    file.add("Hoa_don.xls");
+                    file.add(encodeFileName);
+                    lstFiles.add(file);
+                    MailSender ms = new MailSender();
+                    ms.sendMail(mapEmail.get(sendArray[i].toString()), "Hoá đơn tiền phòng", "H4U kính gửi quý khách hóa đơn tiền phòng!", lstFiles);
+                } catch (Exception ex) {
+                    VaadinUtils.handleException(ex);
+                    MainUI.mainLogger.debug("Install error: ", ex);                    
+                }
+            }
+        } else {
+            Notification.show("Bạn phải chon 1 hóa đơn", null, Notification.Type.ERROR_MESSAGE);
+        }
+    }
+    
     @Override
     public void afterInitPanel() throws Exception {
 //        List lstCom = getComponentList("create_date");
@@ -185,142 +251,144 @@ public class H4UInvoiceAction extends BaseAction {
     private void buttonExportClick() throws Exception {
         Object[] printArray = ((java.util.Collection) table.getValue()).toArray();
         if (printArray != null && printArray.length >= 1) {
-            if (checkPermission(printArray)) {
-                String strTemplate = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + "Templates"
-                        + File.separator + "template_invoice.xls";
-                String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
-                        + "Temp" + File.separator + "Invoice.xls";
-                // Dien tham so
-                List<Object[][]> lstExportData = new ArrayList();
-                List<List> lstParams = new ArrayList();
-
-                for (int i = 0; i < printArray.length; i++) {
-                    Item data = table.getItem(printArray[i]);
-                    String month = data.getItemProperty(ResourceBundleUtils.getLanguageResource("User.CreateDate")).getValue().toString().substring(3);
-                    List lstParameter = new ArrayList();
-                    List lstRow = new ArrayList();
-                    lstRow.add("$month");
-                    lstRow.add(month);
-                    lstParameter.add(lstRow);
-
-                    String roomName = data.getItemProperty("Phòng").getValue().toString();
-                    List lstRow1 = new ArrayList();
-                    lstRow1.add("$room_name");
-                    lstRow1.add(roomName);
-                    lstParameter.add(lstRow1);
-
-                    String customer = data.getItemProperty("Khách hàng").getValue().toString();
-                    List lstRow2 = new ArrayList();
-                    lstRow2.add("$customer");
-                    lstRow2.add(customer);
-                    lstParameter.add(lstRow2);
-
-                    String houseMoney = data.getItemProperty("Giá nhà").getValue().toString();
-                    List lstRow3 = new ArrayList();
-                    lstRow3.add("$house_money");
-                    lstRow3.add(houseMoney);
-                    lstParameter.add(lstRow3);
-
-                    String electricMoney = data.getItemProperty("Giá điện").getValue().toString();
-                    List lstRow4 = new ArrayList();
-                    lstRow4.add("$electric_money");
-                    lstRow4.add(electricMoney);
-                    lstParameter.add(lstRow4);
-
-                    String waterMoney = data.getItemProperty("Giá nước").getValue().toString();
-                    List lstRow5 = new ArrayList();
-                    lstRow5.add("$water_money");
-                    lstRow5.add(waterMoney);
-                    lstParameter.add(lstRow5);
-
-                    String cleanMoney = data.getItemProperty("Giá vệ sinh").getValue().toString();
-                    List lstRow6 = new ArrayList();
-                    lstRow6.add("$clean_money");
-                    lstRow6.add(cleanMoney);
-                    lstParameter.add(lstRow6);
-
-                    String capMoney = data.getItemProperty("Giá TH cáp").getValue().toString();
-                    List lstRow7 = new ArrayList();
-                    lstRow7.add("$cap_money");
-                    lstRow7.add(capMoney);
-                    lstParameter.add(lstRow7);
-
-                    String washMoney = data.getItemProperty("Giá máy giặt").getValue().toString();
-                    List lstRow8 = new ArrayList();
-                    lstRow8.add("$wash_money");
-                    lstRow8.add(washMoney);
-                    lstParameter.add(lstRow8);
-
-                    String internetMoney = data.getItemProperty("Giá internet").getValue().toString();
-                    List lstRow9 = new ArrayList();
-                    lstRow9.add("$internet_money");
-                    lstRow9.add(internetMoney);
-                    lstParameter.add(lstRow9);
-
-                    String numberPerson = data.getItemProperty("Số người ở").getValue().toString();
-                    List lstRow10 = new ArrayList();
-                    lstRow10.add("$person_num");
-                    lstRow10.add(numberPerson);
-                    lstParameter.add(lstRow10);
-
-                    String startIndex = data.getItemProperty("Số điện đầu").getValue().toString();
-                    if (startIndex.isEmpty()) {
-                        startIndex = "0";
-                    }
-                    List lstRow11 = new ArrayList();
-                    lstRow11.add("$first_number");
-                    lstRow11.add(startIndex);
-                    lstParameter.add(lstRow11);
-
-                    String endIndex = data.getItemProperty("Số điện cuối").getValue().toString();
-                    if (endIndex.isEmpty()) {
-                        endIndex = "0";
-                    }
-                    List lstRow12 = new ArrayList();
-                    lstRow12.add("$last_number");
-                    lstRow12.add(endIndex);
-                    lstParameter.add(lstRow12);
-
-                    String startIndex1 = data.getItemProperty("Số điện đầu khác (Nếu có)").getValue().toString();
-                    if (startIndex1.isEmpty()) {
-                        startIndex1 = "0";
-                    }
-                    List lstRow13 = new ArrayList();
-                    lstRow13.add("$first_number1");
-                    lstRow13.add(startIndex1);
-                    lstParameter.add(lstRow13);
-
-                    String endIndex1 = data.getItemProperty("Số điện cuối khác (Nếu có)").getValue().toString();
-                    if (endIndex1.isEmpty()) {
-                        endIndex1 = "0";
-                    }
-                    List lstRow14 = new ArrayList();
-                    lstRow14.add("$last_number1");
-                    lstRow14.add(endIndex1);
-                    lstParameter.add(lstRow14);
-
-                    String debit = data.getItemProperty("Tiền nợ tháng trước").getValue().toString();
-                    if (debit.isEmpty()) {
-                        debit = "0";
-                    }
-                    List lstRow15 = new ArrayList();
-                    lstRow15.add("$debit");
-                    lstRow15.add(debit);
-                    lstParameter.add(lstRow15);
-                    Object[][] exportData = {{"", "", "", "", "", "", "", "", "", ""}};
-                    lstExportData.add(exportData);
-                    List lstTemp = new ArrayList();
-                    lstTemp.add(roomName);
-                    lstTemp.add(lstParameter);
-                    lstParams.add(lstTemp);
-                }
-                FileUtils.exportExcelWithTemplateMultiSheet(lstExportData, strTemplate, filePath, 44, lstParams);
-            }
+            String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
+                    + "Temp" + File.separator + "Invoice.xls";            
+            exportInvoiceFile(printArray, filePath);
         } else {
-            Notification.show("Bạn phai chon 1 hợp đồng", null, Notification.Type.ERROR_MESSAGE);
+            Notification.show("Bạn phải chon 1 hóa đơn", null, Notification.Type.ERROR_MESSAGE);
         }
     }
 
+    public void exportInvoiceFile(Object[] printArray, String filePath) throws Exception {
+        String strTemplate = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + "Templates"
+                + File.separator + "template_invoice.xls";
+        // Dien tham so
+        List<Object[][]> lstExportData = new ArrayList();
+        List<List> lstParams = new ArrayList();
+
+        for (int i = 0; i < printArray.length; i++) {
+            Item data = table.getItem(printArray[i]);
+            String month = data.getItemProperty(ResourceBundleUtils.getLanguageResource("User.CreateDate")).getValue().toString().substring(3);
+            List lstParameter = new ArrayList();
+            List lstRow = new ArrayList();
+            lstRow.add("$month");
+            lstRow.add(month);
+            lstParameter.add(lstRow);
+
+            String roomName = data.getItemProperty("Phòng").getValue().toString();
+            List lstRow1 = new ArrayList();
+            lstRow1.add("$room_name");
+            lstRow1.add(roomName);
+            lstParameter.add(lstRow1);
+
+            String customer = data.getItemProperty("Khách hàng").getValue().toString();
+            List lstRow2 = new ArrayList();
+            lstRow2.add("$customer");
+            lstRow2.add(customer);
+            lstParameter.add(lstRow2);
+
+            String houseMoney = data.getItemProperty("Giá nhà").getValue().toString();
+            List lstRow3 = new ArrayList();
+            lstRow3.add("$house_money");
+            lstRow3.add(houseMoney);
+            lstParameter.add(lstRow3);
+
+            String electricMoney = data.getItemProperty("Giá điện").getValue().toString();
+            List lstRow4 = new ArrayList();
+            lstRow4.add("$electric_money");
+            lstRow4.add(electricMoney);
+            lstParameter.add(lstRow4);
+
+            String waterMoney = data.getItemProperty("Giá nước").getValue().toString();
+            List lstRow5 = new ArrayList();
+            lstRow5.add("$water_money");
+            lstRow5.add(waterMoney);
+            lstParameter.add(lstRow5);
+
+            String cleanMoney = data.getItemProperty("Giá vệ sinh").getValue().toString();
+            List lstRow6 = new ArrayList();
+            lstRow6.add("$clean_money");
+            lstRow6.add(cleanMoney);
+            lstParameter.add(lstRow6);
+
+            String capMoney = data.getItemProperty("Giá TH cáp").getValue().toString();
+            List lstRow7 = new ArrayList();
+            lstRow7.add("$cap_money");
+            lstRow7.add(capMoney);
+            lstParameter.add(lstRow7);
+
+            String washMoney = data.getItemProperty("Giá máy giặt").getValue().toString();
+            List lstRow8 = new ArrayList();
+            lstRow8.add("$wash_money");
+            lstRow8.add(washMoney);
+            lstParameter.add(lstRow8);
+
+            String internetMoney = data.getItemProperty("Giá internet").getValue().toString();
+            List lstRow9 = new ArrayList();
+            lstRow9.add("$internet_money");
+            lstRow9.add(internetMoney);
+            lstParameter.add(lstRow9);
+
+            String numberPerson = data.getItemProperty("Số người ở").getValue().toString();
+            List lstRow10 = new ArrayList();
+            lstRow10.add("$person_num");
+            lstRow10.add(numberPerson);
+            lstParameter.add(lstRow10);
+
+            String startIndex = data.getItemProperty("Số điện đầu").getValue().toString();
+            if (startIndex.isEmpty()) {
+                startIndex = "0";
+            }
+            List lstRow11 = new ArrayList();
+            lstRow11.add("$first_number");
+            lstRow11.add(startIndex);
+            lstParameter.add(lstRow11);
+
+            String endIndex = data.getItemProperty("Số điện cuối").getValue().toString();
+            if (endIndex.isEmpty()) {
+                endIndex = "0";
+            }
+            List lstRow12 = new ArrayList();
+            lstRow12.add("$last_number");
+            lstRow12.add(endIndex);
+            lstParameter.add(lstRow12);
+
+            String startIndex1 = data.getItemProperty("Số điện đầu khác (Nếu có)").getValue().toString();
+            if (startIndex1.isEmpty()) {
+                startIndex1 = "0";
+            }
+            List lstRow13 = new ArrayList();
+            lstRow13.add("$first_number1");
+            lstRow13.add(startIndex1);
+            lstParameter.add(lstRow13);
+
+            String endIndex1 = data.getItemProperty("Số điện cuối khác (Nếu có)").getValue().toString();
+            if (endIndex1.isEmpty()) {
+                endIndex1 = "0";
+            }
+            List lstRow14 = new ArrayList();
+            lstRow14.add("$last_number1");
+            lstRow14.add(endIndex1);
+            lstParameter.add(lstRow14);
+
+            String debit = data.getItemProperty("Tiền nợ tháng trước").getValue().toString();
+            if (debit.isEmpty()) {
+                debit = "0";
+            }
+            List lstRow15 = new ArrayList();
+            lstRow15.add("$debit");
+            lstRow15.add(debit);
+            lstParameter.add(lstRow15);
+            Object[][] exportData = {{"", "", "", "", "", "", "", "", "", ""}};
+            lstExportData.add(exportData);
+            List lstTemp = new ArrayList();
+            lstTemp.add(roomName);
+            lstTemp.add(lstParameter);
+            lstParams.add(lstTemp);
+        }
+        FileUtils.exportExcelWithTemplateMultiSheet(lstExportData, strTemplate, filePath, 44, lstParams);        
+    }
+    
     @Override
     public void beforeEditData(Connection connection, long id) throws Exception {
         System.out.println("before edit");
