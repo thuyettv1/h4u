@@ -18,6 +18,7 @@ import javax.mail.internet.MimeMultipart;
  * @version 1.0
  */
 public class MailSender {
+
     /**
      * Cac doi tuong dung de gui mail.
      */
@@ -34,16 +35,18 @@ public class MailSender {
     private String alias;
 
     /**
-     * Ham khoi tao. Ket noi luon den mail server. Co the bi 2 loi: - Dang nhap khong dung username, password - Khong
-     * ket noi duoc den mail server (khong dung dia chi, mang bi loi,...)
+     * Ham khoi tao. Ket noi luon den mail server. Co the bi 2 loi: - Dang nhap
+     * khong dung username, password - Khong ket noi duoc den mail server (khong
+     * dung dia chi, mang bi loi,...)
      */
-    public MailSender() throws Exception {            
+    public MailSender() throws Exception {
         alias = "H4U";
         host = "smtp.gmail.com";
         port = "465";
         username = "h4u.family@gmail.com";
         password = "H4u@123456";
-        
+        System.out.println("host: " + host);
+
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.socketFactory.port", port);
@@ -56,8 +59,8 @@ public class MailSender {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password);
                     }
-                });  
-        
+                });
+
         transport = session.getTransport("smtp");
         transport.connect(host, username, password);
     }
@@ -65,11 +68,11 @@ public class MailSender {
     public void sendMail(String email, String subject, String textContent, List<List> files) {
         try {
             Multipart multipart = new MimeMultipart();
-            
+
             MimeBodyPart textPart = new MimeBodyPart();
             textPart.setText(textContent, "utf-8");
             multipart.addBodyPart(textPart);
-            
+
             // Dinh kem file
             if (files != null) {
                 for (List<String> entry : files) {
@@ -79,7 +82,7 @@ public class MailSender {
                     multipart.addBodyPart(attachmentPart);
                 }
             }
-            
+
             message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username, alias, "UTF-8"));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
@@ -98,7 +101,7 @@ public class MailSender {
             MimeBodyPart textPart = new MimeBodyPart();
             textPart.setText(textContent, "utf-8");
             multipart.addBodyPart(textPart);
-            
+
             message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username, alias, "UTF-8"));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
@@ -110,7 +113,7 @@ public class MailSender {
             ex.printStackTrace();
         }
     }
-    
+
     /**
      * Dong ket noi, giai phong tai nguyen.
      */

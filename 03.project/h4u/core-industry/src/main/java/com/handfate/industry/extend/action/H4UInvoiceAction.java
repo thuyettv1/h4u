@@ -219,15 +219,15 @@ public class H4UInvoiceAction extends BaseAction {
                 String fileName = "" + cal.get(Calendar.YEAR)
                         + (cal.get(Calendar.MONTH) + 1) + cal.get(Calendar.DATE)
                         + cal.get(Calendar.HOUR) + cal.get(Calendar.MINUTE) + cal.get(Calendar.SECOND)
-                        + "_" + "revenue" + UUID.randomUUID();
-                String encodeFileName = Base64Utils.encodeBytes(fileName.getBytes())
-                        + ".xls";                
+                        + "_" + "revenue" + UUID.randomUUID() + ".xls";
+                String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
+                    + "Temp" + File.separator + fileName;
                 try {
-                    exportInvoiceFile(exportArray, encodeFileName);
+                    exportInvoiceFile(exportArray, filePath);
                     List lstFiles = new ArrayList();
                     List file = new ArrayList();
                     file.add("Hoa_don.xls");
-                    file.add(encodeFileName);
+                    file.add(filePath);
                     lstFiles.add(file);
                     MailSender ms = new MailSender();
                     ms.sendMail(mapEmail.get(sendArray[i].toString()), "Hoá đơn tiền phòng", "H4U kính gửi quý khách hóa đơn tiền phòng!", lstFiles);
