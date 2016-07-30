@@ -55,10 +55,10 @@ public class H4URevenueAction extends BaseAction {
         buildTreeSearch("Nhà cho thuê",
                 "select house_id, name from h4u_house where 1=1 ", null,
                 "house_id", "name", null, "0", " and id in (select revenue_id from h4u_revenue_house where house_id = ?) ",
-                true);        
+                true);
 
         addTextFieldToForm("ID", new TextField(), "ID", "int", true, 50, null, null, false, false, null, false, null, true, true, false, true, null);
-        addTextFieldToForm("Tên", new TextField(), "name", "string", true, 100, null, null, true, false, null, false, null, true, true, true, true, null);        
+        addTextFieldToForm("Tên", new TextField(), "name", "string", true, 100, null, null, true, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Ngày hạch toán", new PopupDateField(), "create_date", "date", true, null, null, null, true, false, null, false, null, true, true, true, true, null);
         addUploadFieldToForm("File đính kèm", new UploadField(), "ATTACH_FILE", "file", false, null, null, null, false, H4URevenueAction.class.toString(), 10);
         addMultiPopupToForm("Nhà cho thuê", true, false, new PopupMultiHouseAction(localMainUI), 2, null,
