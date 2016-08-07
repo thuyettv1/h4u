@@ -5604,8 +5604,14 @@ public class BaseAction {
                             splittedFileName = fileName.split("/");
                             fileName = splittedFileName[splittedFileName.length - 1];
                         }
-                        fileName = (new String(Base64Utils.decode(FileUtils.extractFileNameNotExt(fileName)))).split("_")[1]
-                                + FileUtils.extractFileExt(fileName);
+                        if(fileName != null && FileUtils.extractFileNameNotExt(fileName) != null &&
+                                Base64Utils.decode(FileUtils.extractFileNameNotExt(fileName)) != null) {
+                            String[] arrString = (new String(Base64Utils.decode(FileUtils.extractFileNameNotExt(fileName)))).split("_");
+                            if(arrString != null && arrString.length > 0) {
+                                fileName = (new String(Base64Utils.decode(FileUtils.extractFileNameNotExt(fileName)))).split("_")[1]
+                                        + FileUtils.extractFileExt(fileName);
+                            }
+                        }
                         if (fileName.length() > 30) {
                             fileName = fileName.substring(0, 25) + "---" + FileUtils.extractFileExt(fileName);
                         }
