@@ -86,6 +86,7 @@ public class H4UInvoiceAction extends BaseAction {
         // Them customer ID theo hop dong 
         addSinglePopupToForm("Khách hàng", "RECEIVE_USER_ID", "int", true, 50, null, null, true, null, false, null, true, true, true, true, new PopupSingleCustomerAction(localMainUI), 2,
                 null, "", "user_id", "user_name", "sm_users", null, null);
+        addComponentOnlyViewToForm("Điện thoại", "phone", null, false, null, false, null);        
         addComponentOnlyViewToForm("Số người ở", "number_person", null, false, null, true, null);
         addComponentOnlyViewToForm("Tháng", "month_invoice", null, false, null, false, null);
         Object[][] invoiceStatus = {{"0", "Invoice.Unpaid"}, {"1", "Invoice.Paid"}, {"2", "Invoice.Cancel"}, {"3", "Invoice.NoPay"}};
@@ -220,7 +221,7 @@ public class H4UInvoiceAction extends BaseAction {
                         + (cal.get(Calendar.MONTH) + 1) + cal.get(Calendar.DATE)
                         + cal.get(Calendar.HOUR) + cal.get(Calendar.MINUTE) + cal.get(Calendar.SECOND)
                         + "_" + "revenue" + UUID.randomUUID() + ".xls";
-                String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
+                String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory")
                     + "Temp" + File.separator + fileName;
                 try {
                     exportInvoiceFile(exportArray, filePath);
@@ -285,7 +286,7 @@ public class H4UInvoiceAction extends BaseAction {
             List lstRow2 = new ArrayList();
             lstRow2.add("$customer");
             lstRow2.add(customer);
-            lstParameter.add(lstRow2);
+            lstParameter.add(lstRow2);            
 
             String houseMoney = data.getItemProperty("Giá nhà").getValue().toString();
             List lstRow3 = new ArrayList();
@@ -379,6 +380,13 @@ public class H4UInvoiceAction extends BaseAction {
             lstRow15.add("$debit");
             lstRow15.add(debit);
             lstParameter.add(lstRow15);
+            
+            String phone = data.getItemProperty("Điện thoại").getValue().toString();
+            List lstRow16 = new ArrayList();
+            lstRow16.add("$phone");
+            lstRow16.add(phone);
+            lstParameter.add(lstRow16);            
+            
             Object[][] exportData = {{"", "", "", "", "", "", "", "", "", ""}};
             lstExportData.add(exportData);
             List lstTemp = new ArrayList();
@@ -386,7 +394,7 @@ public class H4UInvoiceAction extends BaseAction {
             lstTemp.add(lstParameter);
             lstParams.add(lstTemp);
         }
-        FileUtils.exportExcelWithTemplateMultiSheet(lstExportData, strTemplate, filePath, 44, lstParams);        
+        FileUtils.exportExcelWithTemplateMultiSheet(lstExportData, strTemplate, filePath, 48, lstParams);        
     }
     
     @Override
