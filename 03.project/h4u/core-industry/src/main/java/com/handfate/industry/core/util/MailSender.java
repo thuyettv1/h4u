@@ -41,25 +41,21 @@ public class MailSender {
      */
     public MailSender() throws Exception {
         alias = "H4U";
-        host = "smtp.gmail.com";
-        port = "465";
-        username = "h4u.family@gmail.com";
+        host = "smtp.mail.yahoo.com";
+        port = "587";
+        username = "h4u.family@yahoo.com";
         password = "H4u@123456";
-        System.out.println("host: " + host);
+        Properties props = System.getProperties();
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", port);
+        props.put("mail.smtp.auth", "true");
 
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.socketFactory.port", port);
-        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.port", "465");
-
-        Session session = Session.getDefaultInstance(properties,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
-                    }
-                });
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
 
         transport = session.getTransport("smtp");
         transport.connect(host, username, password);
@@ -91,7 +87,7 @@ public class MailSender {
             message.setContent(multipart);
             transport.sendMessage(message, message.getAllRecipients());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
     }
 
@@ -110,7 +106,7 @@ public class MailSender {
             message.setContent(multipart);
             transport.sendMessage(message, message.getAllRecipients());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
     }
 
@@ -123,7 +119,7 @@ public class MailSender {
                 transport.close();
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
     }
 }
