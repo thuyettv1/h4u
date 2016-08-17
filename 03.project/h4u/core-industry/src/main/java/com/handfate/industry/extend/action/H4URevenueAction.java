@@ -91,8 +91,14 @@ public class H4URevenueAction extends BaseAction {
         
         Calendar c = Calendar.getInstance();   // this takes current date
         c.set(Calendar.DAY_OF_MONTH, 1);
+        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
         Date fromDate = c.getTime();
         c.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
+        c.set(Calendar.HOUR, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);        
         Date toDate = c.getTime();
         List lstParam = new ArrayList();
         lstParam.add(fromDate);
@@ -277,7 +283,7 @@ public class H4URevenueAction extends BaseAction {
         String fileName = "" + cal.get(Calendar.YEAR)
                 + (cal.get(Calendar.MONTH) + 1) + cal.get(Calendar.DATE)
                 + cal.get(Calendar.HOUR) + cal.get(Calendar.MINUTE) + cal.get(Calendar.SECOND)
-                + "_" + "revenue" + UUID.randomUUID();
+                + "_" + "revenue";
         String encodeFileName = Base64Utils.encodeBytes(fileName.getBytes())
                 + ".xls";        
         

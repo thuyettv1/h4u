@@ -106,7 +106,7 @@ public class H4UInvoiceAction extends BaseAction {
         pd.setResolution(Resolution.SECOND);
         pd1.setResolution(Resolution.SECOND);
         pd2.setResolution(Resolution.SECOND);
-        addTextFieldToForm("User.CreateDate", pd, "create_date", "date", true, 100, null, null, true, false, null, false, null, false, false, false, false, null);
+        addTextFieldToForm("User.CreateDate", pd, "create_date", "date", true, 100, null, null, true, false, null, false, null, true, true, true, true, null);
 
         addTextFieldToForm("Số điện đầu", new TextField(), "electric_start_index", "int", false, 6, null, null, false, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Số điện cuối", new TextField(), "electric_end_index", "int", false, 6, null, null, false, false, null, false, null, true, true, true, true, null);
