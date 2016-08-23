@@ -7,8 +7,6 @@ package com.handfate.industry.extend.action;
 
 import com.handfate.industry.core.action.BaseAction;
 import com.handfate.industry.core.action.PopupMultiUserAction;
-import com.handfate.industry.core.action.UserAction;
-import com.handfate.industry.core.action.component.MultiUploadField;
 import com.handfate.industry.core.action.component.UploadField;
 import com.handfate.industry.core.oracle.C3p0Connector;
 import com.handfate.industry.core.util.Base64Utils;
@@ -26,7 +24,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @since 14/11/2014
@@ -115,7 +112,6 @@ public class H4URevenueAction extends BaseAction {
             " ORDER BY house_name, a.cost_type ";
         
         List<Map> lstCost = C3p0Connector.queryData(SQL);
-        
         
         List<Object[]> lstData = new ArrayList();
         int count = 0;
