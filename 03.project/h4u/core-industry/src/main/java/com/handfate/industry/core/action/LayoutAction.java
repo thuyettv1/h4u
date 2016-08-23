@@ -52,7 +52,7 @@ public class LayoutAction {
         topLayout.setWidth("253px");
         topLayout.setHeight("79px");
         topLayout.addStyleName("top-menu-layout");
-        //Embedded topMenu = new Embedded(null, new ThemeResource("img/industry/layout/hf_top_menu.png"));
+        Embedded topMenu = new Embedded(null, new ThemeResource("img/industry/layout/hf_top_menu.png"));
         HorizontalLayout menuIcon = new HorizontalLayout();
         menuIcon.addStyleName("menu-button-layout");
         menuIcon.setWidth("43px");
@@ -328,9 +328,9 @@ public class LayoutAction {
         table.setPageLength(pageLength);
         table.setWidth("253px");
         
-        Embedded bottomMenu = new Embedded(null, new ThemeResource("img/industry/layout/hf_bottom_menu.png"));
-        leftLayout.addComponent(bottomMenu);     
-        leftLayout.setExpandRatio(bottomMenu, 0f);
+//        Embedded bottomMenu = new Embedded(null, new ThemeResource("img/industry/layout/hf_bottom_menu.png"));
+//        leftLayout.addComponent(bottomMenu);     
+//        leftLayout.setExpandRatio(bottomMenu, 0f);
         
         return containerLayout;
     }
