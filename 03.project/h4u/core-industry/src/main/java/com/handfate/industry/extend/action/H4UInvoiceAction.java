@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
+import org.w3c.dom.Document;
 
 /**
  * @since 14/11/2014
@@ -174,7 +176,7 @@ public class H4UInvoiceAction extends BaseAction {
                 try {
                     // download file
                     String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
-                            + "Temp" + File.separator + "Invoice.xls";
+                            + "Temp" + File.separator + "Invoice.html";
                     File downloadFile = new File(filePath);
                     if (!downloadFile.exists()) {
                         Notification.show(ResourceBundleUtils.getLanguageResource("Common.FileNotExist"),
@@ -220,14 +222,14 @@ public class H4UInvoiceAction extends BaseAction {
                 String fileName = "" + cal.get(Calendar.YEAR)
                         + (cal.get(Calendar.MONTH) + 1) + cal.get(Calendar.DATE)
                         + cal.get(Calendar.HOUR) + cal.get(Calendar.MINUTE) + cal.get(Calendar.SECOND)
-                        + "_" + "revenue" + UUID.randomUUID() + ".xls";
+                        + "_" + "revenue" + UUID.randomUUID();
                 String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory")
                     + "Temp" + File.separator + fileName;
                 try {
                     exportInvoiceFile(exportArray, filePath);
                     List lstFiles = new ArrayList();
                     List file = new ArrayList();
-                    file.add("Hoa_don.xls");
+                    file.add("Hoa_don.html");
                     file.add(filePath);
                     lstFiles.add(file);
                     MailSender ms = new MailSender();
@@ -253,7 +255,7 @@ public class H4UInvoiceAction extends BaseAction {
         Object[] printArray = ((java.util.Collection) table.getValue()).toArray();
         if (printArray != null && printArray.length >= 1) {
             String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
-                    + "Temp" + File.separator + "Invoice.xls";            
+                    + "Temp" + File.separator + "Invoice";            
             exportInvoiceFile(printArray, filePath);
         } else {
             Notification.show("Bạn phải chon 1 hóa đơn", null, Notification.Type.ERROR_MESSAGE);
@@ -394,7 +396,9 @@ public class H4UInvoiceAction extends BaseAction {
             lstTemp.add(lstParameter);
             lstParams.add(lstTemp);
         }
-        FileUtils.exportExcelWithTemplateMultiSheet(lstExportData, strTemplate, filePath, 48, lstParams);        
+        FileUtils.exportExcelWithTemplateMultiSheet(lstExportData, strTemplate, filePath + ".xls", 48, lstParams);
+        Document doc = ExcelToHtmlConverter.process(new File(filePath + ".xls"));
+        FileUtils.writeHtmlDomToFile(doc, filePath + ".html");
     }
     
     @Override
