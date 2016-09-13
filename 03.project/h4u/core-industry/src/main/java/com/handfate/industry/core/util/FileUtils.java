@@ -3,6 +3,7 @@ package com.handfate.industry.core.util;
 import com.google.gwt.thirdparty.guava.common.io.Files;
 import com.vaadin.server.DownloadStream;
 import com.vaadin.server.FileResource;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -34,6 +35,15 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.w3c.dom.Document;
 
 /**
  * @since 26/03/2014
@@ -746,4 +756,5 @@ public class FileUtils {
         } else return -1;
         return 1;
     }    
+    
 }

@@ -50,7 +50,6 @@ public class RevenueReportAction extends BaseAction  {
         setTemplateFile("report_revenue.xls");
         setTemplateHeight(8);
         
-        
         //Thêm các thành phần
         addTextFieldToForm("CustomerTypeID", new TextField(), "id", "int", true, 50, null, null, false, false, null, false, null, true, true, true, true, null);
         addTextFieldToForm("Customer.CustomerName", new TextField(), "customer_name", "string", true, 100, null, null, true, false, null, false, null, true, true, true, true, null);        

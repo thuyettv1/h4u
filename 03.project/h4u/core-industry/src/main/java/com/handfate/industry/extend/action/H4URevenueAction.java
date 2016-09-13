@@ -17,7 +17,10 @@ import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
+import com.viettel.nonPDFconvert.Converter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -280,8 +283,7 @@ public class H4URevenueAction extends BaseAction {
                 + (cal.get(Calendar.MONTH) + 1) + cal.get(Calendar.DATE)
                 + cal.get(Calendar.HOUR) + cal.get(Calendar.MINUTE) + cal.get(Calendar.SECOND)
                 + "_" + "revenue";
-        String encodeFileName = Base64Utils.encodeBytes(fileName.getBytes())
-                + ".xls";        
+        String encodeFileName = Base64Utils.encodeBytes(fileName.getBytes());        
         
         String strPath = "H4URevenueAction" + File.separator + encodeFileName;
         String strFile = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + strPath;
@@ -291,12 +293,19 @@ public class H4URevenueAction extends BaseAction {
         lstRow.add("$name");
         lstRow.add(getComponent("name").getValue());
         lstParamExport.add(lstRow);
-        FileUtils.exportExcelWithTemplate(arrData, strTemplate, strFile, 6, lstParamExport);
+        FileUtils.exportExcelWithTemplate(arrData, strTemplate, strFile + ".xls", 6, lstParamExport);
+
+        Converter convert = new Converter();
+        ByteArrayOutputStream baos = convert.toPDF(strFile + ".xls", "xls", false);
+        FileOutputStream out = new FileOutputStream(strFile + ".pdf");
+        baos.writeTo(out);
+        baos.close();
+        out.close();        
         
         List lstUpdateParam = new ArrayList();
-        lstUpdateParam.add(strPath);
+        lstUpdateParam.add(strPath + ".pdf");
         lstUpdateParam.add(id);
-        SQL = " update h4u_revenue set attach_file = ? where id = ? ";        
+        SQL = " update h4u_revenue set attach_file = ? where id = ? ";
         C3p0Connector.excuteData(SQL, lstUpdateParam, connection);
     }
 

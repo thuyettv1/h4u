@@ -9,7 +9,6 @@ import com.handfate.industry.core.MainUI;
 import com.handfate.industry.core.action.BaseAction;
 import com.handfate.industry.core.oracle.C3p0Connector;
 import com.handfate.industry.core.util.AdvancedFileDownloader;
-import com.handfate.industry.core.util.Base64Utils;
 import com.handfate.industry.core.util.FileUtils;
 import com.handfate.industry.core.util.MailSender;
 import com.handfate.industry.core.util.ResourceBundleUtils;
@@ -23,7 +22,10 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
+import com.viettel.nonPDFconvert.Converter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,8 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
-import org.w3c.dom.Document;
 
 /**
  * @since 14/11/2014
@@ -141,9 +141,10 @@ public class H4UInvoiceAction extends BaseAction {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 try {
-                    buttonExportClick();
-                    buttonExport.setEnabled(false);
-                    buttonDownload.setEnabled(true);
+                    if(buttonExportClick()) {
+                        buttonExport.setEnabled(false);
+                        buttonDownload.setEnabled(true);
+                    }
                 } catch (Exception ex) {
                     VaadinUtils.handleException(ex);
                     MainUI.mainLogger.debug("Install error: ", ex);
@@ -176,7 +177,7 @@ public class H4UInvoiceAction extends BaseAction {
                 try {
                     // download file
                     String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
-                            + "Temp" + File.separator + "Invoice.html";
+                            + "Temp" + File.separator + "Invoice.pdf";
                     File downloadFile = new File(filePath);
                     if (!downloadFile.exists()) {
                         Notification.show(ResourceBundleUtils.getLanguageResource("Common.FileNotExist"),
@@ -229,7 +230,7 @@ public class H4UInvoiceAction extends BaseAction {
                     exportInvoiceFile(exportArray, filePath);
                     List lstFiles = new ArrayList();
                     List file = new ArrayList();
-                    file.add("Hoa_don.html");
+                    file.add("Hoa_don.pdf");
                     file.add(filePath);
                     lstFiles.add(file);
                     MailSender ms = new MailSender();
@@ -251,14 +252,16 @@ public class H4UInvoiceAction extends BaseAction {
 //        ((PopupDateField) lstCom.get(INT_COMPONENT)).setValue(fromDate);        
     }
 
-    private void buttonExportClick() throws Exception {
+    private boolean buttonExportClick() throws Exception {
         Object[] printArray = ((java.util.Collection) table.getValue()).toArray();
         if (printArray != null && printArray.length >= 1) {
             String filePath = ResourceBundleUtils.getConfigureResource("FileBaseDirectory") + File.separator
                     + "Temp" + File.separator + "Invoice";            
             exportInvoiceFile(printArray, filePath);
+            return true;
         } else {
             Notification.show("Bạn phải chon 1 hóa đơn", null, Notification.Type.ERROR_MESSAGE);
+            return false;
         }
     }
 
@@ -271,12 +274,17 @@ public class H4UInvoiceAction extends BaseAction {
 
         for (int i = 0; i < printArray.length; i++) {
             Item data = table.getItem(printArray[i]);
-            String month = data.getItemProperty(ResourceBundleUtils.getLanguageResource("User.CreateDate")).getValue().toString().substring(3);
+            String month = data.getItemProperty(ResourceBundleUtils.getLanguageResource("User.CreateDate")).getValue().toString().substring(3,5);
+            int intMonth = Integer.parseInt(month.replace("0", ""));
             List lstParameter = new ArrayList();
             List lstRow = new ArrayList();
             lstRow.add("$month");
-            lstRow.add(month);
+            lstRow.add("" + intMonth);            
             lstParameter.add(lstRow);
+            List lstMonth = new ArrayList();
+            lstMonth.add("$month1");
+            lstMonth.add("" + (intMonth - 1));            
+            lstParameter.add(lstMonth);            
 
             String roomName = data.getItemProperty("Phòng").getValue().toString();
             List lstRow1 = new ArrayList();
@@ -397,8 +405,12 @@ public class H4UInvoiceAction extends BaseAction {
             lstParams.add(lstTemp);
         }
         FileUtils.exportExcelWithTemplateMultiSheet(lstExportData, strTemplate, filePath + ".xls", 48, lstParams);
-        Document doc = ExcelToHtmlConverter.process(new File(filePath + ".xls"));
-        FileUtils.writeHtmlDomToFile(doc, filePath + ".html");
+        Converter c = new Converter();
+        ByteArrayOutputStream baos = c.toPDF(filePath + ".xls", "xls", false);
+        FileOutputStream out = new FileOutputStream(filePath + ".pdf");
+        baos.writeTo(out);
+        baos.close();
+        out.close();
     }
     
     @Override
